@@ -1,0 +1,23 @@
+<flags EDM_PLUGIN=1>
+<use name=FWCore/Framework>
+<use name=Foundation/PluginManager>
+<use name=FWCore/ParameterSet>
+<use name=DataFormats/EgammaReco>
+<use name=DataFormats/EgammaCandidates>
+<use name=DataFormats/HepMCCandidate>
+<use name=hepmc>
+<use name=root>
+<use name=SimDataFormats/HepMCProduct>
+<use name=SimTracker/TrackerHitAssociation>
+<export>
+  <lib name=NtupleMakersElectronAnalyzer>
+  <use name=FWCore/Framework>
+  <use name=Foundation/PluginManager>
+  <use name=FWCore/ParameterSet>
+  <use name=DataFormats/HepMCCandidate>
+  <use name=DataFormats/EgammaReco>
+  <use name=DataFormats/EgammaCandidates>
+  <use name=hepmc>
+  <use name=SimDataFormats/HepMCProduct>
+  <use name=SimTracker/TrackerHitAssociation>
+</export>
