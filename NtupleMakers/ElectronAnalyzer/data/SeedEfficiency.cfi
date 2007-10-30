@@ -1,0 +1,20 @@
+module seedEfficiency = SeedEfficiency {
+
+string RootFileName       = "pippo.root"
+string TrajectorySeedName = "globalMixedSeeds"
+string SimHitName         = "globalGsfElectrons" 
+vstring ROUList = {
+#TIB
+		"TrackerHitsTIBLowTof", "TrackerHitsTIBHighTof",
+#TID
+		"TrackerHitsTIDLowTof", "TrackerHitsTIDHighTof",
+#TOB
+		"TrackerHitsTOBLowTof", "TrackerHitsTOBHighTof",
+#TEC
+		"TrackerHitsTECLowTof", "TrackerHitsTECHighTof",
+#BPIX
+		"TrackerHitsPixelBarrelLowTof", "TrackerHitsPixelBarrelHighTof",
+#FPIX
+		"TrackerHitsPixelEndcapLowTof", "TrackerHitsPixelEndcapHighTof"}
+
+} 
