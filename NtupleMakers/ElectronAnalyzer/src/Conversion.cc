@@ -22,12 +22,15 @@
 #include "DataFormats/GeometryVector/interface/GlobalPoint.h"
 #include "Geometry/TrackerGeometryBuilder/interface/StripGeomDetUnit.h"
 
+#include "DataFormats/EgammaCandidates/interface/PixelMatchGsfElectronFwd.h"
+
 #include "SimDataFormats/HepMCProduct/interface/HepMCProduct.h"
-#include "CLHEP/HepMC/GenParticle.h"
 #include "DataFormats/EgammaReco/interface/BasicClusterShapeAssociation.h"
+#include "DataFormats/EgammaReco/interface/BasicCluster.h"
+#include "DataFormats/EgammaReco/interface/ClusterShape.h"
+
 #include "DataFormats/EcalDetId/interface/EcalSubdetector.h"
 
-#include "DataFormats/EgammaCandidates/interface/PixelMatchGsfElectron.h"
 #include "DataFormats/SiStripDetId/interface/StripSubdetector.h"
 #include "DataFormats/TrackingRecHit/interface/TrackingRecHit.h"
 #include "DataFormats/SiStripDetId/interface/SiStripDetId.h"
@@ -35,11 +38,11 @@
 #include "DataFormats/SiStripDetId/interface/TECDetId.h"
 #include "DataFormats/SiStripDetId/interface/TIBDetId.h"
 #include "DataFormats/SiStripDetId/interface/TOBDetId.h"
-
 #include "DataFormats/SiPixelDetId/interface/PXBDetId.h"
 #include "DataFormats/SiPixelDetId/interface/PXFDetId.h"
 
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
+#include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 
 #include "TFile.h"
@@ -319,7 +322,12 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
         el_pout = pout;
         el_fbrem = (pin-pout)/pin;
         el_class = nearElectron->classification();
-        R9_25_gsf(event, &(*nearElectron), el_eseed, el_e3x3, el_e5x5, el_spp, el_see);
+        el_eseed = nearElectron->superCluster()->seed()->energy();
+        el_e3x3 = nearElectron->seedClusterShape()->e3x3();
+        el_e5x5 = nearElectron->seedClusterShape()->e5x5();
+        el_spp = sqrt(nearElectron->seedClusterShape()->covPhiPhi());
+        el_see = sqrt(nearElectron->seedClusterShape()->covEtaEta());
+        
         int a, b;
         nHits(nearElectron->gsfTrack(), a, b);
         el_npxhits = a;
@@ -458,13 +466,18 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
         el1_pout = pout;
         el1_fbrem = (pin-pout)/pin;
         el1_class = nearElectron1->classification();
-        R9_25_gsf(event, &(*nearElectron1), el1_eseed, el1_e3x3, el1_e5x5, el1_spp, el1_see);
-        int a, b;
+        el1_eseed = nearElectron1->superCluster()->seed()->energy();
+        el1_e3x3 = nearElectron1->seedClusterShape()->e3x3();
+        el1_e5x5 = nearElectron1->seedClusterShape()->e5x5();
+        el1_spp = sqrt(nearElectron1->seedClusterShape()->covPhiPhi());
+        el1_see = sqrt(nearElectron1->seedClusterShape()->covEtaEta());
 
+        int a, b;
+        
         nHits(nearElectron1->gsfTrack(), a, b);
         el1_npxhits = a;
         el1_nsihits = b; 
-
+        
         int index = 1;
         while(1) {
           TrackingRecHitRef hit = nearElectron1->gsfTrack()->recHit(nearElectron1->gsfTrack()->recHitsSize()-index);
@@ -481,13 +494,13 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
           }
           index++;
         }
-
+        
         el1_z0 = nearElectron1->gsfTrack()->vz();
         el1_tkiso = trackIsolation(nearElectron1->trackMomentumAtVtx(), nearElectron1->vertex(), tracks);
         el1_tkpt = nearElectron1->gsfTrack()->pt();
         el1_tketa = nearElectron1->gsfTrack()->eta(); 
         el1_tkphi = nearElectron1->gsfTrack()->phi(); 
-
+        
         double dR, dRmin = 0.1;
         HepMC::GenEvent::particle_const_iterator nearMC;
         for (HepMC::GenEvent::particle_const_iterator it = myGenEvent->particles_begin(); it != myGenEvent->particles_end(); ++it) { 
@@ -599,35 +612,6 @@ int Conversion::mother(HepMC::GenParticle *p) {
   }
   
   return -1;
-}
-
-void Conversion::R9_25_gsf(const Event & event, const reco::PixelMatchGsfElectron* e,
-                            float& eseed, float& e3x3, float& e5x5, float& spp, float& see) {
-  
-  reco::SuperClusterRef sclRef=e->superCluster();
-
-  edm::Handle<reco::BasicClusterShapeAssociationCollection> bH, eH;
-  event.getByLabel("hybridSuperClusters", "hybridShapeAssoc", bH);
-  const reco::BasicClusterShapeAssociationCollection* barrelClShp = bH.product();
-  event.getByLabel("islandBasicClusters", "islandEndcapShapeAssoc", eH);
-  const reco::BasicClusterShapeAssociationCollection* endcapClShp = eH.product();
-
-  reco::BasicClusterShapeAssociationCollection::const_iterator seedShpItr;
-  DetId id = sclRef->seed()->getHitsByDetId()[0];
-  if (id.subdetId() == EcalBarrel) {
-    seedShpItr = barrelClShp->find(sclRef->seed());
-  } else {
-    seedShpItr = endcapClShp->find(sclRef->seed());
-  }
-
-  // Get the ClusterShapeRef corresponding to the BasicCluster
-  const reco::ClusterShapeRef& seedShapeRef = seedShpItr->val;
-
-  eseed = sclRef->seed()->energy();
-  e3x3 = seedShapeRef->e3x3();
-  e5x5 = seedShapeRef->e5x5();
-  spp = sqrt(seedShapeRef->covPhiPhi());
-  see = sqrt(seedShapeRef->covEtaEta());
 }
 
 void Conversion::nHits(const reco::GsfTrackRef t, int& nPixelHits, int& nSiTkHits) {

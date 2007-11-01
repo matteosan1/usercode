@@ -4,15 +4,15 @@
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 
 #include "DataFormats/EgammaCandidates/interface/PixelMatchGsfElectron.h"
-
 #include "DataFormats/TrackReco/interface/Track.h"
+
+#include "SimDataFormats/HepMCProduct/interface/HepMCProduct.h"
 
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include <Math/VectorUtil.h>
 #include <Math/Point3D.h>
+
 #include <vector>
-#include "SimDataFormats/HepMCProduct/interface/HepMCProduct.h"
-#include "CLHEP/HepMC/GenParticle.h"
 
 namespace edm {
   class ParameterSet;
@@ -35,8 +35,6 @@ public:
   void endJob();
   bool inCrack(float eta);
   int mother(HepMC::GenParticle *p); 
-  void R9_25_gsf(const edm::Event & event, const reco::PixelMatchGsfElectron*,
-                 float&, float&, float&, float&, float&); 
   double trackIsolation(const math::XYZVector, const math::XYZPoint,
                         const reco::TrackCollection*);
   void subDetector(TrackingRecHitRef hit, int& subdet, int& layer);

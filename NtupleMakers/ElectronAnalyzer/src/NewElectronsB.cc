@@ -314,35 +314,35 @@ void NewElectronsB::analyze(const Event & event, const EventSetup& eventSetup) {
         el_pout = pout;
         el_fbrem = (pin-pout)/pin;
         el_class = nearElectron->classification();
-	el_eseed = nearElectron->superCluster()->seed()->energy();
-	el_e3x3 = nearElectron->seedClusterShape()->e3x3();
-	el_e5x5 = nearElectron->seedClusterShape()->e5x5();
-	el_spp = sqrt(nearElectron->seedClusterShape()->covPhiPhi());
-	el_see = sqrt(nearElectron->seedClusterShape()->covEtaEta());
+        el_eseed = nearElectron->superCluster()->seed()->energy();
+        el_e3x3 = nearElectron->seedClusterShape()->e3x3();
+        el_e5x5 = nearElectron->seedClusterShape()->e5x5();
+        el_spp = sqrt(nearElectron->seedClusterShape()->covPhiPhi());
+        el_see = sqrt(nearElectron->seedClusterShape()->covEtaEta());
 		
         int a, b;
         nHits(nearElectron->gsfTrack(), a, b);
         el_npxhits = a;
         el_nsihits = b;
         int index = 1;
-	while(1) {
-	  TrackingRecHitRef hit = nearElectron->gsfTrack()->recHit(nearElectron->gsfTrack()->recHitsSize()-index);
-
-	  if (hit->isValid()) {
-
-	    GlobalPoint hitPosition = theTracker.idToDet(hit->geographicalId())->surface().toGlobal(hit->localPosition());
-	    GlobalPoint pos(hitPosition.x()-nearElectron->gsfTrack()->vx(), hitPosition.y()-nearElectron->gsfTrack()->vy(),
-			    hitPosition.z()-nearElectron->gsfTrack()->vz());
-	    //std::cout << "Inner: " <<  HitPosition.perp() << "  " << HitPosition.z() << std::endl;                                                                  
-	    el_rinnerhit = sqrt(pow(pos.perp(),2) + pow(pos.z(),2));
-	    //std::cout << "Inner: " << el_rinnerhit << std::endl;                                                                                                    
-	    subDetector(hit, a, b);
-	    el_detinnerhit = a;
-	    break;
-	  }
-	}
-
-	el_z0 = nearElectron->gsfTrack()->vz();
+        while(1) {
+          TrackingRecHitRef hit = nearElectron->gsfTrack()->recHit(nearElectron->gsfTrack()->recHitsSize()-index);
+          
+          if (hit->isValid()) {
+            
+            GlobalPoint hitPosition = theTracker.idToDet(hit->geographicalId())->surface().toGlobal(hit->localPosition());
+            GlobalPoint pos(hitPosition.x()-nearElectron->gsfTrack()->vx(), hitPosition.y()-nearElectron->gsfTrack()->vy(),
+                            hitPosition.z()-nearElectron->gsfTrack()->vz());
+            //std::cout << "Inner: " <<  HitPosition.perp() << "  " << HitPosition.z() << std::endl;                                                                  
+            el_rinnerhit = sqrt(pow(pos.perp(),2) + pow(pos.z(),2));
+            //std::cout << "Inner: " << el_rinnerhit << std::endl;                                                                                                    
+            subDetector(hit, a, b);
+            el_detinnerhit = a;
+            break;
+          }
+        }
+        
+        el_z0 = nearElectron->gsfTrack()->vz();
         el_tkiso = trackIsolation(nearElectron->trackMomentumAtVtx(), nearElectron->vertex(), tracks);
       } else {
         el_pt = 0.;
@@ -367,9 +367,9 @@ void NewElectronsB::analyze(const Event & event, const EventSetup& eventSetup) {
         el_class = -1;
         el_npxhits = -1;
         el_nsihits = -1;
-	el_detinnerhit = -1;
-	el_rinnerhit = 0.; 
-	el_z0 = -1;
+        el_detinnerhit = -1;
+        el_rinnerhit = 0.; 
+        el_z0 = -1;
         el_tkiso = -1;
       }
       
@@ -404,36 +404,36 @@ void NewElectronsB::analyze(const Event & event, const EventSetup& eventSetup) {
         el1_pout = pout;
         el1_fbrem = (pin-pout)/pin;
         el1_class = nearElectron1->classification();
-	el1_eseed = nearElectron1->superCluster()->seed()->energy();
-	el1_e3x3 = nearElectron1->seedClusterShape()->e3x3();
-	el1_e5x5 = nearElectron1->seedClusterShape()->e5x5();
-	el1_spp = sqrt(nearElectron1->seedClusterShape()->covPhiPhi());
-	el1_see = sqrt(nearElectron1->seedClusterShape()->covEtaEta());
-
+        el1_eseed = nearElectron1->superCluster()->seed()->energy();
+        el1_e3x3 = nearElectron1->seedClusterShape()->e3x3();
+        el1_e5x5 = nearElectron1->seedClusterShape()->e5x5();
+        el1_spp = sqrt(nearElectron1->seedClusterShape()->covPhiPhi());
+        el1_see = sqrt(nearElectron1->seedClusterShape()->covEtaEta());
+        
         int a, b;
         nHits(nearElectron1->gsfTrack(), a, b);
         el1_npxhits = a;
         el1_nsihits = b;
-
+        
         int index = 1;
-	while(1) {
-	  TrackingRecHitRef hit = nearElectron1->gsfTrack()->recHit(nearElectron1->gsfTrack()->recHitsSize()-index);
-
-	  if (hit->isValid()) {
-
-	    GlobalPoint hitPosition = theTracker.idToDet(hit->geographicalId())->surface().toGlobal(hit->localPosition());
-	    GlobalPoint pos(hitPosition.x()-nearElectron1->gsfTrack()->vx(), hitPosition.y()-nearElectron1->gsfTrack()->vy(),
-			    hitPosition.z()-nearElectron1->gsfTrack()->vz());
-	    //std::cout << "Inner: " <<  HitPosition.perp() << "  " << HitPosition.z() << std::endl;                                                                  
-	    el1_rinnerhit = sqrt(pow(pos.perp(),2) + pow(pos.z(),2));
-	    //std::cout << "Inner: " << el_rinnerhit << std::endl;                                                                                                    
-	    subDetector(hit, a, b);
-	    el1_detinnerhit = a;
-	    break;
-	  }
-	  index++;
-	}
-
+        while(1) {
+          TrackingRecHitRef hit = nearElectron1->gsfTrack()->recHit(nearElectron1->gsfTrack()->recHitsSize()-index);
+          
+          if (hit->isValid()) {
+            
+            GlobalPoint hitPosition = theTracker.idToDet(hit->geographicalId())->surface().toGlobal(hit->localPosition());
+            GlobalPoint pos(hitPosition.x()-nearElectron1->gsfTrack()->vx(), hitPosition.y()-nearElectron1->gsfTrack()->vy(),
+                            hitPosition.z()-nearElectron1->gsfTrack()->vz());
+            //std::cout << "Inner: " <<  HitPosition.perp() << "  " << HitPosition.z() << std::endl;                                                                  
+            el1_rinnerhit = sqrt(pow(pos.perp(),2) + pow(pos.z(),2));
+            //std::cout << "Inner: " << el_rinnerhit << std::endl;                                                                                                    
+            subDetector(hit, a, b);
+            el1_detinnerhit = a;
+            break;
+          }
+          index++;
+        }
+        
         el1_z0 = nearElectron1->gsfTrack()->vz();
         el1_tkiso = trackIsolation(nearElectron1->trackMomentumAtVtx(), nearElectron1->vertex(), tracks);
       } else {
@@ -459,8 +459,8 @@ void NewElectronsB::analyze(const Event & event, const EventSetup& eventSetup) {
         el1_class = -1;
         el1_npxhits = -1;
         el1_nsihits = -1;
-	el1_rinnerhit = 0.;
-	el1_detinnerhit = -1;
+        el1_rinnerhit = 0.;
+        el1_detinnerhit = -1;
         el1_z0 = -1;
         el1_tkiso = -1;
       }
