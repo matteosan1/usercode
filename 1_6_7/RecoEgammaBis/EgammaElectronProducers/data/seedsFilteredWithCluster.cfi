@@ -1,0 +1,8 @@
+
+module seedsFilteredWithCluster = SubSeedsCollectionProducer {
+
+     string SeedProducer          = "globalMixedSeeds"
+     string SeedLabel             = ""
+
+}
+

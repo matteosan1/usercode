@@ -1,0 +1,5 @@
+<use name=RecoEgamma/EgammaElectronProducers>
+<use name=RecoEgammaBis/EgammaElectronAlgos>
+<library file="*.cc" name=RecoEgammaBisEgammaElectronProducersPlugins>
+<flags EDM_PLUGIN=1>
+</library>
