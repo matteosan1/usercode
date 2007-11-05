@@ -1,0 +1,7 @@
+module newElectronsAnalyzer = NewElectronsC {
+
+string RootFileName = "new_electrons.root"
+string BaselineEleCollName = "pixelMatchGsfElectrons"
+string CustomEleCollName   = "globalGsfElectrons" 
+
+} 
