@@ -141,11 +141,13 @@ void Conversion::beginJob(const EventSetup& eventSetup) {
   tree->Branch("el_layerinnerhit", &el_detinnerhit, "el_layerinnerhit/I");
   tree->Branch("el_rinnerhit", &el_rinnerhit, "el_rinnerhit/F");
   tree->Branch("el_z0", &el_z0, "el_z0/F");
+  tree->Branch("el_d0", &el_d0, "el1_d0/F");
+  tree->Branch("el_d0err", &el_d0err, "el_d0err/F");
   tree->Branch("el_tkiso", &el_tkiso, "el_tkiso/F");
   tree->Branch("el_tkpt", &el_tkpt, "el_tkpt/F");
   tree->Branch("el_tketa", &el_tketa, "el_tketa/F");
   tree->Branch("el_tkphi", &el_tkphi, "el_tkphi/F");
-
+  
   tree->Branch("el1_pt", &el1_pt, "el1_pt/F");
   tree->Branch("el1_e", &el1_e, "el1_e/F");
   tree->Branch("el1_q", &el1_q, "el1_q/I");
@@ -176,80 +178,102 @@ void Conversion::beginJob(const EventSetup& eventSetup) {
   tree->Branch("el1_layerinnerhit", &el1_detinnerhit, "el1_layerinnerhit/I");
   tree->Branch("el1_rinnerhit", &el1_rinnerhit, "el1_rinnerhit/F");
   tree->Branch("el1_z0", &el1_z0, "el1_z0/F");
+  tree->Branch("el1_d0", &el1_d0, "el1_d0/F");
+  tree->Branch("el1_d0err", &el1_d0err, "el1_d0err/F");
   tree->Branch("el1_tkiso", &el1_tkiso, "el1_tkiso/F");
   tree->Branch("el1_tkpt", &el1_tkpt, "el1_tkpt/F");
   tree->Branch("el1_tketa", &el1_tketa, "el1_tketa/F");
   tree->Branch("el1_tkphi", &el1_tkphi, "el1_tkphi/F");
-  
+    
   //Sim branches
-  //px,py,pz and e of the photon closest to the ctf track - standard electron
-  tree->Branch("el_tk_simtrkpx", &el_tk_simtrkpx, "el_tk_simtrkpx/F");
-  tree->Branch("el_tk_simtrkpy", &el_tk_simtrkpy, "el_tk_simtrkpy/F");
-  tree->Branch("el_tk_simtrkpz", &el_tk_simtrkpz, "el_tk_simtrkpz/F");
-  tree->Branch("el_tk_simtrke", &el_tk_simtrke, "el_tk_simtrke/F");
+  //px,py,pz and e of the photon closest to the standard electron's track
+  tree->Branch("el_sim_gpx", &el_sim_gpx, "el_sim_gpx/F");
+  tree->Branch("el_sim_gpy", &el_sim_gpy, "el_sim_gpy/F");
+  tree->Branch("el_sim_gpz", &el_sim_gpz, "el_sim_gpz/F");
+  tree->Branch("el_sim_gpt", &el_sim_gpt, "el_sim_gpt/F");
+  tree->Branch("el_sim_ge", &el_sim_ge, "el_sim_ge/F");
   //position of the vertex where the conversion happened
-  tree->Branch("el_tk_simconvertx", &el_tk_simconvertx, "el_tk_simconvertx/F");
-  tree->Branch("el_tk_simconverty", &el_tk_simconverty, "el_tk_simconverty/F");
-  tree->Branch("el_tk_simconvertz", &el_tk_simconvertz, "el_tk_simconvertz/F");
+  tree->Branch("el_sim_gvx", &el_sim_gvx, "el_sim_gvx/F");
+  tree->Branch("el_sim_gvy", &el_sim_gvy, "el_sim_gvy/F");
+  tree->Branch("el_sim_gvz", &el_sim_gvz, "el_sim_gvz/F");
+  tree->Branch("el_sim_gvr", &el_sim_gvr, "el_sim_gvr/F");
+  tree->Branch("el_sim_gveta", &el_sim_gveta, "el_sim_gveta/F");
+  tree->Branch("el_sim_gvphi", &el_sim_gvphi, "el_sim_gvphi/F");
   //px,py,pz, e of the 2 decay electrons
-  tree->Branch("el_tk_simdecay1px", &el_tk_simdecay1px, "el_tk_simdecay1px/F");
-  tree->Branch("el_tk_simdecay1py", &el_tk_simdecay1py, "el_tk_simdecay1py/F");
-  tree->Branch("el_tk_simdecay1pz", &el_tk_simdecay1pz, "el_tk_simdecay1pz/F");
-  tree->Branch("el_tk_simdecay1e",  &el_tk_simdecay1e,  "el_tk_simdecay1e/F" );
-  tree->Branch("el_tk_simdecay1pid",  &el_tk_simdecay1pid,  "el_tk_simdecay1pid/I" );
-  tree->Branch("el_tk_simdecay2px", &el_tk_simdecay2px, "el_tk_simdecay2px/F");
-  tree->Branch("el_tk_simdecay2py", &el_tk_simdecay2py, "el_tk_simdecay2py/F");
-  tree->Branch("el_tk_simdecay2pz", &el_tk_simdecay2pz, "el_tk_simdecay2pz/F");
-  tree->Branch("el_tk_simdecay2e",  &el_tk_simdecay2e,  "el_tk_simdecay2e/F" );
-  tree->Branch("el_tk_simdecay2pid",  &el_tk_simdecay2pid,  "el_tk_simdecay2pid/I" );
+  tree->Branch("el_sim_decay1px", &el_sim_decay1px, "el_sim_decay1px/F");
+  tree->Branch("el_sim_decay1py", &el_sim_decay1py, "el_sim_decay1py/F");
+  tree->Branch("el_sim_decay1pz", &el_sim_decay1pz, "el_sim_decay1pz/F");
+  tree->Branch("el_sim_decay1pt", &el_sim_decay1pt, "el_sim_decay1pt/F");
+  tree->Branch("el_sim_decay1e",  &el_sim_decay1e,  "el_sim_decay1e/F" );
+  tree->Branch("el_sim_decay1pid",  &el_sim_decay1pid,  "el_sim_decay1pid/I" );
+  tree->Branch("el_sim_decay2px", &el_sim_decay2px, "el_sim_decay2px/F");
+  tree->Branch("el_sim_decay2py", &el_sim_decay2py, "el_sim_decay2py/F");
+  tree->Branch("el_sim_decay2pz", &el_sim_decay2pz, "el_sim_decay2pz/F");
+  tree->Branch("el_sim_decay2pt", &el_sim_decay2pt, "el_sim_decay2pt/F");
+  tree->Branch("el_sim_decay2e",  &el_sim_decay2e,  "el_sim_decay2e/F" );
+  tree->Branch("el_sim_decay2pid",  &el_sim_decay2pid,  "el_sim_decay2pid/I" );
 
   //UCSD electron
-  tree->Branch("el1_tk_simtrkpx", &el1_tk_simtrkpx, "el1_tk_simtrkpx/F");
-  tree->Branch("el1_tk_simtrkpy", &el1_tk_simtrkpy, "el1_tk_simtrkpy/F");
-  tree->Branch("el1_tk_simtrkpz", &el1_tk_simtrkpz, "el1_tk_simtrkpz/F");
-  tree->Branch("el1_tk_simtrke", &el1_tk_simtrke, "el1_tk_simtrke/F");
+  tree->Branch("el1_sim_gpx", &el1_sim_gpx, "el1_sim_gpx/F");
+  tree->Branch("el1_sim_gpy", &el1_sim_gpy, "el1_sim_gpy/F");
+  tree->Branch("el1_sim_gpz", &el1_sim_gpz, "el1_sim_gpz/F");
+  tree->Branch("el1_sim_gpt", &el1_sim_gpt, "el1_sim_gpt/F");
+  tree->Branch("el1_sim_ge", &el1_sim_ge, "el1_sim_ge/F");
   //position of the vertex where the conversion happened
-  tree->Branch("el1_tk_simconvertx", &el1_tk_simconvertx, "el1_tk_simconvertx/F");
-  tree->Branch("el1_tk_simconverty", &el1_tk_simconverty, "el1_tk_simconverty/F");
-  tree->Branch("el1_tk_simconvertz", &el1_tk_simconvertz, "el1_tk_simconvertz/F");
+  tree->Branch("el1_sim_gvx", &el1_sim_gvx, "el1_sim_gvx/F");
+  tree->Branch("el1_sim_gvy", &el1_sim_gvy, "el1_sim_gvy/F");
+  tree->Branch("el1_sim_gvz", &el1_sim_gvz, "el1_sim_gvz/F");
+  tree->Branch("el1_sim_gvr", &el1_sim_gvr, "el1_sim_gvr/F");
+  tree->Branch("el1_sim_gveta", &el1_sim_gveta, "el1_sim_gveta/F");
+  tree->Branch("el1_sim_gvphi", &el1_sim_gvphi, "el1_sim_gvphi/F");
   //px,py,pz, e of the 2 decay electrons
-  tree->Branch("el1_tk_simdecay1px", &el1_tk_simdecay1px, "el1_tk_simdecay1px/F");
-  tree->Branch("el1_tk_simdecay1py", &el1_tk_simdecay1py, "el1_tk_simdecay1py/F");
-  tree->Branch("el1_tk_simdecay1pz", &el1_tk_simdecay1pz, "el1_tk_simdecay1pz/F");
-  tree->Branch("el1_tk_simdecay1e",  &el1_tk_simdecay1e,  "el1_tk_simdecay1e/F" );
-  tree->Branch("el1_tk_simdecay1pid",  &el1_tk_simdecay1pid,  "el1_tk_simdecay1pid/I" );
-  tree->Branch("el1_tk_simdecay2px", &el1_tk_simdecay2px, "el1_tk_simdecay2px/F");
-  tree->Branch("el1_tk_simdecay2py", &el1_tk_simdecay2py, "el1_tk_simdecay2py/F");
-  tree->Branch("el1_tk_simdecay2pz", &el1_tk_simdecay2pz, "el1_tk_simdecay2pz/F");
-  tree->Branch("el1_tk_simdecay2e",  &el1_tk_simdecay2e,  "el1_tk_simdecay2e/F" );
-  tree->Branch("el1_tk_simdecay2pid",  &el1_tk_simdecay2pid,  "el1_tk_simdecay2pid/I" );
+  tree->Branch("el1_sim_decay1px", &el1_sim_decay1px, "el1_sim_decay1px/F");
+  tree->Branch("el1_sim_decay1py", &el1_sim_decay1py, "el1_sim_decay1py/F");
+  tree->Branch("el1_sim_decay1pz", &el1_sim_decay1pz, "el1_sim_decay1pz/F");
+  tree->Branch("el1_sim_decay1pt", &el1_sim_decay1pt, "el1_sim_decay1pt/F");
+  tree->Branch("el1_sim_decay1e",  &el1_sim_decay1e,  "el1_sim_decay1e/F" );
+  tree->Branch("el1_sim_decay1pid",  &el1_sim_decay1pid,  "el1_sim_decay1pid/I" );
+  tree->Branch("el1_sim_decay2px", &el1_sim_decay2px, "el1_sim_decay2px/F");
+  tree->Branch("el1_sim_decay2py", &el1_sim_decay2py, "el1_sim_decay2py/F");
+  tree->Branch("el1_sim_decay2pz", &el1_sim_decay2pz, "el1_sim_decay2pz/F");
+  tree->Branch("el1_sim_decay2pt", &el1_sim_decay2pt, "el1_sim_decay2pt/F");
+  tree->Branch("el1_sim_decay2e",  &el1_sim_decay2e,  "el1_sim_decay2e/F" );
+  tree->Branch("el1_sim_decay2pid",  &el1_sim_decay2pid,  "el1_sim_decay2pid/I" );
 
   //px,py,pz and e of the photon closest to the sc
-  tree->Branch("el_sc_simtrkpx", &el_sc_simtrkpx, "el_sc_simtrkpx/F");
-  tree->Branch("el_sc_simtrkpy", &el_sc_simtrkpy, "el_sc_simtrkpy/F");
-  tree->Branch("el_sc_simtrkpz", &el_sc_simtrkpz, "el_sc_simtrkpz/F");
-  tree->Branch("el_sc_simtrke", &el_sc_simtrke, "el_sc_simtrke/F");
+  tree->Branch("sc_sim_gpx", &sc_sim_gpx, "sc_sim_gpx/F");
+  tree->Branch("sc_sim_gpy", &sc_sim_gpy, "sc_sim_gpy/F");
+  tree->Branch("sc_sim_gpz", &sc_sim_gpz, "sc_sim_gpz/F");
+  tree->Branch("sc_sim_gpt", &sc_sim_gpt, "sc_sim_gpt/F");
+  tree->Branch("sc_sim_ge", &sc_sim_ge, "sc_sim_ge/F");
   //position of the vertex where the conversion happened
-  tree->Branch("el_sc_simconvertx", &el_sc_simconvertx, "el_sc_simconvertx/F");
-  tree->Branch("el_sc_simconverty", &el_sc_simconverty, "el_sc_simconverty/F");
-  tree->Branch("el_sc_simconvertz", &el_sc_simconvertz, "el_sc_simconvertz/F");
+  tree->Branch("sc_sim_gvx", &sc_sim_gvx, "sc_sim_gvx/F");
+  tree->Branch("sc_sim_gvy", &sc_sim_gvy, "sc_sim_gvy/F");
+  tree->Branch("sc_sim_gvz", &sc_sim_gvz, "sc_sim_gvz/F");
+  tree->Branch("sc_sim_gvr", &sc_sim_gvr, "sc_sim_gvr/F");
+  tree->Branch("sc_sim_gveta", &sc_sim_gveta, "sc_sim_gveta/F");
+  tree->Branch("sc_sim_gvphi", &sc_sim_gvphi, "sc_sim_gvphi/F");
   //px,py,pz, e of the 2 decay electrons
-  tree->Branch("el_sc_simdecay1px", &el_sc_simdecay1px, "el_sc_simdecay1px/F");
-  tree->Branch("el_sc_simdecay1py", &el_sc_simdecay1py, "el_sc_simdecay1py/F");
-  tree->Branch("el_sc_simdecay1pz", &el_sc_simdecay1pz, "el_sc_simdecay1pz/F");
-  tree->Branch("el_sc_simdecay1e",  &el_sc_simdecay1e,  "el_sc_simdecay1e/F" );
-  tree->Branch("el_sc_simdecay1pid",  &el_sc_simdecay1pid,  "el_sc_simdecay1pid/I" );
-  tree->Branch("el_sc_simdecay2px", &el_sc_simdecay2px, "el_sc_simdecay2px/F");
-  tree->Branch("el_sc_simdecay2py", &el_sc_simdecay2py, "el_sc_simdecay2py/F");
-  tree->Branch("el_sc_simdecay2pz", &el_sc_simdecay2pz, "el_sc_simdecay2pz/F");
-  tree->Branch("el_sc_simdecay2e",  &el_sc_simdecay2e,  "el_sc_simdecay2e/F" );
-  tree->Branch("el_sc_simdecay2pid",  &el_sc_simdecay2pid,  "el_sc_simdecay2pid/I");  
+  tree->Branch("sc_sim_decay1px", &sc_sim_decay1px, "sc_sim_decay1px/F");
+  tree->Branch("sc_sim_decay1py", &sc_sim_decay1py, "sc_sim_decay1py/F");
+  tree->Branch("sc_sim_decay1pz", &sc_sim_decay1pz, "sc_sim_decay1pz/F");
+  tree->Branch("sc_sim_decay1pt", &sc_sim_decay1pt, "sc_sim_decay1pt/F");
+  tree->Branch("sc_sim_decay1e",  &sc_sim_decay1e,  "sc_sim_decay1e/F" );
+  tree->Branch("sc_sim_decay1pid",  &sc_sim_decay1pid,  "sc_sim_decay1pid/I" );
+  tree->Branch("sc_sim_decay2px", &sc_sim_decay2px, "sc_sim_decay2px/F");
+  tree->Branch("sc_sim_decay2py", &sc_sim_decay2py, "sc_sim_decay2py/F");
+  tree->Branch("sc_sim_decay2pz", &sc_sim_decay2pz, "sc_sim_decay2pz/F");
+  tree->Branch("sc_sim_decay2pt", &sc_sim_decay2pt, "sc_sim_decay2pt/F");
+  tree->Branch("sc_sim_decay2e",  &sc_sim_decay2e,  "sc_sim_decay2e/F" );
+  tree->Branch("sc_sim_decay2pid",  &sc_sim_decay2pid,  "sc_sim_decay2pid/I");  
+  
 }
 
 void Conversion::endJob() {
   
   file->Write();
   file->Close();
+  
 }
 
 void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
@@ -291,6 +315,8 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
   event.getByLabel("ctfWithMaterialTracks", tkh);
   const TrackCollection* tracks = tkh.product();
   TrackCollection::const_iterator itt;
+
+
   
   //__________________________added by PDK______________________
   //Sim Track Collection
@@ -299,28 +325,30 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
   if(!simTrackCollection.isValid()) throw cms::Exception("FatalError") << "SimTrackCollection not found!\n";
   vector<SimTrack> theSimTrks;
   theSimTrks.insert(theSimTrks.end(), 
-                    simTrackCollection->begin(),
-                    simTrackCollection->end());
+		    simTrackCollection->begin(),
+		    simTrackCollection->end());
   
   Handle<SimVertexContainer> simVertexCollection;
   event.getByType(simVertexCollection);
   if(!simVertexCollection.isValid()) throw cms::Exception("FatalError") << "SimVertexCollection not found!\n";
   vector<SimVertex> theSimVerts;
   theSimVerts.insert(theSimVerts.end(),
-                     simVertexCollection->begin(),
-                     simVertexCollection->end());
+		     simVertexCollection->begin(),
+		     simVertexCollection->end());
 
   //____________________________________________________________
-  
+
 
   for (itsc = sc.begin(); itsc != sc.end(); ++itsc) {
     
     int mctk_index=0;
     int mctk1_index=0;
     int mcsc_index=0;
+
     
     math::XYZVector scv(itsc->x(), itsc->y(), itsc->z());
     
+    //save SC with Et > 5
     if (sin(scv.Theta())*itsc->energy() > 5.) {
       sc_e = itsc->energy(); 
       sc_rawe = itsc->rawEnergy();
@@ -329,10 +357,11 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
       sc_phi = itsc->phi(); 
       
       if (fabs(itsc->eta()) < 1.47)
-        sc_type = 0;
+        sc_type = 0; //barrel
       else
-        sc_type = 1;
+        sc_type = 1; //endcap
       
+      //match SC to nearest Gen particle by dR
       double dR, dRmin = 0.1;
       HepMC::GenEvent::particle_const_iterator nearMC;
       int i=1;
@@ -348,8 +377,9 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
             mcsc_index = i;
           }
         }
-      }
+      }//gen partcle loop
       
+      //save Gen particle info
       if (dRmin < 0.1) {
         mcsc_dr = dRmin;
         mcsc_mother = mother(*nearMC);
@@ -401,6 +431,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
           electrons.push_back(*it1);
       }
       
+      //match standard electron to SC
       dRmin = 0.1;
       PixelMatchGsfElectronCollection::const_iterator nearElectron;	
       for(ite = electrons.begin(); ite != electrons.end(); ++ite) {
@@ -410,7 +441,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
           nearElectron = ite;
         }
       }
-      // strore info about Ele
+      // strore info about standard Electron if it passes matching requirement
       if (dRmin < 0.1) {
         el_pt = nearElectron->pt(); 
         el_eta = nearElectron->eta(); 
@@ -442,8 +473,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
           
           if (hit->isValid()) {
             GlobalPoint hitPosition = theTracker.idToDet(hit->geographicalId())->surface().toGlobal(hit->localPosition());
-            GlobalPoint pos(hitPosition.x()-nearElectron->gsfTrack()->vx(), 
-                            hitPosition.y()-nearElectron->gsfTrack()->vy(),
+            GlobalPoint pos(hitPosition.x()-nearElectron->gsfTrack()->vx(), hitPosition.y()-nearElectron->gsfTrack()->vy(),
                             hitPosition.z()-nearElectron->gsfTrack()->vz());
             //std::cout << "Inner: " <<  HitPosition.perp() << "  " << HitPosition.z() << std::endl;
             el_xhit = hitPosition.x();
@@ -457,26 +487,28 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
           }
           index++;
         }
-        
+
         el_z0 = nearElectron->gsfTrack()->vz();
+        el_d0 = nearElectron->gsfTrack()->d0();
+        el_d0err = nearElectron->gsfTrack()->d0Error();
         el_tkiso = trackIsolation(nearElectron->trackMomentumAtVtx(), nearElectron->vertex(), tracks);
         el_tkpt = nearElectron->gsfTrack()->pt();
         el_tketa = nearElectron->gsfTrack()->eta(); 
         el_tkphi = nearElectron->gsfTrack()->phi();  
-        
+
         double dR, dRmin = 0.1;
         HepMC::GenEvent::particle_const_iterator nearMC;
-        int i=1;
+	int i=1;
         for (HepMC::GenEvent::particle_const_iterator it = myGenEvent->particles_begin(); it != myGenEvent->particles_end(); ++it, ++i) { 
           
           if ((*it)->status() == 1) {      
             math::XYZVector mcv((*it)->momentum().px(), (*it)->momentum().py(), (*it)->momentum().pz());
             dR = ROOT::Math::VectorUtil::DeltaR(nearElectron->gsfTrack()->innerMomentum(), mcv);
-            
+	    
             if (dR < dRmin) {
               dRmin = dR;
               nearMC = it;
-              mctk_index = i;
+	      mctk_index = i;
             }
           }
         }
@@ -508,7 +540,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
       } else {
         el_pt = 0.;
         el_e = 0.;
-        el_q = 0;
+	el_q = 0;
         el_eta = 0.;
         el_phi = 0.;
         el_dr = 0.1;
@@ -532,6 +564,8 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
         el_rinnerhit = 0.;
         el_detinnerhit = -1;
         el_z0 = -1;
+        el_d0 = -1;
+        el_d0err = -1;
         el_tkiso = -1;
         el_tkpt = 0.;
         el_tketa = 0.; 
@@ -563,7 +597,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
         el1_pt = nearElectron1->pt(); 
         el1_eta = nearElectron1->eta(); 
         el1_e = nearElectron1->energy();
-        el1_q = nearElectron1->charge();
+	el1_q = nearElectron1->charge();
         el1_phi = nearElectron1->phi(); 
         el1_dr = dRmin; 
         el1_eopin = nearElectron1->eSuperClusterOverP();
@@ -580,11 +614,11 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
         el1_class = nearElectron1->classification();
         R9_25_gsf(event, &(*nearElectron1), el1_eseed, el1_e3x3, el1_e5x5, el1_spp, el1_see);
         int a, b;
-        
+
         nHits(nearElectron1->gsfTrack(), a, b);
         el1_npxhits = a;
         el1_nsihits = b; 
-        
+
         int index = 1;
         while(1) {
           TrackingRecHitRef hit = nearElectron1->gsfTrack()->recHit(nearElectron1->gsfTrack()->recHitsSize()-index);
@@ -605,13 +639,15 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
           }
           index++;
         }
-        
+
         el1_z0 = nearElectron1->gsfTrack()->vz();
+        el1_d0 = nearElectron1->gsfTrack()->d0();
+        el1_d0err = nearElectron1->gsfTrack()->d0Error();
         el1_tkiso = trackIsolation(nearElectron1->trackMomentumAtVtx(), nearElectron1->vertex(), tracks);
         el1_tkpt = nearElectron1->gsfTrack()->pt();
         el1_tketa = nearElectron1->gsfTrack()->eta(); 
         el1_tkphi = nearElectron1->gsfTrack()->phi(); 
-        
+
         double dR, dRmin = 0.1;
         i=1;
         HepMC::GenEvent::particle_const_iterator nearMC;
@@ -680,6 +716,8 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
         el1_npxhits = -1;
         el1_nsihits = -1;
         el1_z0 = -1;
+        el1_d0 = -1;
+        el1_d0err = -1;
         el1_tkiso = -1;
         el1_tkpt = 0.;
         el1_tketa = 0.; 
@@ -699,225 +737,263 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
       //if there is a standard electron or a UCSD electron, fill SC info
       //now do the same for the MC particle matched closest to the SC
       if(el_dr < 0.1 || el1_dr < 0.1) {
-        vector<SimTrack>::const_iterator theSimTrksIter;
-        int SimIndex = 0;
-        unsigned int photonTrackId = 0;
-        
-        for(theSimTrksIter = theSimTrks.begin();
-            theSimTrksIter!= theSimTrks.end();
-            theSimTrksIter++, SimIndex++) {
-          
-          //is the MC particle closest to the CTF track matched to the SimTrack?
-          if(theSimTrksIter->genpartIndex() == mcsc_index) { 
-            
-            int i = 1;
-            HepMC::GenEvent::particle_const_iterator geniter;
-            for(geniter = myGenEvent->particles_begin(); i < mcsc_index; ++i, ++geniter) {}
-            
-            //Making sure that the Sim and Gen particle are both Photons
-            if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22) {
-              photonTrackId = theSimTrksIter->trackId();
-              
-              HepLorentzVector psimvect = theSimTrksIter->momentum();
-              el_sc_simtrkpx = psimvect.px();
-              el_sc_simtrkpy = psimvect.py();
-              el_sc_simtrkpz = psimvect.pz();
-              el_sc_simtrke = psimvect.e();
+	vector<SimTrack>::const_iterator theSimTrksIter;
+	int SimIndex = 0;
+	int photonTrackId = 0;
+	
+	for(theSimTrksIter = theSimTrks.begin();
+	    theSimTrksIter!= theSimTrks.end();
+	    theSimTrksIter++, SimIndex++) {
+	  
+	  //is the MC particle closest to the CTF track matched to the SimTrack?
+	  if(theSimTrksIter->genpartIndex() == mcsc_index) { 
+	
+	    int i = 1;
+	    HepMC::GenEvent::particle_const_iterator geniter;
+	    for(geniter = myGenEvent->particles_begin(); i < mcsc_index; ++i, ++geniter) {}
+	    
+	    //Making sure that the Sim and Gen particle are both Photons
+	    if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22) {
+	      photonTrackId = theSimTrksIter->trackId();
+	      
+	      HepLorentzVector psimvect = theSimTrksIter->momentum();
+	      sc_sim_gpx = psimvect.px();
+	      sc_sim_gpy = psimvect.py();
+	      sc_sim_gpz = psimvect.pz();
+	      sc_sim_gpt = TMath::Sqrt(sc_sim_gpx*sc_sim_gpx+sc_sim_gpy*sc_sim_gpy);
+	      sc_sim_ge = psimvect.e();
 	    	      
-              //Get the index to the vertex that the photon is a parent of
-              //int vertindex = theSimTrksIter->vertIndex();
-              //SimVertex indicies start at 0
-              i=0;
-              vector<SimVertex>::const_iterator theSimVertsIter;
-              //int conversionVertexIndex;
-              for(theSimVertsIter = theSimVerts.begin();
-                  theSimVertsIter != theSimVerts.end();
-                  theSimVertsIter++, i++) {
-                
-                //check to see if the parent of this vertex was the photon in question
-                if((unsigned int)theSimVertsIter->parentIndex() == photonTrackId) {
-                  
-                  el_sc_simconvertx = theSimVertsIter->position().x();
-                  el_sc_simconverty = theSimVertsIter->position().y();
-                  el_sc_simconvertz = theSimVertsIter->position().z();
-                  
-                  /*loop over the simtracks (ugh...again) to see if there are
-                    any tracks which have this vertex
-                  */
-                  for(unsigned int k = 0; k < theSimTrks.size(); k++) {
-                    if(theSimTrks.at(k).vertIndex() == i) {
-                      
-                      if(el_sc_simdecay1pid==0) {
-                        el_sc_simdecay1px = theSimTrks.at(k).momentum().x();
-                        el_sc_simdecay1py = theSimTrks.at(k).momentum().y();
-                        el_sc_simdecay1pz = theSimTrks.at(k).momentum().z();
-                        el_sc_simdecay1e = theSimTrks.at(k).momentum().t();
-                        el_sc_simdecay1pid = theSimTrks.at(k).type();
-                      } else {
-                        el_sc_simdecay2px = theSimTrks.at(k).momentum().x();
-                        el_sc_simdecay2py = theSimTrks.at(k).momentum().y();
-                        el_sc_simdecay2pz = theSimTrks.at(k).momentum().z();
-                        el_sc_simdecay2e = theSimTrks.at(k).momentum().t();
-                        el_sc_simdecay2pid = theSimTrks.at(k).type();
-                      }
-                      
-                    }
-                  }//sim track loop 
-                }//is the parent of the vertex a photon?
-              }//SimVerteces Iterator
-            }//if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22)  
-          }//if(theSimTrksIter->genpartIndex() == mcsc_index) {
-        }//SimTracksIterator
+	      
+	      //SimVertex indicies start at 0
+	      i=0;
+	      vector<SimVertex>::const_iterator theSimVertsIter;
+	      for(theSimVertsIter = theSimVerts.begin();
+		  theSimVertsIter != theSimVerts.end();
+		  theSimVertsIter++, i++) {
+		
+		//check to see if the parent of this vertex was the photon in question
+		if(theSimVertsIter->parentIndex() == photonTrackId) {
+		  		  
+		  sc_sim_gvx = theSimVertsIter->position().x();
+		  sc_sim_gvy = theSimVertsIter->position().y();
+		  sc_sim_gvz = theSimVertsIter->position().z();
+		  sc_sim_gvr = TMath::Sqrt(sc_sim_gvx*sc_sim_gvx+sc_sim_gvy*sc_sim_gvy);
+		  sc_sim_gvphi = atan2(sc_sim_gvy, sc_sim_gvx);
+		  //make sure that we don't get Log of 0
+		  if(fabs(sc_sim_gvz) > 1E-7 && sc_sim_gvr > 1E-7) {
+		    sc_sim_gveta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(sc_sim_gvr/fabs(sc_sim_gvz) ) ) );
+		    if(sc_sim_gvz < 0) 
+		      sc_sim_gveta = -fabs(sc_sim_gvz);
+		  }else sc_sim_gveta = -999.;
+		  
+		  
+		  /*loop over the simtracks (ugh...again) to see if there are
+		    any tracks which have this vertex
+		  */
+		  for(unsigned int k = 0; k < theSimTrks.size(); k++) {
+		    if(theSimTrks.at(k).vertIndex() == i) {
+		      
+		      //if(sc_sim_decay1pid==0) {
+		      float charge = theSimTrks.at(k).charge();
+		      if(el_q/charge > 0) {
+			sc_sim_decay1px = theSimTrks.at(k).momentum().x();
+			sc_sim_decay1py = theSimTrks.at(k).momentum().y();
+			sc_sim_decay1pz = theSimTrks.at(k).momentum().z();
+			sc_sim_decay1pt = TMath::Sqrt(sc_sim_decay1px*sc_sim_decay1px+
+						      sc_sim_decay1py*sc_sim_decay1py);
+			sc_sim_decay1e = theSimTrks.at(k).momentum().t();
+			sc_sim_decay1pid = theSimTrks.at(k).type();
+		      } else {
+			sc_sim_decay2px = theSimTrks.at(k).momentum().x();
+			sc_sim_decay2py = theSimTrks.at(k).momentum().y();
+			sc_sim_decay2pz = theSimTrks.at(k).momentum().z();
+			sc_sim_decay2pt = TMath::Sqrt(sc_sim_decay1px*sc_sim_decay1px+
+						      sc_sim_decay1py*sc_sim_decay1py);
+			sc_sim_decay2e = theSimTrks.at(k).momentum().t();
+			sc_sim_decay2pid = theSimTrks.at(k).type();
+		      }
+		      
+		    }
+		  }//sim track loop 
+		}//is the parent of the vertex a photon?
+	      }//SimVerteces Iterator
+	    }//if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22)  
+	  }//if(theSimTrksIter->genpartIndex() == mcsc_index) {
+	}//SimTracksIterator
       }//if(el_dr < 0.1 || el1_dr < 0.1) 
-      
-      
+
+
       
       //did we find a standard electron?
       if(el_dr < 0.1) {//existance of electron
-        
-        vector<SimTrack>::const_iterator theSimTrksIter;
-        int SimIndex = 0;
-        unsigned int photonTrackId = 0;
-        for(theSimTrksIter = theSimTrks.begin();
-            theSimTrksIter!= theSimTrks.end();
-            theSimTrksIter++, SimIndex++) {
-          
-          //is the MC particle closest to the CTF track matched to the SimTrack?
-          if(theSimTrksIter->genpartIndex() == mctk1_index) { 
-            
-            int i = 1;
-            HepMC::GenEvent::particle_const_iterator geniter;
-            for(geniter = myGenEvent->particles_begin(); i < mctk1_index; ++i, ++geniter) {}
-            
-            //Making sure that the Sim and Gen particle are both Photons
-            if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22) {
-              photonTrackId = theSimTrksIter->trackId();
-              
-              HepLorentzVector psimvect = theSimTrksIter->momentum();
-              el_tk_simtrkpx = psimvect.px();
-              el_tk_simtrkpy = psimvect.py();
-              el_tk_simtrkpz = psimvect.pz();
-              el_tk_simtrke = psimvect.e();
-              
-              //Get the index to the vertex that the photon is a parent of
-              //int vertindex = theSimTrksIter->vertIndex();
-              //SimVertex indicies start at 0
-              i=0;
-              vector<SimVertex>::const_iterator theSimVertsIter;
-              //int conversionVertexIndex;
-              for(theSimVertsIter = theSimVerts.begin();
-                  theSimVertsIter != theSimVerts.end();
-                  theSimVertsIter++, i++) {
-                
-                //check to see if the parent of this vertex was the photon in question
-                if((unsigned int)theSimVertsIter->parentIndex() == photonTrackId) {
-                  
-                  el_tk_simconvertx = theSimVertsIter->position().x();
-                  el_tk_simconverty = theSimVertsIter->position().y();
-                  el_tk_simconvertz = theSimVertsIter->position().z();
-                  
-                  /*loop over the simtracks (ugh...again) to see if there are
-                    any tracks which have this vertex
-                  */
-                  for(unsigned int k = 0; k < theSimTrks.size(); k++) {
-                    if(theSimTrks.at(k).vertIndex() == i) {
-                      
-                      if(el_tk_simdecay1pid==0) {
-                        el_tk_simdecay1px = theSimTrks.at(k).momentum().x();
-                        el_tk_simdecay1py = theSimTrks.at(k).momentum().y();
-                        el_tk_simdecay1pz = theSimTrks.at(k).momentum().z();
-                        el_tk_simdecay1e = theSimTrks.at(k).momentum().t();
-                        el_tk_simdecay1pid = theSimTrks.at(k).type();
-                      } else {
-                        el_tk_simdecay2px = theSimTrks.at(k).momentum().x();
-                        el_tk_simdecay2py = theSimTrks.at(k).momentum().y();
-                        el_tk_simdecay2pz = theSimTrks.at(k).momentum().z();
-                        el_tk_simdecay2e = theSimTrks.at(k).momentum().t();
-                        el_tk_simdecay2pid = theSimTrks.at(k).type();
-                      }
-                      
-                    }
-                  }//sim track loop 
-                }//is the parent of the vertex a photon?
-              }//SimVerteces Iterator
-            }//if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22)  
-          }//if(theSimTrksIter->genpartIndex() == mctk1_index) {
-        }//SimTracksIterator
+	
+	vector<SimTrack>::const_iterator theSimTrksIter;
+	int SimIndex = 0;
+	int photonTrackId = 0;
+	for(theSimTrksIter = theSimTrks.begin();
+	    theSimTrksIter!= theSimTrks.end();
+	    theSimTrksIter++, SimIndex++) {
+	  
+	  //is the MC particle closest to the CTF track matched to the SimTrack?
+	  if(theSimTrksIter->genpartIndex() == mctk1_index) { 
+	    
+	    int i = 1;
+	    HepMC::GenEvent::particle_const_iterator geniter;
+	    for(geniter = myGenEvent->particles_begin(); i < mctk1_index; ++i, ++geniter) {}
+	    
+	    //Making sure that the Sim and Gen particle are both Photons
+	    if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22) {
+	      photonTrackId = theSimTrksIter->trackId();
+	      
+	      HepLorentzVector psimvect = theSimTrksIter->momentum();
+	      el_sim_gpx = psimvect.px();
+	      el_sim_gpy = psimvect.py();
+	      el_sim_gpz = psimvect.pz();
+	      el_sim_gpt = TMath::Sqrt(el_sim_gpx*el_sim_gpx+el_sim_gpy*el_sim_gpy);
+	      el_sim_ge = psimvect.e();
+	      
+	      
+	      //SimVertex indicies start at 0
+	      i=0;
+	      vector<SimVertex>::const_iterator theSimVertsIter;
+	      for(theSimVertsIter = theSimVerts.begin();
+		  theSimVertsIter != theSimVerts.end();
+		  theSimVertsIter++, i++) {
+		
+		//check to see if the parent of this vertex was the photon in question
+		if(theSimVertsIter->parentIndex() == photonTrackId) {
+		  		  
+		  el_sim_gvx = theSimVertsIter->position().x();
+		  el_sim_gvy = theSimVertsIter->position().y();
+		  el_sim_gvz = theSimVertsIter->position().z();
+		  el_sim_gvr = TMath::Sqrt(el_sim_gvx*el_sim_gvx+el_sim_gvy*el_sim_gvy);
+		  el_sim_gvphi = atan2(el_sim_gvy, el_sim_gvx);
+		  //make sure that we don't get Log of 0
+		  if(fabs(el_sim_gvz) > 1E-7 && el_sim_gvr > 1E-7) {
+		    el_sim_gveta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(el_sim_gvr/fabs(el_sim_gvz) ) ) );
+		    if(el_sim_gvz < 0) 
+		      el_sim_gveta  = -fabs(el_sim_gveta);
+		  }else el_sim_gveta = -999.;
+
+		  
+		  /*loop over the simtracks (ugh...again) to see if there are
+		    any tracks which have this vertex
+		  */
+		  for(unsigned int k = 0; k < theSimTrks.size(); k++) {
+		    if(theSimTrks.at(k).vertIndex() == i) {
+		      
+		      float charge = theSimTrks.at(k).charge();
+		      if(el1_q/charge > 0) {
+			el_sim_decay1px = theSimTrks.at(k).momentum().x();
+			el_sim_decay1py = theSimTrks.at(k).momentum().y();
+			el_sim_decay1pz = theSimTrks.at(k).momentum().z();
+			el_sim_decay1pt = TMath::Sqrt(el_sim_decay1px*el_sim_decay1px+
+						      el_sim_decay1py*el_sim_decay1py);
+			el_sim_decay1e = theSimTrks.at(k).momentum().t();
+			el_sim_decay1pid = theSimTrks.at(k).type();
+		      } else {
+			el_sim_decay2px = theSimTrks.at(k).momentum().x();
+			el_sim_decay2py = theSimTrks.at(k).momentum().y();
+			el_sim_decay2pz = theSimTrks.at(k).momentum().z();
+			el_sim_decay2pt = TMath::Sqrt(el_sim_decay2px*el_sim_decay2px+
+						      el_sim_decay2py*el_sim_decay2py);
+			el_sim_decay2e = theSimTrks.at(k).momentum().t();
+			el_sim_decay2pid = theSimTrks.at(k).type();
+		      }
+		      
+		    }
+		  }//sim track loop 
+		}//is the parent of the vertex a photon?
+	      }//SimVerteces Iterator
+	    }//if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22)  
+	  }//if(theSimTrksIter->genpartIndex() == mctk1_index) {
+	}//SimTracksIterator
       }
-      
+
       //is there a UCSD electron?
       if(el1_dr < 0.1) {
-        
-        vector<SimTrack>::const_iterator theSimTrksIter;
-        int SimIndex = 0;
-        unsigned int photonTrackId = 0;
-        for(theSimTrksIter = theSimTrks.begin();
-            theSimTrksIter!= theSimTrks.end();
-            theSimTrksIter++, SimIndex++) {
-          
-          //is the MC particle closest to the CTF track matched to the SimTrack?
-          if(theSimTrksIter->genpartIndex() == mctk1_index) { 
-            
-            int i = 1;
-            HepMC::GenEvent::particle_const_iterator geniter;
-            for(geniter = myGenEvent->particles_begin(); i < mctk1_index; ++i, ++geniter) {}
-            
-            //Making sure that the Sim and Gen particle are both Photons
-            if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22) {
-              photonTrackId = theSimTrksIter->trackId();
-              
-              HepLorentzVector psimvect = theSimTrksIter->momentum();
-              el1_tk_simtrkpx = psimvect.px();
-              el1_tk_simtrkpy = psimvect.py();
-              el1_tk_simtrkpz = psimvect.pz();
-              el1_tk_simtrke = psimvect.e();
-              //Get the index to the vertex that the photon is a parent of
-              //int vertindex = theSimTrksIter->vertIndex();
-              //SimVertex indicies start at 0
-              i=0;
-              vector<SimVertex>::const_iterator theSimVertsIter;
-              //int conversionVertexIndex;
-              for(theSimVertsIter = theSimVerts.begin();
-                  theSimVertsIter != theSimVerts.end();
-                  theSimVertsIter++, i++) {
-                
-                //check to see if the parent of this vertex was the photon in question
-                if((unsigned int)theSimVertsIter->parentIndex() == photonTrackId) {
-                  
-                  el1_tk_simconvertx = theSimVertsIter->position().x();
-                  el1_tk_simconverty = theSimVertsIter->position().y();
-                  el1_tk_simconvertz = theSimVertsIter->position().z();
-                  
-                  /*loop over the simtracks (ugh...again) to see if there are
-                    any tracks which have this vertex
-                  */
-                  for(unsigned int k = 0; k < theSimTrks.size(); k++) {
-                    if(theSimTrks.at(k).vertIndex() == i) {
-                      
-                      if(el1_tk_simdecay1pid==0) {
-                        el1_tk_simdecay1px = theSimTrks.at(k).momentum().x();
-                        el1_tk_simdecay1py = theSimTrks.at(k).momentum().y();
-                        el1_tk_simdecay1pz = theSimTrks.at(k).momentum().z();
-                        el1_tk_simdecay1e = theSimTrks.at(k).momentum().t();
-                        el1_tk_simdecay1pid = theSimTrks.at(k).type();
-                      } else {
-                        el1_tk_simdecay2px = theSimTrks.at(k).momentum().x();
-                        el1_tk_simdecay2py = theSimTrks.at(k).momentum().y();
-                        el1_tk_simdecay2pz = theSimTrks.at(k).momentum().z();
-                        el1_tk_simdecay2e = theSimTrks.at(k).momentum().t();
-                        el1_tk_simdecay2pid = theSimTrks.at(k).type();
-                      }
-                      
-                    }
-                  }//sim track loop 
-                }//is the parent of the vertex a photon?
-              }//SimVerteces Iterator
-            }//if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22)  
-          }//if(theSimTrksIter->genpartIndex() == mctk1_index) {
-        }//SimTracksIterator
-        
+	
+	vector<SimTrack>::const_iterator theSimTrksIter;
+	int SimIndex = 0;
+	int photonTrackId = 0;
+	for(theSimTrksIter = theSimTrks.begin();
+	    theSimTrksIter!= theSimTrks.end();
+	    theSimTrksIter++, SimIndex++) {
+	  
+	  //is the MC particle closest to the CTF track matched to the SimTrack?
+	  if(theSimTrksIter->genpartIndex() == mctk1_index) { 
+	    
+	    int i = 1;
+	    HepMC::GenEvent::particle_const_iterator geniter;
+	    for(geniter = myGenEvent->particles_begin(); i < mctk1_index; ++i, ++geniter) {}
+	    
+	    //Making sure that the Sim and Gen particle are both Photons
+	    if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22) {
+	      photonTrackId = theSimTrksIter->trackId();
+	      
+	      HepLorentzVector psimvect = theSimTrksIter->momentum();
+	      el1_sim_gpx = psimvect.px();
+	      el1_sim_gpy = psimvect.py();
+	      el1_sim_gpz = psimvect.pz();
+	      el1_sim_gpt = TMath::Sqrt(el1_sim_gpx*el1_sim_gpx+el1_sim_gpy*el1_sim_gpy);
+	      el1_sim_ge = psimvect.e();
+	      
+	      //SimVertex indicies start at 0
+	      i=0;
+	      vector<SimVertex>::const_iterator theSimVertsIter;
+	      for(theSimVertsIter = theSimVerts.begin();
+		  theSimVertsIter != theSimVerts.end();
+		  theSimVertsIter++, i++) {
+		
+		//check to see if the parent of this vertex was the photon in question
+		if(theSimVertsIter->parentIndex() == photonTrackId) {
+		  el1_sim_gvx = theSimVertsIter->position().x();
+		  el1_sim_gvy = theSimVertsIter->position().y();
+		  el1_sim_gvz = theSimVertsIter->position().z();
+		  el1_sim_gvr = TMath::Sqrt(el1_sim_gvx*el1_sim_gvx+el1_sim_gvy*el1_sim_gvy);
+		  el1_sim_gvphi = atan2(el1_sim_gvy, el1_sim_gvx);
+		  //make sure that we don't get Log of 0
+		  if(fabs(el1_sim_gvz) > 1E-7 && el1_sim_gvr > 1E-7) {
+		    el1_sim_gveta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(el1_sim_gvr/fabs(el1_sim_gvz) ) ) );
+		    if(el1_sim_gvz < 0) 
+		      el1_sim_gveta = -fabs(el1_sim_gveta);
+		  }else el1_sim_gveta = -999.;
+		  
+		  /*loop over the simtracks (ugh...again) to see if there are
+		    any tracks which have this vertex
+		  */
+		  for(unsigned int k = 0; k < theSimTrks.size(); k++) {
+		    if(theSimTrks.at(k).vertIndex() == i) {
+		      float charge = theSimTrks.at(k).charge();
+		      if(el1_q/charge > 0) {
+			el1_sim_decay1px = theSimTrks.at(k).momentum().x();
+			el1_sim_decay1py = theSimTrks.at(k).momentum().y();
+			el1_sim_decay1pz = theSimTrks.at(k).momentum().z();
+			el1_sim_decay1pt = TMath::Sqrt(el1_sim_decay1px*el1_sim_decay1px+
+						       el1_sim_decay1py*el1_sim_decay1py);
+			el1_sim_decay1e = theSimTrks.at(k).momentum().t();
+			el1_sim_decay1pid = theSimTrks.at(k).type();
+		      } else {
+			el1_sim_decay2px = theSimTrks.at(k).momentum().x();
+			el1_sim_decay2py = theSimTrks.at(k).momentum().y();
+			el1_sim_decay2pz = theSimTrks.at(k).momentum().z();
+			el1_sim_decay2pt = TMath::Sqrt(el1_sim_decay2px*el1_sim_decay2px+
+						       el1_sim_decay2py*el1_sim_decay2py);
+			el1_sim_decay2e = theSimTrks.at(k).momentum().t();
+			el1_sim_decay2pid = theSimTrks.at(k).type();
+		      }
+		      
+		    }
+		  }//sim track loop 
+		}//is the parent of the vertex a photon?
+	      }//SimVerteces Iterator
+	    }//if(theSimTrksIter->type() == 22 && (*geniter)->pdg_id()==22)  
+	  }//if(theSimTrksIter->genpartIndex() == mctk1_index) {
+	}//SimTracksIterator
+      
       }//if(el1_dr<0.1)
-           
+      
+      
       run = event.id().run();
       id = event.id().event();
       tree->Fill();
@@ -926,7 +1002,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
 }
 
 bool Conversion::inCrack(float eta) {
-  
+
   return (eta < 0.018 ||
           (eta>0.423 && eta<0.461) ||
           (eta>0.770 && eta<0.806) ||
@@ -953,16 +1029,16 @@ int Conversion::mother(HepMC::GenParticle *p) {
 }
 
 void Conversion::R9_25_gsf(const Event & event, const reco::PixelMatchGsfElectron* e,
-                           float& eseed, float& e3x3, float& e5x5, float& spp, float& see) {
+			   float& eseed, float& e3x3, float& e5x5, float& spp, float& see) {
   
   reco::SuperClusterRef sclRef=e->superCluster();
-  
+
   edm::Handle<reco::BasicClusterShapeAssociationCollection> bH, eH;
   event.getByLabel("hybridSuperClusters", "hybridShapeAssoc", bH);
   const reco::BasicClusterShapeAssociationCollection* barrelClShp = bH.product();
   event.getByLabel("islandBasicClusters", "islandEndcapShapeAssoc", eH);
   const reco::BasicClusterShapeAssociationCollection* endcapClShp = eH.product();
-  
+
   reco::BasicClusterShapeAssociationCollection::const_iterator seedShpItr;
   DetId id = sclRef->seed()->getHitsByDetId()[0];
   if (id.subdetId() == EcalBarrel) {
@@ -970,10 +1046,10 @@ void Conversion::R9_25_gsf(const Event & event, const reco::PixelMatchGsfElectro
   } else {
     seedShpItr = endcapClShp->find(sclRef->seed());
   }
-  
+
   // Get the ClusterShapeRef corresponding to the BasicCluster
   const reco::ClusterShapeRef& seedShapeRef = seedShpItr->val;
-  
+
   eseed = sclRef->seed()->energy();
   e3x3 = seedShapeRef->e3x3();
   e5x5 = seedShapeRef->e5x5();
@@ -982,13 +1058,13 @@ void Conversion::R9_25_gsf(const Event & event, const reco::PixelMatchGsfElectro
 }
 
 void Conversion::nHits(const reco::GsfTrackRef t, int& nPixelHits, int& nSiTkHits) {
-  
+
   // loop sugli hits e conta il risultato facile no ?
   nPixelHits = 0; 
   nSiTkHits = 0;
-  
+
   for(size_t i = 0; i < t->recHitsSize(); ++i) {
-    
+
     TrackingRecHitRef hit = t->recHit(i);
     
     if (hit->isValid()) {
@@ -998,16 +1074,16 @@ void Conversion::nHits(const reco::GsfTrackRef t, int& nPixelHits, int& nSiTkHit
         nSiTkHits++;
       if ((subdetId == 2) || (subdetId == 1))
         nPixelHits++;
-      
+
     }
   }
 }
 
 //trackRelIsolation(el->trackMomentumAtVtx(), el->vertex(), tracks, 0.3, 0.01, 0.1, 999.9, 0.5, 1.5, 7);
 double Conversion::trackIsolation(const math::XYZVector momentum, 
-                                  const math::XYZPoint vertex,
-                                  const TrackCollection* tracks) {
-  
+				  const math::XYZPoint vertex,
+				  const TrackCollection* tracks) {
+
   double dRConeMax = 0.3;
   double dRConeMin = 0.01;
   double tkVtxDMax = 0.1;
@@ -1016,7 +1092,7 @@ double Conversion::trackIsolation(const math::XYZVector momentum,
   double ptMin = 1.5;
   unsigned int nHits = 7;
   double isoResult = -10.;
-  
+
   if ( tracks == 0 ) {
     return isoResult;
   }
@@ -1046,12 +1122,12 @@ double Conversion::trackIsolation(const math::XYZVector momentum,
   }
   
   isoResult = sumPt;
-  
+
   return isoResult;
 }
 
 void Conversion::subDetector(TrackingRecHitRef hit, int& subdet, int& layer) {
-  
+
   DetId detid(hit->geographicalId());       
   unsigned int subdetId = static_cast<unsigned int>(detid.subdetId());
   switch (subdetId) {
@@ -1098,65 +1174,86 @@ void Conversion::subDetector(TrackingRecHitRef hit, int& subdet, int& layer) {
       break;
     }
   }
+
 }
 
 
 
 void Conversion::InitSimVariables() {
 
-  el_tk_simtrkpx = 0.0;
-  el_tk_simtrkpy = 0.0;
-  el_tk_simtrkpz = 0.0;
-  el_tk_simtrke = 0.0; 
-  el_tk_simconvertx = 0.0; 
-  el_tk_simconverty = 0.0;
-  el_tk_simconvertz = 0.0;
-  el_tk_simdecay1px = 0.0;
-  el_tk_simdecay1py = 0.0;
-  el_tk_simdecay1pz = 0.0;
-  el_tk_simdecay1e = 0.0;
-  el_tk_simdecay1pid = 0;
-  el_tk_simdecay2px = 0.0; 
-  el_tk_simdecay2py = 0.0;
-  el_tk_simdecay2pz = 0.0;
-  el_tk_simdecay2e = 0.0;
-  el_tk_simdecay2pid = 0;
+  sc_sim_gpx = 0.0;
+  sc_sim_gpy = 0.0;
+  sc_sim_gpz = 0.0;
+  sc_sim_gpt = 0.0;
+  sc_sim_ge = 0.0; 
+  sc_sim_gvx = 0.0; 
+  sc_sim_gvy = 0.0;
+  sc_sim_gvz = 0.0;
+  sc_sim_gvr = 0.0;
+  sc_sim_gvphi = 0.0;
+  sc_sim_gveta = 0.0;
+  sc_sim_decay1px = 0.0;
+  sc_sim_decay1py = 0.0;
+  sc_sim_decay1pz = 0.0;
+  sc_sim_decay1pt = 0.0;  
+  sc_sim_decay1e = 0.0;
+  sc_sim_decay1pid = 0;
+  sc_sim_decay2px = 0.0; 
+  sc_sim_decay2py = 0.0;
+  sc_sim_decay2pz = 0.0;
+  sc_sim_decay2pt = 0.0;
+  sc_sim_decay2e = 0.0;
+  sc_sim_decay2pid = 0;
+
+
+
+  el_sim_gpx = 0.0;
+  el_sim_gpy = 0.0;
+  el_sim_gpz = 0.0;
+  el_sim_gpt = 0.0;
+  el_sim_ge = 0.0; 
+  el_sim_gvx = 0.0; 
+  el_sim_gvy = 0.0;
+  el_sim_gvz = 0.0;
+  el_sim_gvr = 0.0;
+  el_sim_gvphi = 0.0;
+  el_sim_gveta = 0.0;
+  el_sim_decay1px = 0.0;
+  el_sim_decay1py = 0.0;
+  el_sim_decay1pz = 0.0;
+  el_sim_decay1pt = 0.0;  
+  el_sim_decay1e = 0.0;
+  el_sim_decay1pid = 0;
+  el_sim_decay2px = 0.0; 
+  el_sim_decay2py = 0.0;
+  el_sim_decay2pz = 0.0;
+  el_sim_decay2pt = 0.0;
+  el_sim_decay2e = 0.0;
+  el_sim_decay2pid = 0;
+
+  el1_sim_gpx = 0.0;
+  el1_sim_gpy = 0.0;
+  el1_sim_gpz = 0.0;
+  el1_sim_gpt = 0.0;
+  el1_sim_ge = 0.0; 
+  el1_sim_gvx = 0.0; 
+  el1_sim_gvy = 0.0;
+  el1_sim_gvz = 0.0;
+  el1_sim_gvr = 0.0;
+  el1_sim_gvphi = 0.0;
+  el1_sim_gveta = 0.0;
+  el1_sim_decay1px = 0.0;
+  el1_sim_decay1py = 0.0;
+  el1_sim_decay1pz = 0.0;
+  el1_sim_decay1pt = 0.0;  
+  el1_sim_decay1e = 0.0;
+  el1_sim_decay1pid = 0;
+  el1_sim_decay2px = 0.0; 
+  el1_sim_decay2py = 0.0;
+  el1_sim_decay2pz = 0.0;
+  el1_sim_decay2pt = 0.0;
+  el1_sim_decay2e = 0.0;
+  el1_sim_decay2pid = 0;  
   
   
-  el1_tk_simtrkpx = 0.0;
-  el1_tk_simtrkpy = 0.0;
-  el1_tk_simtrkpz = 0.0;
-  el1_tk_simtrke = 0.0; 
-  el1_tk_simconvertx = 0.0; 
-  el1_tk_simconverty = 0.0;
-  el1_tk_simconvertz = 0.0;
-  el1_tk_simdecay1px = 0.0;
-  el1_tk_simdecay1py = 0.0;
-  el1_tk_simdecay1pz = 0.0;
-  el1_tk_simdecay1e = 0.0;
-  el1_tk_simdecay1pid = 0;
-  el1_tk_simdecay2px = 0.0; 
-  el1_tk_simdecay2py = 0.0;
-  el1_tk_simdecay2pz = 0.0;
-  el1_tk_simdecay2e = 0.0;
-  el1_tk_simdecay2pid = 0;
-  
- 
-  el_sc_simtrkpx = 0.0;
-  el_sc_simtrkpy = 0.0;
-  el_sc_simtrkpz = 0.0;
-  el_sc_simtrke = 0.0; 
-  el_sc_simconvertx = 0.0; 
-  el_sc_simconverty = 0.0;
-  el_sc_simconvertz = 0.0;
-  el_sc_simdecay1px = 0.0;
-  el_sc_simdecay1py = 0.0;
-  el_sc_simdecay1pz = 0.0;
-  el_sc_simdecay1e = 0.0;
-  el_sc_simdecay1pid = 0;
-  el_sc_simdecay2px = 0.0; 
-  el_sc_simdecay2py = 0.0;
-  el_sc_simdecay2pz = 0.0;
-  el_sc_simdecay2e = 0.0;
-  el_sc_simdecay2pid = 0; 
 }
