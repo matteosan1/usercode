@@ -141,7 +141,7 @@ void Conversion::beginJob(const EventSetup& eventSetup) {
   tree->Branch("el_layerinnerhit", &el_detinnerhit, "el_layerinnerhit/I");
   tree->Branch("el_rinnerhit", &el_rinnerhit, "el_rinnerhit/F");
   tree->Branch("el_z0", &el_z0, "el_z0/F");
-  tree->Branch("el_d0", &el_d0, "el1_d0/F");
+  tree->Branch("el_d0", &el_d0, "el_d0/F");
   tree->Branch("el_d0err", &el_d0err, "el_d0err/F");
   tree->Branch("el_tkiso", &el_tkiso, "el_tkiso/F");
   tree->Branch("el_tkpt", &el_tkpt, "el_tkpt/F");
