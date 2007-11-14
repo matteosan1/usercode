@@ -181,11 +181,11 @@ void NewElectronsB::analyze(const Event & event, const EventSetup& eventSetup) {
   PixelMatchGsfElectronCollection::const_iterator ite; 
 
   Handle<SuperClusterCollection> sch1;
-  event.getByLabel("hybridSuperClusters", sch1);
+  event.getByLabel("correctedHybridSuperClusters", sch1);
   const SuperClusterCollection* scb = sch1.product();
 
   Handle<SuperClusterCollection> sch2;
-  event.getByLabel("islandSuperClusters", "islandEndcapSuperClusters", sch2);
+  event.getByLabel("correctedEndcapSuperClustersWithPreshower", sch2);
   const SuperClusterCollection* sce = sch2.product();
   SuperClusterCollection::const_iterator itsc, itscb, itsce;
   SuperClusterCollection sc;
