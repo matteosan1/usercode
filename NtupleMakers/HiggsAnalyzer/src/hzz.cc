@@ -174,11 +174,11 @@ void hzz::analyze(const Event & event, const EventSetup& eventSetup) {
   PixelMatchGsfElectronCollection::const_iterator ite; 
 
   Handle<SuperClusterCollection> sch1;
-  event.getByLabel("hybridSuperClusters", sch1);
+  event.getByLabel("correctedHybridSuperClusters", sch1);
   const SuperClusterCollection* scb = sch1.product();
 
   Handle<SuperClusterCollection> sch2;
-  event.getByLabel("islandSuperClusters", "islandEndcapSuperClusters", sch2);
+  event.getByLabel("correctedEndcapSuperClustersWithPreshower", sch2);
   const SuperClusterCollection* sce = sch2.product();
   SuperClusterCollection::const_iterator itscb, itsce;
 
@@ -627,13 +627,6 @@ void hzz::analyze(const Event & event, const EventSetup& eventSetup) {
    
 }
 
-
-
-
-
-
-
-
 bool hzz::inCrack(float eta) {
 
   return (eta < 0.018 ||
@@ -647,7 +640,7 @@ int hzz::mother(HepMC::GenParticle *p) {
   
   while (p->production_vertex()) {
     HepMC::GenVertex* inVertex = p->production_vertex();
-    for(std::set<HepMC::GenParticle*>::const_iterator iter = inVertex->particles_in_const_begin();
+    for(HepMC::GenVertex::particles_in_const_iterator iter = inVertex->particles_in_const_begin();
         iter != inVertex->particles_in_const_end();iter++) {
       if ((*iter)->pdg_id() != p->pdg_id()) {
         return (*iter)->pdg_id();

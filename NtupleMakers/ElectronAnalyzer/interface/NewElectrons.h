@@ -54,7 +54,7 @@ public:
   float sc_rawe;
   float tk_pt, tk_eta, tk_phi, tk_dr;
   float el_pt, el_eta, el_phi, el_dr, el_e;
-  float el_eopin, el_eopout, el_hoe, el_detain, el_dphiin;
+  float el_eopin, el_eopout, el_hoe, el_detain, el_dphiin, el_pin, el1_pin;
   float el_fbrem, el_eseed, el_e3x3, el_detaout, el_dphiout;
   float el_e5x5, el_spp, el_see, el_pout, el_z0;	
   float el1_pt, el1_eta, el1_phi, el1_dr, el1_e, el1_z0;

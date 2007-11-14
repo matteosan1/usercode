@@ -106,6 +106,7 @@ void NewElectronsB::beginJob(const EventSetup& eventSetup) {
   tree->Branch("el_phi", &el_phi, "el_phi/F");
   tree->Branch("el_dr", &el_dr, "el_dr/F");
   tree->Branch("el_eopin", &el_eopin, "el_eopin/F");
+  tree->Branch("el_pin", &el_pin, "el_pin/F");
   tree->Branch("el_eopout", &el_eopout, "el_eopout/F");
   tree->Branch("el_pout", &el_pout, "el_pout/F");
   tree->Branch("el_fbrem", &el_fbrem, "el_fbrem/F");
@@ -133,6 +134,7 @@ void NewElectronsB::beginJob(const EventSetup& eventSetup) {
   tree->Branch("el1_phi", &el1_phi, "el1_phi/F");
   tree->Branch("el1_dr", &el1_dr, "el1_dr/F");
   tree->Branch("el1_eopin", &el1_eopin, "el1_eopin/F");
+  tree->Branch("el1_pin", &el1_pin, "el1_pin/F");
   tree->Branch("el1_eopout", &el1_eopout, "el1_eopout/F");
   tree->Branch("el1_pout", &el1_pout, "el1_pout/F");
   tree->Branch("el1_fbrem", &el1_fbrem, "el1_fbrem/F");
@@ -180,11 +182,11 @@ void NewElectronsB::analyze(const Event & event, const EventSetup& eventSetup) {
   PixelMatchGsfElectronCollection::const_iterator ite; 
 
   Handle<SuperClusterCollection> sch1;
-  event.getByLabel("hybridSuperClusters", sch1);
+  event.getByLabel("correctedHybridSuperClusters", sch1);
   const SuperClusterCollection* scb = sch1.product();
 
   Handle<SuperClusterCollection> sch2;
-  event.getByLabel("islandSuperClusters", "islandEndcapSuperClusters", sch2);
+  event.getByLabel("correctedEndcapSuperClustersWithPreshower", sch2);
   const SuperClusterCollection* sce = sch2.product();
   SuperClusterCollection::const_iterator itsc, itscb, itsce;
   SuperClusterCollection sc;
@@ -311,6 +313,7 @@ void NewElectronsB::analyze(const Event & event, const EventSetup& eventSetup) {
         el_detaout = nearElectron->deltaEtaSeedClusterTrackAtCalo();
         float pin  = nearElectron->trackMomentumAtVtx().R();
         float pout = nearElectron->trackMomentumOut().R();
+        el_pin = pin;
         el_pout = pout;
         el_fbrem = (pin-pout)/pin;
         el_class = nearElectron->classification();
@@ -352,6 +355,7 @@ void NewElectronsB::analyze(const Event & event, const EventSetup& eventSetup) {
         el_dr = 0.1;
         el_eopin = 0.;
         el_eopout = 0.;
+        el_pin = 0;
         el_pout = 0;
         el_hoe = 0.;
         el_dphiin = 0.;
@@ -401,6 +405,7 @@ void NewElectronsB::analyze(const Event & event, const EventSetup& eventSetup) {
         el1_detaout = nearElectron1->deltaEtaSeedClusterTrackAtCalo();
         float pin  = nearElectron1->trackMomentumAtVtx().R();
         float pout = nearElectron1->trackMomentumOut().R();
+        el1_pin = pin;
         el1_pout = pout;
         el1_fbrem = (pin-pout)/pin;
         el1_class = nearElectron1->classification();
@@ -444,6 +449,7 @@ void NewElectronsB::analyze(const Event & event, const EventSetup& eventSetup) {
         el1_dr = 0.1; 
         el1_eopin = 0.;
         el1_eopout = 0.;
+        el1_pin = 0;
         el1_pout = 0;
         el1_hoe = 0.;
         el1_dphiin = 0.;
@@ -554,7 +560,7 @@ int NewElectronsB::mother(HepMC::GenParticle *p) {
   
   while (p->production_vertex()) {
     HepMC::GenVertex* inVertex = p->production_vertex();
-    for(std::set<HepMC::GenParticle*>::const_iterator iter = inVertex->particles_in_const_begin();
+    for(HepMC::GenVertex::particles_in_const_iterator iter = inVertex->particles_in_const_begin();
         iter != inVertex->particles_in_const_end();iter++) {
       if ((*iter)->pdg_id() != p->pdg_id()) {
         return (*iter)->pdg_id();
