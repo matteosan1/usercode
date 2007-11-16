@@ -63,12 +63,15 @@ Conversion::Conversion(const ParameterSet& pset) {
   fileName = pset.getParameter<std::string>("RootFileName");
   baselineEleCollName =  pset.getParameter<std::string>("BaselineEleCollName");
   customEleCollName   =  pset.getParameter<std::string>("CustomEleCollName");
+  //logFileName         =  pset.getParameter<std::string>("LogFileName");
 }
 
 Conversion::~Conversion() {}
 
 void Conversion::beginJob(const EventSetup& eventSetup) {
 
+  logfile.open("logfile.txt");
+  
   file = new TFile(fileName.c_str(), "recreate");
   tree = new TTree("event","Event data");
 
@@ -266,6 +269,102 @@ void Conversion::beginJob(const EventSetup& eventSetup) {
   tree->Branch("sc_sim_decay2pt", &sc_sim_decay2pt, "sc_sim_decay2pt/F");
   tree->Branch("sc_sim_decay2e",  &sc_sim_decay2e,  "sc_sim_decay2e/F" );
   tree->Branch("sc_sim_decay2pid",  &sc_sim_decay2pid,  "sc_sim_decay2pid/I");  
+
+
+  
+  //converted photon info - std electron
+  tree->Branch("el_con_flag", &el_con_flag, "el_con_flag/I");
+  tree->Branch("el_con_pairinvmass", &el_con_pairinvmass, "el_con_pairinvmass/F");
+  tree->Branch("el_con_pairdcottheta", &el_con_pairdcottheta, "el_con_pairdcottheta/F");
+  tree->Branch("el_con_pairp", &el_con_pairp, "el_con_pairp/F");
+  tree->Branch("el_con_pairphi", &el_con_pairphi, "el_con_pairphi/F");
+  tree->Branch("el_con_paireta", &el_con_paireta, "el_con_paireta/F");
+  tree->Branch("el_con_elcottheta", &el_con_elcottheta, "el_con_elcottheta/F");
+  tree->Branch("el_con_elcottheta_2", &el_con_elcottheta_2, "el_con_elcottheta_2/F");
+  tree->Branch("el_con_vx", &el_con_vx, "el_con_vx/F");
+  tree->Branch("el_con_vy", &el_con_vy, "el_con_vy/F");
+  tree->Branch("el_con_vz", &el_con_vz, "el_con_vz/F");
+  tree->Branch("el_con_vphi", &el_con_vphi, "el_con_vphi/F");  
+  tree->Branch("el_con_veta", &el_con_veta, "el_con_veta/F");
+  tree->Branch("el_con_vr", &el_con_vr, "el_con_vr/F");
+  tree->Branch("el_con_decay1px", &el_con_decay1px, "el_con_decay1px/F");
+  tree->Branch("el_con_decay1py", &el_con_decay1py, "el_con_decay1py/F");
+  tree->Branch("el_con_decay1pz", &el_con_decay1pz, "el_con_decay1pz/F");
+  tree->Branch("el_con_decay1pt", &el_con_decay1pt, "el_con_decay1pt/F");
+  tree->Branch("el_con_decay1q", &el_con_decay1q, "el_con_decay1q/I");
+  tree->Branch("el_con_decay2px", &el_con_decay2px, "el_con_decay2px/F");
+  tree->Branch("el_con_decay2py", &el_con_decay2py, "el_con_decay2py/F");
+  tree->Branch("el_con_decay2pz", &el_con_decay2pz, "el_con_decay2pz/F");
+  tree->Branch("el_con_decay2pt", &el_con_decay2pt, "el_con_decay2pt/F");
+  tree->Branch("el_con_decay2q", &el_con_decay2q, "el_con_decay2q/I");
+  tree->Branch("el_con_decay1numhits",  &el_con_decay1numhits,  "el_con_decay1numhits/I");
+  tree->Branch("el_con_decay1numsharedhits",  &el_con_decay1numsharedhits,  "el_con_decay1numsharedhits/I");
+  tree->Branch("el_con_decay1fracsharedhits",  &el_con_decay1fracsharedhits,  "el_con_decay1fracsharedhits/F");
+  tree->Branch("el_con_decay2numhits",  &el_con_decay2numhits,  "el_con_decay2numhits/I");
+  tree->Branch("el_con_decay2numsharedhits",  &el_con_decay2numsharedhits,  "el_con_decay2numsharedhits/I");
+  tree->Branch("el_con_decay2fracsharedhits",  &el_con_decay2fracsharedhits,  "el_con_decay2fracsharedhits/F");
+
+  //UCSD electron1
+  tree->Branch("el1_con_flag", &el1_con_flag, "el1_con_flag/I");
+  tree->Branch("el1_con_pairinvmass", &el1_con_pairinvmass, "el1_con_pairinvmass/F");
+  tree->Branch("el1_con_pairdcottheta", &el1_con_pairdcottheta, "el1_con_pairdcottheta/F");
+  tree->Branch("el1_con_pairp", &el1_con_pairp, "el1_con_pairp/F");
+  tree->Branch("el1_con_pairphi", &el1_con_pairphi, "el1_con_pairphi/F");
+  tree->Branch("el1_con_paireta", &el1_con_paireta, "el1_con_paireta/F");
+  tree->Branch("el1_con_el1cottheta", &el1_con_el1cottheta, "el1_con_el1cottheta/F");
+  tree->Branch("el1_con_el1cottheta_2", &el1_con_el1cottheta_2, "el1_con_el1cottheta_2/F");
+  tree->Branch("el1_con_vx", &el1_con_vx, "el1_con_vx/F");
+  tree->Branch("el1_con_vy", &el1_con_vy, "el1_con_vy/F");
+  tree->Branch("el1_con_vz", &el1_con_vz, "el1_con_vz/F");
+  tree->Branch("el1_con_vphi", &el1_con_vphi, "el1_con_vphi/F");  
+  tree->Branch("el1_con_veta", &el1_con_veta, "el1_con_veta/F");
+  tree->Branch("el1_con_vr", &el1_con_vr, "el1_con_vr/F");
+  tree->Branch("el1_con_decay1px", &el1_con_decay1px, "el1_con_decay1px/F");
+  tree->Branch("el1_con_decay1py", &el1_con_decay1py, "el1_con_decay1py/F");
+  tree->Branch("el1_con_decay1pz", &el1_con_decay1pz, "el1_con_decay1pz/F");
+  tree->Branch("el1_con_decay1pt", &el1_con_decay1pt, "el1_con_decay1pt/F");
+  tree->Branch("el1_con_decay1q", &el1_con_decay1q, "el1_con_decay1q/I");
+  tree->Branch("el1_con_decay2px", &el1_con_decay2px, "el1_con_decay2px/F");
+  tree->Branch("el1_con_decay2py", &el1_con_decay2py, "el1_con_decay2py/F");
+  tree->Branch("el1_con_decay2pz", &el1_con_decay2pz, "el1_con_decay2pz/F");
+  tree->Branch("el1_con_decay2pt", &el1_con_decay2pt, "el1_con_decay2pt/F");
+  tree->Branch("el1_con_decay2q", &el1_con_decay2q, "el1_con_decay2q/I");
+  tree->Branch("el1_con_decay1numhits",  &el1_con_decay1numhits,  "el1_con_decay1numhits/I");
+  tree->Branch("el1_con_decay1numsharedhits",  &el1_con_decay1numsharedhits,  "el1_con_decay1numsharedhits/I");
+  tree->Branch("el1_con_decay1fracsharedhits",  &el1_con_decay1fracsharedhits,  "el1_con_decay1fracsharedhits/F");
+  tree->Branch("el1_con_decay2numhits",  &el1_con_decay2numhits,  "el1_con_decay2numhits/I");
+  tree->Branch("el1_con_decay2numsharedhits",  &el1_con_decay2numsharedhits,  "el1_con_decay2numsharedhits/I");
+  tree->Branch("el1_con_decay2fracsharedhits",  &el1_con_decay2fracsharedhits,  "el1_con_decay2fracsharedhits/F");
+  
+  
+  //SC
+  tree->Branch("sc_con_flag", &sc_con_flag, "sc_con_flag/I");
+  tree->Branch("sc_con_pairinvmass", &sc_con_pairinvmass, "sc_con_pairinvmass/F");
+  tree->Branch("sc_con_pairdcottheta", &sc_con_pairdcottheta, "sc_con_pairdcottheta/F");
+  tree->Branch("sc_con_pairp", &sc_con_pairp, "sc_con_pairp/F");
+  tree->Branch("sc_con_pairphi", &sc_con_pairphi, "sc_con_pairphi/F");
+  tree->Branch("sc_con_paireta", &sc_con_paireta, "sc_con_paireta/F");
+  tree->Branch("sc_con_vx", &sc_con_vx, "sc_con_vx/F");
+  tree->Branch("sc_con_vy", &sc_con_vy, "sc_con_vy/F");
+  tree->Branch("sc_con_vz", &sc_con_vz, "sc_con_vz/F");
+  tree->Branch("sc_con_vphi", &sc_con_vphi, "sc_con_vphi/F");  
+  tree->Branch("sc_con_veta", &sc_con_veta, "sc_con_veta/F");
+  tree->Branch("sc_con_vr", &sc_con_vr, "sc_con_vr/F");
+  tree->Branch("sc_con_decay1px", &sc_con_decay1px, "sc_con_decay1px/F");
+  tree->Branch("sc_con_decay1py", &sc_con_decay1py, "sc_con_decay1py/F");
+  tree->Branch("sc_con_decay1pz", &sc_con_decay1pz, "sc_con_decay1pz/F");
+  tree->Branch("sc_con_decay1pt", &sc_con_decay1pt, "sc_con_decay1pt/F");
+  tree->Branch("sc_con_decay1q", &sc_con_decay1q, "sc_con_decay1q/I");
+  tree->Branch("sc_con_decay2px", &sc_con_decay2px, "sc_con_decay2px/F");
+  tree->Branch("sc_con_decay2py", &sc_con_decay2py, "sc_con_decay2py/F");
+  tree->Branch("sc_con_decay2pz", &sc_con_decay2pz, "sc_con_decay2pz/F");
+  tree->Branch("sc_con_decay2pt", &sc_con_decay2pt, "sc_con_decay2pt/F");
+  tree->Branch("sc_con_decay2q", &sc_con_decay2q, "sc_con_decay2q/I");
+  tree->Branch("sc_con_decay1numhits",  &sc_con_decay1numhits,  "sc_con_decaynum1hits/F");
+  tree->Branch("sc_con_decay2numhits",  &sc_con_decay2numhits,  "sc_con_decay2numhits/F");
+    
+  
+  
   
 }
 
@@ -293,6 +392,19 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
   event.getByLabel(baselineEleCollName, elh);
   const PixelMatchGsfElectronCollection* copy = elh.product();
   PixelMatchGsfElectronCollection::const_iterator ite; 
+
+  //  Handle<SuperClusterCollection> sch1;
+  //   event.getByLabel("hybridSuperClusters", sch1);
+  //   const SuperClusterCollection* scb = sch1.product();
+
+  //   Handle<SuperClusterCollection> sch2;
+  //   event.getByLabel("islandSuperClusters", "islandEndcapSuperClusters", sch2);
+  //   const SuperClusterCollection* sce = sch2.product();
+  //   SuperClusterCollection::const_iterator itsc, itscb, itsce;
+  //   SuperClusterCollection sc;
+  //   sc.insert(sc.end(), scb->begin(), scb->end());
+  //   sc.insert(sc.end(), sce->begin(), sce->end());
+
 
   Handle<SuperClusterCollection> sch1;
   event.getByLabel("correctedHybridSuperClusters", sch1);
@@ -336,9 +448,28 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
 		     simVertexCollection->begin(),
 		     simVertexCollection->end());
 
+  InputTag blah("convertedPhotons", "", "TEST");
+  Handle<ConvertedPhotonCollection> convertedPhotonCollection;
+  event.getByLabel(blah, convertedPhotonCollection);
+  if(!convertedPhotonCollection.isValid()) throw cms::Exception("FatalError") << "ConvertedPhotonCollection not found!\n";
+  vector<ConvertedPhoton> theConPhotons;
+  theConPhotons.insert(theConPhotons.end(),
+                       convertedPhotonCollection->begin(),
+                       convertedPhotonCollection->end());
+
   //____________________________________________________________
 
 
+  
+//   logfile << endl << "Run: " << event.id().run() 
+// 	  << " Event: " << event.id().event() << endl;
+  
+//   logfile << "Size of corrected SC collection: " << sc.size() 
+// 	  << "  Size of pre-existing ConvertedPhoton Coll: " 
+// 	  << theConPhotons.size() << endl;
+  //<< "   Size of pre-existing collection: " << theConPhotons2.size() << endl;
+  
+  
   for (itsc = sc.begin(); itsc != sc.end(); ++itsc) {
     
     int mctk_index=0;
@@ -745,7 +876,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
 	    theSimTrksIter!= theSimTrks.end();
 	    theSimTrksIter++, SimIndex++) {
 	  
-	  //is the MC particle closest to the CTF track matched to the SimTrack?
+	  //index of genparticle closest to the SC
 	  if(theSimTrksIter->genpartIndex() == mcsc_index) { 
 	
 	    int i = 1;
@@ -793,9 +924,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
 		  for(unsigned int k = 0; k < theSimTrks.size(); k++) {
 		    if(theSimTrks.at(k).vertIndex() == i) {
 		      
-		      //if(sc_sim_decay1pid==0) {
-		      float charge = theSimTrks.at(k).charge();
-		      if(el_q/charge > 0) {
+		      if(sc_sim_decay1pid == 0 ) {
 			sc_sim_decay1px = theSimTrks.at(k).momentum().x();
 			sc_sim_decay1py = theSimTrks.at(k).momentum().y();
 			sc_sim_decay1pz = theSimTrks.at(k).momentum().z();
@@ -821,7 +950,6 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
 	  }//if(theSimTrksIter->genpartIndex() == mcsc_index) {
 	}//SimTracksIterator
       }//if(el_dr < 0.1 || el1_dr < 0.1) 
-
 
       
       //did we find a standard electron?
@@ -883,7 +1011,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
 		    if(theSimTrks.at(k).vertIndex() == i) {
 		      
 		      float charge = theSimTrks.at(k).charge();
-		      if(el1_q/charge > 0) {
+		      if(el1_q/charge > 0 ) {
 			el_sim_decay1px = theSimTrks.at(k).momentum().x();
 			el_sim_decay1py = theSimTrks.at(k).momentum().y();
 			el_sim_decay1pz = theSimTrks.at(k).momentum().z();
@@ -910,6 +1038,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
 	}//SimTracksIterator
       }
 
+      
       //is there a UCSD electron?
       if(el1_dr < 0.1) {
 	
@@ -965,7 +1094,7 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
 		  for(unsigned int k = 0; k < theSimTrks.size(); k++) {
 		    if(theSimTrks.at(k).vertIndex() == i) {
 		      float charge = theSimTrks.at(k).charge();
-		      if(el1_q/charge > 0) {
+		      if(el1_q/charge > 0 ) {
 			el1_sim_decay1px = theSimTrks.at(k).momentum().x();
 			el1_sim_decay1py = theSimTrks.at(k).momentum().y();
 			el1_sim_decay1pz = theSimTrks.at(k).momentum().z();
@@ -994,6 +1123,12 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
       }//if(el1_dr<0.1)
       
       
+      //Fill Converted photon information
+      InitConvertedPhotonVariables();
+      FillConvertedPhotonInfo(theConPhotons, *itsc,
+			      &(*nearElectron), &(*nearElectron1));
+      
+
       run = event.id().run();
       id = event.id().event();
       tree->Fill();
@@ -1177,7 +1312,9 @@ void Conversion::subDetector(TrackingRecHitRef hit, int& subdet, int& layer) {
 
 }
 
-
+//
+//---------------------------------------------------------------------------
+//
 
 void Conversion::InitSimVariables() {
 
@@ -1257,3 +1394,692 @@ void Conversion::InitSimVariables() {
   
   
 }
+
+//
+//---------------------------------------------------------------------------
+//
+
+void Conversion::InitConvertedPhotonVariables() {
+  
+  
+  sc_con_flag = -1;
+  sc_con_pairinvmass = 0.0;
+  sc_con_pairdcottheta = 0.0;
+  sc_con_pairp = 0.0; 
+  sc_con_pairphi = 0.0;
+  sc_con_paireta =0.0;
+  sc_con_vx = 0.0;
+  sc_con_vy = 0.0;
+  sc_con_vz = 0.0;
+  sc_con_vphi = 0.0;
+  sc_con_veta = 0.0;
+  sc_con_vr = 0.0;
+  sc_con_decay1px = 0.0;
+  sc_con_decay1py = 0.0;
+  sc_con_decay1pz = 0.0;
+  sc_con_decay1pt = 0.0;
+  sc_con_decay1q  = 0;
+  sc_con_decay2px = 0.0; 
+  sc_con_decay2py = 0.0;
+  sc_con_decay2pz = 0.0;
+  sc_con_decay2pt = 0.0;
+  sc_con_decay2q  = 0;
+  sc_con_decay1numhits = 0;
+  sc_con_decay2numhits = 0;
+
+  
+  
+  el_con_flag = -1;
+  el_con_pairinvmass = 0.0;
+  el_con_pairdcottheta = 0.0;
+  el_con_pairp = 0.0;
+  el_con_pairphi = 0.0;
+  el_con_paireta = 0.0;
+  el_con_elcottheta = 0.0;
+  el_con_elcottheta_2 = 0.0;
+  el_con_vx = 0.0;
+  el_con_vy = 0.0;
+  el_con_vz = 0.0;
+  el_con_vphi = 0.0;
+  el_con_veta = 0.0;
+  el_con_vr = 0.0;
+  el_con_decay1px = 0.0;
+  el_con_decay1py = 0.0;
+  el_con_decay1pz = 0.0;
+  el_con_decay1pt = 0.0;
+  el_con_decay1q  = 0;
+  el_con_decay2px = 0.0;
+  el_con_decay2py = 0.0;
+  el_con_decay2pz = 0.0;
+  el_con_decay2pt = 0.0;
+  el_con_decay2q  = 0;
+  el_con_decay1numhits = 0; 
+  el_con_decay1numsharedhits = 0;
+  el_con_decay2numhits = 0; 
+  el_con_decay2numsharedhits = 0;
+  el_con_decay1fracsharedhits = 0.0;
+  el_con_decay2fracsharedhits = 0.0;
+
+
+
+  el1_con_flag = -1;
+  el1_con_pairinvmass = 0.0;
+  el1_con_pairdcottheta = 0.0;
+  el1_con_pairp = 0.0;
+  el1_con_pairphi = 0.0;
+  el1_con_paireta = 0.0 ;
+  el1_con_el1cottheta = 0.0;
+  el1_con_el1cottheta_2 = 0.0;
+  el1_con_vx = 0.0;
+  el1_con_vy = 0.0;
+  el1_con_vz = 0.0;
+  el1_con_vphi = 0.0;
+  el1_con_veta = 0.0;
+  el1_con_vr = 0.0;
+  el1_con_decay1px = 0.0;
+  el1_con_decay1py = 0.0;
+  el1_con_decay1pz = 0.0;
+  el1_con_decay1pt = 0.0;
+  el1_con_decay1q  = 0;
+  el1_con_decay2px = 0.0;
+  el1_con_decay2py = 0.0;
+  el1_con_decay2pz = 0.0;
+  el1_con_decay2pt = 0.0;
+  el1_con_decay2q  = 0;
+  el1_con_decay1numhits = 0; 
+  el1_con_decay1numsharedhits = 0;
+  el1_con_decay2numhits = 0; 
+  el1_con_decay2numsharedhits = 0;
+  el1_con_decay1fracsharedhits = 0.0;
+  el1_con_decay2fracsharedhits = 0.0;
+
+
+
+}
+
+
+//
+//---------------------------------------------------------------------------
+//
+
+ 
+void Conversion::FillConvertedPhotonInfo(vector<ConvertedPhoton>& theConPhotons, 
+                                         const SuperCluster& sc,
+                                         const PixelMatchGsfElectron* El,
+                                         const PixelMatchGsfElectron* El1) {
+
+  //get the GSF tracks from the 2 electron objects
+  const Track *el_tr;
+  const Track *el1_tr;
+  if(el_dr < 0.1) el_tr = (El->gsfTrack()).get();
+  if(el1_dr < 0.1) el1_tr = (El1->gsfTrack()).get();
+  
+
+  //get ref to SC closest to given SC
+  SuperClusterRef conPhotonSC;
+  ConvertedPhoton matchedPhoton;
+  vector<ConvertedPhoton> temp;
+  for(vector<ConvertedPhoton>::const_iterator git = theConPhotons.begin();
+      git != theConPhotons.end();
+      git++) {
+    conPhotonSC = git->superCluster();
+    double dphi = conPhotonSC->phi() - sc.phi();
+    
+    if( fabs(dphi) > TMath::Pi()) dphi = 2*TMath::Pi() - fabs(dphi);
+    double dR = TMath::Sqrt(TMath::Power(conPhotonSC->eta() - sc.eta(), 2) +
+                            TMath::Power(dphi, 2)); 
+    //logfile << "dR: " << dR << endl;
+    if(dR < 0.001) 
+      temp.push_back(*git);
+  }//convertedPhoton iterator
+  
+
+  //  logfile << "Size of convertedPhoton vector: " 
+  //  << temp.size() << endl;
+
+
+  //if no converted Photons, all flags are -1 by default 
+  
+  //if 1 converted Photon
+  if(temp.size() == 1) {
+    
+    int ntracks = ((temp.at(0)).tracks()).size();
+
+    //found convertedPhoton object, but no tracks
+    if(ntracks == 0) {
+      sc_con_flag = 0;
+      if(el_dr  < 0.1) el_con_flag = 0;
+      if(el1_dr < 0.1) el1_con_flag = 0;
+    }
+    
+    //found convertedPhoton object, 1 track 
+    if(ntracks == 1) {
+      const Track *tr = ((temp.at(0).tracks()).at(0)).get();
+      if(el_dr < 0.1) {
+	float el_frac = (sharedHits(*tr, *el_tr)).second;
+	
+	if(el_frac <=0.5) {
+	  el_con_flag = 1;
+	} else el_con_flag = 2;
+      }
+
+
+      if(el1_dr < 0.1) {
+	float el1_frac = (sharedHits(*tr, *el1_tr)).second;
+	
+	if(el1_frac < 0.5) {
+	  el1_con_flag = 1;
+	} else el1_con_flag = 2;
+      }
+    } // if(ntracks == 1)
+      
+  }//if(temp.size() == 1)
+  
+
+  //if there are more than or equal to 1 ConvertedPhoton objects
+  if(temp.size() >= 1) {
+  
+    //Must have 2 tracks
+    //number of tracks that share more than 50% of hits
+    int el_numhalf=0;
+    int el1_numhalf=0;
+    vector<ConvertedPhoton> sc_passedPhotons;
+    vector<ConvertedPhoton> el_passedPhotons;
+    vector<ConvertedPhoton> el1_passedPhotons;
+    for(vector<ConvertedPhoton>::iterator tempit = temp.begin();
+   	tempit != temp.end(); 
+   	tempit++) {
+  
+      int ntracks = (tempit->tracks()).size();
+      if(ntracks !=2) continue; //2 track requirement!!!!
+      sc_passedPhotons.push_back(*tempit);
+      
+      
+      if(el_dr < 0.1) {
+	
+   	for(int i=0; i < 2; i++) {
+   	  const Track *tr = ((tempit->tracks()).at(i)).get();
+   	  float frac = (sharedHits(*tr, *el_tr)).second;
+	  
+   	  if(frac >=0.5) {
+   	    el_passedPhotons.push_back( *tempit );
+   	    el_numhalf++;
+   	    continue;
+   	  }
+   	}
+      }
+
+      if(el1_dr < 0.1) {
+	
+   	for(int i=0; i < 2; i++) {
+   	  const Track *tr = ((tempit->tracks()).at(i)).get();
+	  float frac = (sharedHits(*tr, *el1_tr)).second;
+	  
+   	  if(frac >=0.5) {
+   	    el1_passedPhotons.push_back( *tempit );
+   	    el1_numhalf++;
+   	    continue;
+   	  }
+   	}
+      }
+      
+      
+    }//con gamma loop
+    
+    
+    if( el_dr < 0.1) {
+      if(el_numhalf==0) el_con_flag = 3;
+      if(el_numhalf==1) el_con_flag = 4;
+      if(el_numhalf > 1) el_con_flag = 5;
+    }
+    if(el1_dr < 0.1) {
+      if(el1_numhalf==0) el1_con_flag = 3;    
+      if(el1_numhalf==1) el1_con_flag = 4;    
+      if(el1_numhalf > 1) el1_con_flag = 5;    
+    }
+    
+    /*now go back and loop over the vector of ConPhoton objects 
+      which have 2 tracks, and have atleast 1 track which 
+      shares  > 50% of hits with the reco el track
+    */
+    
+    
+    if(sc_passedPhotons.size() == 1) {
+      ConvertedPhoton con = sc_passedPhotons.at(0);
+      sc_con_pairinvmass = con.pairInvariantMass();
+      sc_con_pairdcottheta = con.pairCotThetaSeparation();
+      sc_con_pairp = con.pairInvariantMass();
+      sc_con_pairphi = con.pairMomentumPhi();
+      sc_con_paireta = con.pairMomentumEta();
+
+      sc_con_vx = con.convVertexPosition().x();
+      sc_con_vy = con.convVertexPosition().y();
+      sc_con_vz = con.convVertexPosition().z();
+      
+      sc_con_vr = TMath::Sqrt(sc_con_vx*sc_con_vx+
+			      sc_con_vx*sc_con_vy+
+			      sc_con_vx*sc_con_vz);
+      
+      sc_con_vphi = atan2(sc_con_vy, sc_con_vx);
+      if(fabs(sc_con_vz) > 1E-7 && sc_con_vr > 1E-7) {
+        sc_con_veta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(sc_con_vr/fabs(sc_con_vz) ) ) );
+        if(sc_con_vz < 0) sc_con_veta = -fabs(sc_con_veta);
+      } else sc_con_veta = 500;
+      
+      
+      const Track *tr1 = ((con.tracks()).at(0)).get();
+      const Track *tr2 = ((con.tracks()).at(1)).get();
+
+      sc_con_decay1px = tr1->momentum().x();
+      sc_con_decay1py = tr1->momentum().y();
+      sc_con_decay1pz = tr1->momentum().z();
+      sc_con_decay1pt = TMath::Sqrt(sc_con_decay1px*sc_con_decay1px+
+				    sc_con_decay1py*sc_con_decay1py);
+      sc_con_decay1q = tr1->charge();
+      sc_con_decay1numhits = tr1->numberOfValidHits();
+	    
+
+      sc_con_decay2px = tr2->momentum().x();
+      sc_con_decay2py = tr2->momentum().y();
+      sc_con_decay2pz = tr2->momentum().z();
+      sc_con_decay2pt = TMath::Sqrt(sc_con_decay2px*sc_con_decay2px+
+				    sc_con_decay2py*sc_con_decay2py);
+      sc_con_decay2q = tr2->charge();
+      sc_con_decay2numhits = tr2->numberOfValidHits();
+    }//if(sc_passedPhotons.size() == 1) {
+
+
+
+
+    if(el_passedPhotons.size() == 1) {
+      ConvertedPhoton con = el_passedPhotons.at(0);
+      el_con_pairinvmass = con.pairInvariantMass();
+      el_con_pairdcottheta = con.pairCotThetaSeparation();
+      el_con_pairp = con.pairInvariantMass();
+      el_con_pairphi = con.pairMomentumPhi();
+      el_con_paireta = con.pairMomentumEta();
+      
+      el_con_vx = con.convVertexPosition().x();
+      el_con_vy = con.convVertexPosition().y();
+      el_con_vz = con.convVertexPosition().z();
+      
+      el_con_vr = TMath::Sqrt(el_con_vx*el_con_vx+
+			      el_con_vx*el_con_vy+
+			      el_con_vx*el_con_vz);
+      
+      el_con_vphi = atan2(el_con_vy, el_con_vx);
+      if(fabs(el_con_vz) > 1E-7 && el_con_vr > 1E-7) {
+        el_con_veta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(el_con_vr/fabs(el_con_vz) ) ) );
+        if(el_con_vz < 0) el_con_veta = -fabs(el_con_veta);
+      } else el_con_veta = 500;
+      
+      
+      
+
+      const Track *tr1;
+      const Track *tr2;
+      if( (sharedHits(*(((con.tracks()).at(0)).get()), *el_tr)).first >= (sharedHits( *(((con.tracks()).at(1)).get()), *el_tr)).first) {
+	tr1 =  ((con.tracks()).at(0)).get();
+	tr2 =  ((con.tracks()).at(1)).get();
+      } else {
+	tr1 =  ((con.tracks()).at(1)).get();
+	tr2 =  ((con.tracks()).at(0)).get();
+      }
+      
+      /*fill the difference in cot(theta) between the reco
+	electron and the leading (i.e. more hits) track
+      */
+      float eltheta = el_tr->innerMomentum().Theta();
+      float contrtheta = tr1->innerMomentum().Theta();
+      
+      el_con_elcottheta = fabs(1/TMath::Tan(eltheta) - 1/TMath::Tan(contrtheta));
+      
+      el_con_decay1px = tr1->momentum().x();
+      el_con_decay1py = tr1->momentum().y();
+      el_con_decay1pz = tr1->momentum().z();
+      el_con_decay1pt = TMath::Sqrt(el_con_decay1px*el_con_decay1px+
+				    el_con_decay1py*el_con_decay1py);
+      el_con_decay1q = tr1->charge();
+      el_con_decay1numhits = tr1->numberOfValidHits();
+      el_con_decay1numsharedhits = (sharedHits(*tr1, *el_tr)).first;
+      el_con_decay1fracsharedhits = (sharedHits(*tr1, *el_tr)).second;
+      
+      
+      el_con_decay2px = tr2->momentum().x();
+      el_con_decay2py = tr2->momentum().y();
+      el_con_decay2pz = tr2->momentum().z();
+      el_con_decay2pt = TMath::Sqrt(el_con_decay2px*el_con_decay2px+
+				    el_con_decay2py*el_con_decay2py);
+      el_con_decay2q = tr2->charge();
+      el_con_decay2numhits = tr2->numberOfValidHits();
+      el_con_decay2numsharedhits = (sharedHits(*tr2, *el_tr)).first;
+      el_con_decay2fracsharedhits = (sharedHits(*tr2, *el_tr)).second;
+      
+      
+
+    }
+    
+    if(el1_passedPhotons.size() == 1) {
+      ConvertedPhoton con = el1_passedPhotons.at(0);
+      el1_con_pairinvmass = con.pairInvariantMass();
+      el1_con_pairdcottheta = con.pairCotThetaSeparation();
+      el1_con_pairp = con.pairInvariantMass();
+      el1_con_pairphi = con.pairMomentumPhi();
+      el1_con_paireta = con.pairMomentumEta();
+
+      el1_con_vx = con.convVertexPosition().x();
+      el1_con_vy = con.convVertexPosition().y();
+      el1_con_vz = con.convVertexPosition().z();
+      
+      el1_con_vr = TMath::Sqrt(el1_con_vx*el1_con_vx+
+			       el1_con_vx*el1_con_vy+
+			       el1_con_vx*el1_con_vz);
+      
+      el1_con_vphi = atan2(el1_con_vy, el1_con_vx);
+      if(fabs(el1_con_vz) > 1E-7 && el1_con_vr > 1E-7) {
+        el1_con_veta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(el1_con_vr/fabs(el1_con_vz) ) ) );
+        if(el1_con_vz < 0) el1_con_veta = -fabs(el1_con_veta);
+      } else el1_con_veta = 500;
+      
+      
+      const Track *tr1;
+      const Track *tr2;
+      
+      //the first track, decay1 is the one that shares the most hits with the reco el
+      if( (sharedHits(*(((con.tracks()).at(0)).get()), *el1_tr)).first >= (sharedHits( *(((con.tracks()).at(1)).get()), *el1_tr)).first) {
+	tr1 =  ((con.tracks()).at(0)).get();
+	tr2 =  ((con.tracks()).at(1)).get();
+      } else {
+	tr1 =  ((con.tracks()).at(1)).get();
+	tr2 =  ((con.tracks()).at(0)).get();
+      }
+
+      /*fill the difference in cot(theta) between the reco
+	electron and the leading (i.e. more hits) track
+      */
+      float eltheta = el1_tr->innerMomentum().Theta();
+      float contrtheta = tr1->innerMomentum().Theta();
+      
+      el1_con_el1cottheta = fabs(1/TMath::Tan(eltheta) - 1/TMath::Tan(contrtheta));
+      
+
+      el1_con_decay1px = tr1->momentum().x();
+      el1_con_decay1py = tr1->momentum().y();
+      el1_con_decay1pz = tr1->momentum().z();
+      el1_con_decay1pt = TMath::Sqrt(el1_con_decay1px*el1_con_decay1px+
+				     el1_con_decay1py*el1_con_decay1py);
+      el1_con_decay1q = tr1->charge();
+      el1_con_decay1numhits = tr1->numberOfValidHits();
+      el1_con_decay1numsharedhits = (sharedHits(*tr1, *el1_tr)).first;
+      el1_con_decay1fracsharedhits = (sharedHits(*tr1, *el1_tr)).second;
+	    
+
+      el1_con_decay2px = tr2->momentum().x();
+      el1_con_decay2py = tr2->momentum().y();
+      el1_con_decay2pz = tr2->momentum().z();
+      el1_con_decay2pt = TMath::Sqrt(el1_con_decay2px*el1_con_decay2px+
+				     el1_con_decay2py*el1_con_decay2py);
+      el1_con_decay2q = tr2->charge();
+      el1_con_decay2numhits = tr2->numberOfValidHits();
+      el1_con_decay2numsharedhits = (sharedHits(*tr2, *el1_tr)).first;
+      el1_con_decay2fracsharedhits = (sharedHits(*tr2, *el1_tr)).second;
+      
+      
+    }
+    
+    
+    //deal with cases where there are more than 1 convertedPhoton objects
+    if(el_passedPhotons.size() > 1) {
+      ConvertedPhoton con = el_passedPhotons.at(0);
+      el_con_pairdcottheta = con.pairCotThetaSeparation();
+      el_con_pairp = con.pairInvariantMass();
+      el_con_pairphi = con.pairMomentumPhi();
+      el_con_paireta = con.pairMomentumEta();
+
+      el_con_vx = con.convVertexPosition().x();
+      el_con_vy = con.convVertexPosition().y();
+      el_con_vz = con.convVertexPosition().z();
+      
+      el_con_vr = TMath::Sqrt(el_con_vx*el_con_vx+
+			      el_con_vx*el_con_vy+
+			      el_con_vx*el_con_vz);
+      
+      el_con_vphi = atan2(el_con_vy, el_con_vx);
+      if(fabs(el_con_vz) > 1E-7 && el_con_vr > 1E-7) {
+        el_con_veta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(el_con_vr/fabs(el_con_vz) ) ) );
+        if(el_con_vz < 0) el_con_veta = -fabs(el_con_veta);
+      } else el_con_veta = 500;
+      
+      
+      
+
+      const Track *tr1  = ((con.tracks()).at(0)).get();
+      const Track *tr2  = ((con.tracks()).at(1)).get();
+      
+      if( (sharedHits(*tr1, *el_tr)).first <= (sharedHits(*tr2, *el_tr)).first) {
+	tr1 =  ((con.tracks()).at(1)).get();
+	tr2 =  ((con.tracks()).at(0)).get();
+      }
+      
+      /*fill the difference in cot(theta) between the reco
+	electron and the leading (i.e. more hits) track
+      */
+      float eltheta = el_tr->innerMomentum().Theta();
+      float contrtheta = tr1->innerMomentum().Theta();
+      
+      el_con_elcottheta = fabs(1/TMath::Tan(eltheta) - 1/TMath::Tan(contrtheta));
+      double secondbesttheta = (FindSecondBestTrack(el_passedPhotons, *el_tr)).innerMomentum().Theta();
+      double trtheta = el_tr->innerMomentum().Theta();
+      el_con_elcottheta_2 = fabs(1/TMath::Tan(secondbesttheta) - 1/TMath::Tan(trtheta));	 
+     
+      el_con_decay1px = tr1->momentum().x();
+      el_con_decay1py = tr1->momentum().y();
+      el_con_decay1pz = tr1->momentum().z();
+      el_con_decay1pt = TMath::Sqrt(el_con_decay1px*el_con_decay1px+
+				    el_con_decay1py*el_con_decay1py);
+      el_con_decay1q = tr1->charge();
+      el_con_decay1numhits = tr1->numberOfValidHits();
+      el_con_decay1numsharedhits = (sharedHits(*tr1, *el_tr)).first;
+      el_con_decay1fracsharedhits = (sharedHits(*tr1, *el_tr)).second;
+      
+      
+      el_con_decay2px = tr2->momentum().x();
+      el_con_decay2py = tr2->momentum().y();
+      el_con_decay2pz = tr2->momentum().z();
+      el_con_decay2pt = TMath::Sqrt(el_con_decay2px*el_con_decay2px+
+				    el_con_decay2py*el_con_decay2py);
+      el_con_decay2q = tr2->charge();
+      el_con_decay2numhits = tr2->numberOfValidHits();
+      el_con_decay2numsharedhits = (sharedHits(*tr2, *el_tr)).first;
+      el_con_decay2fracsharedhits = (sharedHits(*tr2, *el_tr)).second;
+
+      
+    }
+      
+      
+    if(el1_passedPhotons.size() > 1) {
+      sortConvPhotonVector(el1_passedPhotons, *el1_tr);
+      ConvertedPhoton con = el1_passedPhotons.at(0);
+      el1_con_pairdcottheta = con.pairCotThetaSeparation();
+      el1_con_pairp = con.pairInvariantMass();
+      el1_con_pairphi = con.pairMomentumPhi();
+      el1_con_paireta = con.pairMomentumEta();
+
+      el1_con_vx = con.convVertexPosition().x();
+      el1_con_vy = con.convVertexPosition().y();
+      el1_con_vz = con.convVertexPosition().z();
+      
+      el1_con_vr = TMath::Sqrt(el1_con_vx*el1_con_vx+
+			      el1_con_vx*el1_con_vy+
+			      el1_con_vx*el1_con_vz);
+      
+      el1_con_vphi = atan2(el1_con_vy, el1_con_vx);
+      if(fabs(el1_con_vz) > 1E-7 && el1_con_vr > 1E-7) {
+        el1_con_veta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(el1_con_vr/fabs(el1_con_vz) ) ) );
+        if(el1_con_vz < 0) el1_con_veta = -fabs(el1_con_veta);
+      } else el1_con_veta = 500;
+      
+      
+      
+
+      const Track *tr1  = ((con.tracks()).at(0)).get();
+      const Track *tr2  = ((con.tracks()).at(1)).get();
+      
+      if( (sharedHits(*tr1, *el1_tr)).first <= (sharedHits(*tr2, *el1_tr)).first) {
+	tr1 =  ((con.tracks()).at(1)).get();
+	tr2 =  ((con.tracks()).at(0)).get();
+      }
+      
+      /*fill the difference in cot(theta) between the reco
+	electron and the leading (i.e. more hits) track
+      */
+      float eltheta = el1_tr->innerMomentum().Theta();
+      float contrtheta = tr1->innerMomentum().Theta();
+      
+      el1_con_el1cottheta = fabs(1/TMath::Tan(eltheta) - 1/TMath::Tan(contrtheta));	 
+      double secondbesttheta = (FindSecondBestTrack(el1_passedPhotons, *el1_tr)).innerMomentum().Theta();
+      double trtheta = el1_tr->innerMomentum().Theta();
+      el1_con_el1cottheta_2 = fabs(1/TMath::Tan(secondbesttheta) - 1/TMath::Tan(trtheta));
+
+      
+
+      el1_con_decay1px = tr1->momentum().x();
+      el1_con_decay1py = tr1->momentum().y();
+      el1_con_decay1pz = tr1->momentum().z();
+      el1_con_decay1pt = TMath::Sqrt(el1_con_decay1px*el1_con_decay1px+
+				    el1_con_decay1py*el1_con_decay1py);
+      el1_con_decay1q = tr1->charge();
+      el1_con_decay1numhits = tr1->numberOfValidHits();
+      el1_con_decay1numsharedhits = (sharedHits(*tr1, *el1_tr)).first;
+      el1_con_decay1fracsharedhits = (sharedHits(*tr1, *el1_tr)).second;
+      
+      
+      el1_con_decay2px = tr2->momentum().x();
+      el1_con_decay2py = tr2->momentum().y();
+      el1_con_decay2pz = tr2->momentum().z();
+      el1_con_decay2pt = TMath::Sqrt(el1_con_decay2px*el1_con_decay2px+
+				    el1_con_decay2py*el1_con_decay2py);
+      el1_con_decay2q = tr2->charge();
+      el1_con_decay2numhits = tr2->numberOfValidHits();
+      el1_con_decay2numsharedhits = (sharedHits(*tr2, *el1_tr)).first;
+      el1_con_decay2fracsharedhits = (sharedHits(*tr2, *el1_tr)).second;
+      
+      
+      
+      
+
+    }
+    
+    
+    
+  }//if more than 1 converted Photon object...if(temp.size() >= 1) {
+  //logfile << "Finished ConvertedPhotonInfo" << endl;
+}  
+//
+//------------------------------------------------------------------------------------
+//
+
+
+pair<unsigned int,float> Conversion::sharedHits(const Track& trackA,
+                                                const Track& trackB) {
+  
+    
+  unsigned int shared = 0;
+  for(trackingRecHit_iterator tkHitA = trackA.recHitsBegin(); tkHitA !=trackA.recHitsEnd(); ++tkHitA){
+    for(trackingRecHit_iterator tkHitB = trackB.recHitsBegin();
+        tkHitB !=trackB.recHitsEnd(); ++tkHitB){
+      if( (**tkHitA).isValid() && (**tkHitB).isValid() &&(**tkHitA).sharesInput( &(**tkHitB),TrackingRecHit::all)) {
+        shared++;
+        break;
+      }
+    }
+  }
+  
+  float fraction = (float) shared/min(trackA.found(),trackB.found());
+  return make_pair(shared,fraction);
+  
+}
+
+
+//
+//------------------------------------------------------------------------------------
+//
+
+void Conversion::sortConvPhotonVector(vector<ConvertedPhoton>& conPhotonvect, const Track& tr) {
+  
+  
+  /* loop through the vector using iterators. when you find the smallest delta cot theta,
+     store in a different vector the corresponding ConvertedPhoton object, and then 
+     erase the vector's element in the mother vector
+  */
+
+  vector<ConvertedPhoton> orderedvect;
+  
+  while(conPhotonvect.size() != 0) {
+    
+    vector<ConvertedPhoton>::iterator minCotThetaIt = conPhotonvect.begin();
+    float minCotTheta = minCotThetaIt->pairCotThetaSeparation();
+    for(vector<ConvertedPhoton>::iterator it = conPhotonvect.begin();
+	it != conPhotonvect.end();
+	it++) {
+      
+      if( it->pairCotThetaSeparation() < minCotTheta ) {
+	minCotTheta = it->pairCotThetaSeparation();
+	minCotThetaIt = it;
+      } 
+    }
+    
+    orderedvect.push_back(*minCotThetaIt);
+    conPhotonvect.erase(minCotThetaIt);
+  }
+  
+  conPhotonvect.clear();
+  conPhotonvect = orderedvect;
+}
+
+//
+//------------------------------------------------------------------------------------
+//
+
+    
+Track Conversion::FindSecondBestTrack(const vector<ConvertedPhoton>& conPhotonvect, const Track& tr) {
+  
+  /* put every track into a map (except for the best conphoton object which is the best one)
+     where the key is the delta cot theta between the track and 
+     the electron track and the value is the track. This will get rid of duplicates, 
+     and sort in order of delta cot theta. Then return the track in the second element
+     in the map
+  */
+   
+  
+  map<int, Track> mp;
+  
+  for(vector<ConvertedPhoton>::const_iterator it = conPhotonvect.begin();
+      it != conPhotonvect.end();
+      it++) {
+     
+    if(it==conPhotonvect.begin()) continue;
+
+     float eltheta = tr.innerMomentum().Theta();
+     vector<TrackRef> conPhotontrks = it->tracks();
+     for(vector<TrackRef>::iterator trkit = conPhotontrks.begin();
+	 trkit != conPhotontrks.end();
+	 trkit++) {
+       float trtheta = (*trkit)->innerMomentum().theta();
+       float delcottheta = fabs(1/TMath::Tan(eltheta) - 1/TMath::Tan(trtheta));
+       mp[static_cast<int>(100000*delcottheta)] = *((*trkit).get());
+     }
+   }
+
+   map<int, Track>::iterator mpiter = mp.begin();
+   
+   return mpiter->second;
+}
+   
+   
+    
+    
+  
+  
+
+	  
