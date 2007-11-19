@@ -924,24 +924,47 @@ void Conversion::analyze(const Event & event, const EventSetup& eventSetup) {
 		  for(unsigned int k = 0; k < theSimTrks.size(); k++) {
 		    if(theSimTrks.at(k).vertIndex() == i) {
 		      
-		      if(sc_sim_decay1pid == 0 ) {
-			sc_sim_decay1px = theSimTrks.at(k).momentum().x();
-			sc_sim_decay1py = theSimTrks.at(k).momentum().y();
-			sc_sim_decay1pz = theSimTrks.at(k).momentum().z();
-			sc_sim_decay1pt = TMath::Sqrt(sc_sim_decay1px*sc_sim_decay1px+
-						      sc_sim_decay1py*sc_sim_decay1py);
-			sc_sim_decay1e = theSimTrks.at(k).momentum().t();
-			sc_sim_decay1pid = theSimTrks.at(k).type();
-		      } else {
-			sc_sim_decay2px = theSimTrks.at(k).momentum().x();
-			sc_sim_decay2py = theSimTrks.at(k).momentum().y();
-			sc_sim_decay2pz = theSimTrks.at(k).momentum().z();
-			sc_sim_decay2pt = TMath::Sqrt(sc_sim_decay1px*sc_sim_decay1px+
-						      sc_sim_decay1py*sc_sim_decay1py);
-			sc_sim_decay2e = theSimTrks.at(k).momentum().t();
-			sc_sim_decay2pid = theSimTrks.at(k).type();
-		      }
+		      float charge = theSimTrks.at(k).charge();
+		      if(el_dr < 0.1) {
+			if(el_q/charge > 0 ) {
+			  sc_sim_decay1px = theSimTrks.at(k).momentum().x();
+			  sc_sim_decay1py = theSimTrks.at(k).momentum().y();
+			  sc_sim_decay1pz = theSimTrks.at(k).momentum().z();
+			  sc_sim_decay1pt = TMath::Sqrt(sc_sim_decay1px*sc_sim_decay1px+
+							sc_sim_decay1py*sc_sim_decay1py);
+			  sc_sim_decay1e = theSimTrks.at(k).momentum().t();
+			  sc_sim_decay1pid = theSimTrks.at(k).type();
+			} else {
+			  sc_sim_decay2px = theSimTrks.at(k).momentum().x();
+			  sc_sim_decay2py = theSimTrks.at(k).momentum().y();
+			  sc_sim_decay2pz = theSimTrks.at(k).momentum().z();
+			  sc_sim_decay2pt = TMath::Sqrt(sc_sim_decay1px*sc_sim_decay1px+
+							sc_sim_decay1py*sc_sim_decay1py);
+			  sc_sim_decay2e = theSimTrks.at(k).momentum().t();
+			  sc_sim_decay2pid = theSimTrks.at(k).type();
+			}
+		      }  
 		      
+		      if(el1_dr < 0.1) {
+			if(el1_q/charge > 0 ) {
+			  sc_sim_decay1px = theSimTrks.at(k).momentum().x();
+			  sc_sim_decay1py = theSimTrks.at(k).momentum().y();
+			  sc_sim_decay1pz = theSimTrks.at(k).momentum().z();
+			  sc_sim_decay1pt = TMath::Sqrt(sc_sim_decay1px*sc_sim_decay1px+
+							sc_sim_decay1py*sc_sim_decay1py);
+			  sc_sim_decay1e = theSimTrks.at(k).momentum().t();
+			  sc_sim_decay1pid = theSimTrks.at(k).type();
+			} else {
+			  sc_sim_decay2px = theSimTrks.at(k).momentum().x();
+			  sc_sim_decay2py = theSimTrks.at(k).momentum().y();
+			  sc_sim_decay2pz = theSimTrks.at(k).momentum().z();
+			  sc_sim_decay2pt = TMath::Sqrt(sc_sim_decay1px*sc_sim_decay1px+
+							sc_sim_decay1py*sc_sim_decay1py);
+			  sc_sim_decay2e = theSimTrks.at(k).momentum().t();
+			  sc_sim_decay2pid = theSimTrks.at(k).type();
+			}
+		      }    
+    
 		    }
 		  }//sim track loop 
 		}//is the parent of the vertex a photon?
@@ -1539,21 +1562,28 @@ void Conversion::FillConvertedPhotonInfo(vector<ConvertedPhoton>& theConPhotons,
 
 
   //if no converted Photons, all flags are -1 by default 
+  if(temp.size() == 0 ) {
+    sc_con_flag = -1;
+    el_con_flag = -1;
+    el1_con_flag = -1;
+  } else {
+    sc_con_flag = 0;
+  }
   
   //if 1 converted Photon
   if(temp.size() == 1) {
-    
+          
     int ntracks = ((temp.at(0)).tracks()).size();
 
     //found convertedPhoton object, but no tracks
     if(ntracks == 0) {
-      sc_con_flag = 0;
       if(el_dr  < 0.1) el_con_flag = 0;
       if(el1_dr < 0.1) el1_con_flag = 0;
-    }
+    } 
     
     //found convertedPhoton object, 1 track 
     if(ntracks == 1) {
+
       const Track *tr = ((temp.at(0).tracks()).at(0)).get();
       if(el_dr < 0.1) {
 	float el_frac = (sharedHits(*tr, *el_tr)).second;
@@ -1657,8 +1687,8 @@ void Conversion::FillConvertedPhotonInfo(vector<ConvertedPhoton>& theConPhotons,
       sc_con_vz = con.convVertexPosition().z();
       
       sc_con_vr = TMath::Sqrt(sc_con_vx*sc_con_vx+
-			      sc_con_vx*sc_con_vy+
-			      sc_con_vx*sc_con_vz);
+			      sc_con_vy*sc_con_vy);
+			      
       
       sc_con_vphi = atan2(sc_con_vy, sc_con_vx);
       if(fabs(sc_con_vz) > 1E-7 && sc_con_vr > 1E-7) {
@@ -1704,9 +1734,8 @@ void Conversion::FillConvertedPhotonInfo(vector<ConvertedPhoton>& theConPhotons,
       el_con_vz = con.convVertexPosition().z();
       
       el_con_vr = TMath::Sqrt(el_con_vx*el_con_vx+
-			      el_con_vx*el_con_vy+
-			      el_con_vx*el_con_vz);
-      
+			      el_con_vy*el_con_vy);
+	
       el_con_vphi = atan2(el_con_vy, el_con_vx);
       if(fabs(el_con_vz) > 1E-7 && el_con_vr > 1E-7) {
         el_con_veta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(el_con_vr/fabs(el_con_vz) ) ) );
@@ -1772,9 +1801,8 @@ void Conversion::FillConvertedPhotonInfo(vector<ConvertedPhoton>& theConPhotons,
       el1_con_vz = con.convVertexPosition().z();
       
       el1_con_vr = TMath::Sqrt(el1_con_vx*el1_con_vx+
-			       el1_con_vx*el1_con_vy+
-			       el1_con_vx*el1_con_vz);
-      
+			       el1_con_vy*el1_con_vy);
+			             
       el1_con_vphi = atan2(el1_con_vy, el1_con_vx);
       if(fabs(el1_con_vz) > 1E-7 && el1_con_vr > 1E-7) {
         el1_con_veta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(el1_con_vr/fabs(el1_con_vz) ) ) );
@@ -1841,9 +1869,8 @@ void Conversion::FillConvertedPhotonInfo(vector<ConvertedPhoton>& theConPhotons,
       el_con_vz = con.convVertexPosition().z();
       
       el_con_vr = TMath::Sqrt(el_con_vx*el_con_vx+
-			      el_con_vx*el_con_vy+
-			      el_con_vx*el_con_vz);
-      
+			      el_con_vy*el_con_vy);
+			            
       el_con_vphi = atan2(el_con_vy, el_con_vx);
       if(fabs(el_con_vz) > 1E-7 && el_con_vr > 1E-7) {
         el_con_veta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(el_con_vr/fabs(el_con_vz) ) ) );
@@ -1910,9 +1937,8 @@ void Conversion::FillConvertedPhotonInfo(vector<ConvertedPhoton>& theConPhotons,
       el1_con_vz = con.convVertexPosition().z();
       
       el1_con_vr = TMath::Sqrt(el1_con_vx*el1_con_vx+
-			      el1_con_vx*el1_con_vy+
-			      el1_con_vx*el1_con_vz);
-      
+			       el1_con_vy*el1_con_vy);
+			             
       el1_con_vphi = atan2(el1_con_vy, el1_con_vx);
       if(fabs(el1_con_vz) > 1E-7 && el1_con_vr > 1E-7) {
         el1_con_veta = TMath::Log( TMath::Tan( 0.5*TMath::ATan(el1_con_vr/fabs(el1_con_vz) ) ) );
