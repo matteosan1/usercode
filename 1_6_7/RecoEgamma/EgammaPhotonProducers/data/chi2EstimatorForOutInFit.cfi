@@ -1,0 +1,10 @@
+es_module Chi2ForOutIn = Chi2MeasurementEstimatorESProducer
+  {
+    string ComponentName = "Chi2ForOutIn"
+    double MaxChi2 = 500.
+    double nSigma = 3.
+  }
+
+
+
+
