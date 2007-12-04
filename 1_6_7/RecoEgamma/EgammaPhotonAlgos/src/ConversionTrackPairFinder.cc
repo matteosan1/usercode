@@ -255,6 +255,7 @@ std::map<std::vector<reco::TransientTrack>, reco::SuperCluster>  ConversionTrack
     if ( nFound == 0) {
       //  std::cout << " ConversionTrackPairFinder This SC is not included in the final map of pairs  I include it now  !!! Track charge " <<   (iMap1->first).charge() << " Num of RecHits " <<  ((iMap1->first)).recHitsSize() << " inner momentum " <<  ((iMap1->first)).track().innerMomentum() << " Ass SC " << (iMap1->second).energy() <<  "\n";  
       
+      thePair.clear();               
       thePair.push_back(iMap1->first);
       
       allPairs.push_back ( thePair );
