@@ -56,8 +56,10 @@ public:
   std::pair<unsigned int,float> sharedHits(const reco::Track& trackA,
 					   const reco::Track& trackB);
   //method to sort the ConvertedPhoton objects 
-  void sortConvPhotonVector(std::vector<reco::ConvertedPhoton>&, const reco::Track&);
+  void sortConvPhotonVector(std::vector<reco::ConvertedPhoton>&);
+  void sortConvPhotonVectorByHits(std::vector<reco::ConvertedPhoton>&, const reco::Track&);
   reco::Track FindSecondBestTrack(const std::vector<reco::ConvertedPhoton>&, const reco::Track&);
+  
   
  protected:
   
@@ -69,6 +71,7 @@ public:
   std::string baselineEleCollName;
   std::string customEleCollName;
   std::string fileName;
+  std::string logFileName;
   
   TFile *file;
   TTree *tree;
@@ -101,32 +104,39 @@ public:
   
   
   //standard electron information
-  float el_pt, el_eta, el_phi, el_dr, el_e, el_q;
+  float el_pt, el_eta, el_phi, el_dr, el_e, el_z0, el_q; //pt, eta, phi from combined track/SC
+  float el_sceta, el_scphi; //eta, phi of supercluster
   float el_eopin, el_eopout, el_hoe, el_detain, el_dphiin;
   float el_fbrem, el_eseed, el_e3x3, el_detaout, el_dphiout;
   //sigma phi-phi, sigma eta-eta - width of the shower in phi and eta plane
   float el_spp, el_see;
-  float el_e5x5, el_pout, el_z0;	
+  float el_e5x5, el_pout;	
+  float el_tkiso;
+  //co-ordinates of the innermost hit
+  float el_xhit, el_yhit, el_zhit;
   int el_class, el_npxhits, el_nsihits;
   //innermost hit information
   int el_detinnerhit, el_layerinnerhit;
   float el_rinnerhit, el_tkpt, el_tketa, el_tkphi;
-
+  float el_d0, el_d0err;
+  
   
   //UCSD electron info
   float el1_pt, el1_eta, el1_phi, el1_dr, el1_e, el1_z0, el1_q;
+  float el1_sceta, el1_scphi;
   float el1_eopin, el1_eopout, el1_hoe, el1_detain, el1_dphiin;
   float el1_fbrem, el1_eseed, el1_e3x3, el1_detaout, el1_dphiout;
   //sigma phi-phi, sigma eta-eta - width of the shower in phi and eta plane
   float el1_spp, el1_see;
   float el1_e5x5, el1_pout;	
-  float el1_tkiso, el_tkiso;
-  float el1_xhit, el1_yhit, el1_zhit, el_xhit, el_yhit, el_zhit;
+  float el1_tkiso;
+  //co-ordinates of the innermost hit
+  float el1_xhit, el1_yhit, el1_zhit;
   int el1_class, el1_npxhits, el1_nsihits;
   //innermost hit information
   int el1_detinnerhit, el1_layerinnerhit;
   float el1_rinnerhit, el1_tkpt, el1_tketa, el1_tkphi;
-  float el_d0, el_d0err, el1_d0, el1_d0err;
+  float el1_d0, el1_d0err;
   
   
   //Sim information
@@ -161,30 +171,21 @@ public:
   int sc_sim_decay2pid;
   //_______________________________________________________________________//
 
-
-  //ConvertedPhoton (convg) information
-  /* what the flag means:
-      flag = -1 no ConvertedPhoton (CP) object found for the SuperCluster 
-           (SC) in the electron object (see comment at the end) 
-  flag = 0  CP found, but no tracks in it 
-  flag = 1  CP found, only one track in it, track shares < 50% of hits 
-            with track in electron object 
-  flag = 2  CP found, only one track in it, track shares > 50% of hits 
-            with track in electron object 
-  flag = 3  CP found, possibly more than one, with 2 tracks in it. 
-            None of the CPs have track that shares > 50% of hits with 
-            track in electron object 
-  flag = 4  CP found, possibly more than one, with 2 tracks in it. 
-            One and only one of the CPs have track that shares > 50% of 
-            hits with track in electron object 
-  flag = 5  CP found, possibly more than one, with 2 tracks in it. 
-            More than one CP has track that shares > 50% of hits with 
-            track in electron object 
+  /* 
+     Converted Photon Flag definitions:
+     flag = -1 no CP object found for the SC in the electron object
+     flag = 0 CP found, possibly more than one, but no tracks in any of the !CP objects
+     flag = 1 CP found, possibly more than one, but none have 2 tracks. At least one track exists in any of the !CP objects, but none share >50% of hits with !reco::electron track
+     flag = 2 CP found, possibly more than one, but none have 2 tracks. At least one track in any of the !CP objects shares > 50% of hits with !reco::electron track
+     flag = 3 CP found, possibly more than one, with 2 tracks in it. None of the !CPs have track that shares > 50% of hits with track in !reco::electron track
+     flag = 4 CP found, possibly more than one, with 2 tracks in it. One and only one of the !CPs have track that shares > 50% of hits with track in !reco::electron track
+     flag = 5 CP found, possibly more than one, with 2 tracks in it. More than one !CP has track that shares > 50% of hits with track in!reco::electron track
   */
-  
   
   //ConvertedPhoton information - UCSD electron
   int el_con_flag;
+  //number of CP objects which share their SC with the el's SC
+  int el_con_numCP;
   //inv mass, delta cot(theta) between the 2 tracks, momentum of 2 tracks, phi , eta of 2 tracks
   float el_con_pairinvmass, el_con_pairdcottheta, el_con_pairp, el_con_pairphi, el_con_paireta;
   /*delta cot(theta) between leading track(defined as being the one whose delta cot theta between 
@@ -212,6 +213,8 @@ public:
 
   //ConvertedPhoton information - UCSD electron
   int el1_con_flag;
+  //number of CP objects which share their SC with the el's SC
+  int el1_con_numCP;
   //cot(theta) between the 2 tracks, momentum of 2 tracks, phi , eta of pair momentum
   float el1_con_pairinvmass, el1_con_pairdcottheta, el1_con_pairp, el1_con_pairphi, el1_con_paireta;
   //delta cot(theta) between leading track in con photon object and the reco electron
@@ -234,6 +237,8 @@ public:
 
   //ConvertedPhoton information - SC
   int sc_con_flag; //flag can only be -1,0,1,2,3 or 4
+  //number of CP objects which share their SC with the el's SC
+  int sc_con_numCP;
   //cot(theta) between the 2 tracks, momentum of 2 tracks, phi , eta of 2 tracks
   float sc_con_pairinvmass, sc_con_pairdcottheta, sc_con_pairp, sc_con_pairphi, sc_con_paireta;
   //conversion vertex position
