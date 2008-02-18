@@ -1,0 +1,31 @@
+//
+// Sequences for Jet & MET reconstruction
+//
+// Jet algorithm for jets in the HLT
+include "RecoJets/Configuration/data/RecoJets.cff"
+//
+// MET reco sequence for HLT paths
+include "RecoMET/Configuration/data/RecoMET.cff"
+//
+// HT reco sequence for HLT paths
+include "RecoMET/Configuration/data/RecoHTMET.cff"
+
+replace htMet.src = "iterativeCone5CaloJets"
+
+include "HLTrigger/HLTfilters/data/hlt1CaloJetDefaults.cff"
+replace hlt1CaloJetDefaults.inputTag = iterativeCone5CaloJets
+
+
+//
+sequence doHLTJetReco = {iterativeCone5CaloJets}
+sequence doHLTMETReco = {met}
+sequence doHLTHTReco = {htMet}
+
+// -- Regional :
+module iterativeCone5CaloJetsRegional = iterativeCone5CaloJets from "RecoJets/JetProducers/data/iterativeCone5CaloJets.cff"
+replace iterativeCone5CaloJetsRegional.src = caloTowersForJets
+
+sequence doRegionalHLTJetReco = {iterativeCone5CaloJetsRegional}
+
+include "HLTrigger/HLTfilters/data/hlt1CaloJetRegional.cff"
+replace hlt1CaloJetRegional.inputTag = iterativeCone5CaloJetsRegional

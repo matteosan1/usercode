@@ -1,0 +1,9 @@
+module hltElectronEoverpFilter = HLTElectronEoverpFilterRegional {
+      InputTag candTag = hltElectronPixelMatchFilter
+      InputTag electronIsolatedProducer = pixelMatchElectronsForHLT
+      InputTag electronNonIsolatedProducer = pixelMatchElectronsForHLT
+      double eoverpbarrelcut = 1.5
+      double eoverpendcapcut = 2.45
+      int32 ncandcut = 1
+      bool doIsolated = true
+}

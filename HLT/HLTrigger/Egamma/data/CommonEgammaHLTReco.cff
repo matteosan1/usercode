@@ -1,0 +1,51 @@
+
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsolatedEcalSuperClusters.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsolatedEcalSuperClusters.cff"
+ 
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsoRecoEcalCandidate.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsoRecoEcalCandidate.cff"
+
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsolatedElectronHcalIsol.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsolatedElectronHcalIsol.cff"
+ 
+ include "RecoEgamma/EgammaHLTProducers/data/pixelMatchElectronL1IsoSequenceForHLT.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/pixelMatchElectronL1NonIsoSequenceForHLT.cff"
+
+ include "RecoEgamma/EgammaHLTProducers/data/pixelMatchElectronL1IsoTrackingSequenceForHLT.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/pixelMatchElectronL1NonIsoTrackingSequenceForHLT.cff"
+
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsoElectronsRegionalRecoTracker.cff"	
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsoElectronsRegionalRecoTracker.cff"
+
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsoElectronTrackIsol.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsoElectronTrackIsol.cff"
+
+
+
+## include "RecoEgamma/EgammaHLTProducers/data/hltHcalDoubleCone.cfi" 
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsoEMHcalDoubleCone.cff"
+
+
+
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsoPhotonEcalIsol.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsoPhotonEcalIsol.cff"
+
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsolatedPhotonHcalIsol.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsolatedPhotonHcalIsol.cff"
+ 
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsoEgammaRegionalRecoTracker.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsoEgammaRegionalRecoTracker.cff"
+
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsoPhotonTrackIsol.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsoPhotonTrackIsol.cff"
+
+
+
+ include "RecoEgamma/EgammaHLTProducers/data/pixelMatchElectronL1IsoLargeWindowSequenceForHLT.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/pixelMatchElectronL1NonIsoLargeWindowSequenceForHLT.cff"
+
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsoLargeWindowElectronsRegionalRecoTracker.cff"	
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsoLargeWindowElectronsRegionalRecoTracker.cff"
+
+ include "RecoEgamma/EgammaHLTProducers/data/l1IsoLargeWindowElectronTrackIsol.cff"
+ include "RecoEgamma/EgammaHLTProducers/data/l1NonIsoLargeWindowElectronTrackIsol.cff"

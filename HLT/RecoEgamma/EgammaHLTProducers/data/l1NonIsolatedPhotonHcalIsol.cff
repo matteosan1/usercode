@@ -1,0 +1,11 @@
+include "RecoEgamma/EgammaHLTProducers/data/hltEgammaHcalIsol.cfi"
+module l1NonIsolatedPhotonHcalIsol  = hltEgammaHcalIsol from "RecoEgamma/EgammaHLTProducers/data/hltEgammaHcalIsol.cfi"
+
+replace l1NonIsolatedPhotonHcalIsol.recoEcalCandidateProducer = l1NonIsoRecoEcalCandidate
+
+#  InputTag hbRecHitProducer      = hbhereco
+#  InputTag hfRecHitProducer      = hfreco
+
+replace l1NonIsolatedPhotonHcalIsol.egHcalIsoPtMin = 0.
+replace l1NonIsolatedPhotonHcalIsol.egHcalIsoConeSize = 0.3
+

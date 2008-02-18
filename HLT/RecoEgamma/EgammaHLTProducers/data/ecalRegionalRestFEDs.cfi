@@ -1,0 +1,19 @@
+
+  # -- needed for regional unpacking:
+  include "L1TriggerConfig/L1GeometryProducers/data/l1CaloGeometry.cfi"
+  include "L1TriggerConfig/L1GeometryProducers/data/l1CaloGeomRecordSource.cff"
+
+
+ module ecalRegionalRestFEDs = EcalListOfFEDSProducer {
+
+   untracked bool debug = false
+
+   untracked bool EGamma = false
+   untracked bool Muon   = false
+   untracked bool Jets   = false
+
+   untracked string OutputLabel = ""
+ }
+
+
+

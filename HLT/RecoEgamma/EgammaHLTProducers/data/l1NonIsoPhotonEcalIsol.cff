@@ -1,0 +1,13 @@
+include "RecoEgamma/EgammaHLTProducers/data/hltPhotonEcalIsol.cfi"
+module l1NonIsolatedPhotonEcalIsol  = hltPhotonEcalIsol from "RecoEgamma/EgammaHLTProducers/data/hltPhotonEcalIsol.cfi"
+
+ replace l1NonIsolatedPhotonEcalIsol.bcBarrelProducer          = hltIslandBasicClustersBarrelL1NonIsolated:islandBarrelBasicClusters
+ replace l1NonIsolatedPhotonEcalIsol.bcEndcapProducer          = hltIslandBasicClustersEndcapL1NonIsolated:islandEndcapBasicClusters
+ replace l1NonIsolatedPhotonEcalIsol.scIslandBarrelProducer    = correctedIslandBarrelSuperClustersL1NonIsolated
+ replace l1NonIsolatedPhotonEcalIsol.scIslandEndcapProducer    = correctedEndcapSuperClustersWithPreshowerL1NonIsolated
+
+
+  replace l1NonIsolatedPhotonEcalIsol.recoEcalCandidateProducer = l1NonIsoRecoEcalCandidate
+
+#  double egEcalIsoEtMin = 0
+#  double egEcalIsoConeSize = 0.3

@@ -1,0 +1,93 @@
+## regional seeding 
+# act locally, not globally!  so regional pixel tracking, let's go:
+
+module l1IsoLargeWindowElectronsRegionalPixelSeedGenerator = hltEgammaRegionalPixelSeedGenerator from "RecoEgamma/EgammaHLTProducers/data/hltEgammaRegionalPixelSeedGenerator.cfi"
+
+replace l1IsoLargeWindowElectronsRegionalPixelSeedGenerator.candTag =  l1IsoRecoEcalCandidate
+replace l1IsoLargeWindowElectronsRegionalPixelSeedGenerator.candTagEle =  pixelMatchElectronsL1IsoLargeWindowForHLT
+replace l1IsoLargeWindowElectronsRegionalPixelSeedGenerator.UseZInVertex =  true
+replace l1IsoLargeWindowElectronsRegionalPixelSeedGenerator.originHalfLength = 0.5  
+
+include "TrackingTools/TrackFitters/data/KFTrajectoryFitterESProducer.cfi"
+include "TrackingTools/TrackFitters/data/KFTrajectorySmootherESProducer.cfi"
+include "TrackingTools/TrackFitters/data/KFFittingSmootherESProducer.cfi"
+
+# TrackerTrajectoryBuilders
+include "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cff"
+include "RecoTracker/CkfPattern/data/GroupedCkfTrajectoryBuilderESProducer.cff"
+
+############### generate Ckf track candidates ############
+
+module  l1IsoLargeWindowElectronsRegionalCkfTrackCandidates = hltEgammaRegionalCkfTrackCandidates from "RecoEgamma/EgammaHLTProducers/data/hltEgammaRegionalCkfTrackCandidates.cfi"
+replace l1IsoLargeWindowElectronsRegionalCkfTrackCandidates.SeedProducer = "l1IsoLargeWindowElectronsRegionalPixelSeedGenerator"
+
+#-------------------------------------------------------------------	
+
+
+##################### generate CTF track candidates
+
+# magnetic field
+include "MagneticField/Engine/data/volumeBasedMagneticField.cfi"
+
+# cms geometry
+include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
+
+# tracker geometry
+include "Geometry/TrackerGeometryBuilder/data/trackerGeometry.cfi"
+
+# tracker numbering
+include "Geometry/TrackerNumberingBuilder/data/trackerNumberingGeometry.cfi"
+
+# KFUpdatoerESProducer
+include "TrackingTools/KalmanUpdators/data/KFUpdatorESProducer.cfi"
+
+# Chi2MeasurementEstimatorESProducer
+include "TrackingTools/KalmanUpdators/data/Chi2MeasurementEstimatorESProducer.cfi"
+
+# KFTrajectoryFitterESProducer
+include "TrackingTools/TrackFitters/data/KFTrajectoryFitterESProducer.cfi"
+
+# KFTrajectorySmootherESProducer
+include "TrackingTools/TrackFitters/data/KFTrajectorySmootherESProducer.cfi"
+
+# KFFittingSmootherESProducer
+include "TrackingTools/TrackFitters/data/KFFittingSmootherESProducer.cfi"
+
+# PropagatorWithMaterialESProducer
+include "TrackingTools/MaterialEffects/data/MaterialPropagator.cfi"
+
+# PropagatorWithMaterialESProducer
+include "TrackingTools/MaterialEffects/data/OppositeMaterialPropagator.cfi"
+
+# stripCPE
+include "RecoLocalTracker/SiStripRecHitConverter/data/StripCPEfromTrackAngle.cfi"
+include "RecoLocalTracker/SiStripRecHitConverter/data/SiStripRecHitMatcher.cfi"
+
+# pixelCPE
+include "RecoLocalTracker/SiPixelRecHits/data/PixelCPEParmError.cfi"
+
+#TransientTrackingBuilder
+include "RecoTracker/TransientTrackingRecHit/data/TransientTrackingRecHitBuilder.cfi"
+
+# TrackProducer
+module l1IsoLargeWindowElectronsRegionalCTFFinalFitWithMaterial = hltEgammaRegionalCTFFinalFitWithMaterial from "RecoEgamma/EgammaHLTProducers/data/hltEgammaRegionalCTFFinalFitWithMaterial.cfi"
+
+replace l1IsoLargeWindowElectronsRegionalCTFFinalFitWithMaterial.src = "l1IsoLargeWindowElectronsRegionalCkfTrackCandidates"
+
+
+##-------------------------------------------
+
+  # RoadSearchCloudMaker
+  include "RecoTracker/RoadSearchCloudMaker/data/RoadSearchClouds.cff"
+  include "RecoTracker/RoadSearchCloudCleaner/data/CleanRoadSearchClouds.cff"
+
+  # RoadSearchTrackCandidateMaker
+  include "RecoTracker/RoadSearchTrackCandidateMaker/data/RoadSearchTrackCandidates.cff"
+
+  # RS track fit with material 
+  include "RecoTracker/TrackProducer/data/RSFinalFitWithMaterial.cff"
+
+
+
+  sequence l1IsoLargeWindowElectronsRegionalRecoTracker = {l1IsoLargeWindowElectronsRegionalPixelSeedGenerator, l1IsoLargeWindowElectronsRegionalCkfTrackCandidates, l1IsoLargeWindowElectronsRegionalCTFFinalFitWithMaterial} 
+

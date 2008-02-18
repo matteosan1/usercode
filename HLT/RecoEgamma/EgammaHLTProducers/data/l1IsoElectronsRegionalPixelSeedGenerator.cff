@@ -1,0 +1,17 @@
+#include "RecoEgamma/EgammaHLTProducers/data/hltEgammaRegionalPixelSeedGenerator.cfi"
+module l1IsoElectronsRegionalPixelSeedGenerator = hltEgammaRegionalPixelSeedGenerator from "RecoEgamma/EgammaHLTProducers/data/hltEgammaRegionalPixelSeedGenerator.cfi"
+
+replace l1IsoElectronsRegionalPixelSeedGenerator.candTag =  l1IsoRecoEcalCandidate
+replace l1IsoElectronsRegionalPixelSeedGenerator.candTagEle =  pixelMatchElectronsL1IsoForHLT
+replace l1IsoElectronsRegionalPixelSeedGenerator.UseZInVertex =  true
+replace l1IsoElectronsRegionalPixelSeedGenerator.originHalfLength = 0.5  
+
+#   string HitProducer = "siPixelRecHits"
+#    double ptMin = 1.0
+#    double vertexZ = 0.0
+#    double originRadius = 0.2
+#    double originHalfLength = 15.0
+#    double deltaEtaRegion = .177 #1.0
+#    double deltaPhiRegion = .177 #1.0
+#    string TTRHBuilder = "WithTrackAngle"
+#    InputTag candTag =  hltRecoEcalCandidate

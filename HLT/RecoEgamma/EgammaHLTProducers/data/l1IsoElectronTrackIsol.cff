@@ -1,0 +1,11 @@
+include "RecoEgamma/EgammaHLTProducers/data/hltElectronTrackIsol.cfi"
+module l1IsoElectronTrackIsol  = hltElectronTrackIsol from "RecoEgamma/EgammaHLTProducers/data/hltElectronTrackIsol.cfi"
+
+replace l1IsoElectronTrackIsol.electronProducer    = pixelMatchElectronsL1IsoForHLT
+replace l1IsoElectronTrackIsol.trackProducer = l1IsoElectronsRegionalCTFFinalFitWithMaterial
+
+#  double egTrkIsoPtMin        = 1.5
+#  double egTrkIsoConeSize     = 0.2
+#  double egTrkIsoZSpan        = 0.1
+#  double egTrkIsoRSpan        = 999999.
+#  double egTrkIsoVetoConeSize = 0.02

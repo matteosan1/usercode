@@ -1,0 +1,46 @@
+//
+// Special triggers
+//
+
+
+//
+// Ecal Pi0 trigger: Vladimir Litvine <litvin@hep.caltech.edu>
+//
+// include "HLTrigger/special/data/AlcastreamEcalPi0.cff"
+// path CandHLTEcalPi0 = {hltEcalPi0}
+
+
+//
+// Ecal/Hcal phi Phys symmetry triggers: Stefano Argiro <stefano.argiro@to.infn.it>
+//
+// include "HLTrigger/special/data/AlcastreamEcalPhiSym.cff"
+// path CandHLTEcalPhiSym = {alcaEcalPhiSymSequence}
+// include "HLTrigger/special/data/AlcastreamHcalPhiSym.cff"
+// path CandHLTHcalPhiSym = {alcaHcalPhiSymSequence}
+
+
+//
+// Isolated-track trigger for HCAL: Grigory Safronov <Grigory.Safronov@cern.ch>
+//
+include "HLTrigger/special/data/hltHcalIsolatedTrack.cff"
+path CandHLTHcalIsolatedTrack           = { hltHcalIsolatedTrack }
+path CandHLTHcalIsolatedTrackNoEcalIsol = { hltHcalIsolatedTrackNoEcalIsol }
+
+
+//
+// Pixel-Tracks based MinBias Triggers: Mika Huhtinen <mika.huhtinen@cern.ch>
+//
+include "SimGeneral/HepPDTESSource/data/pythiapdt.cfi"
+//
+include "HLTrigger/special/data/MinBias-With-Pixel-Tracks.cff"
+path HLTMinBiasPixel = {hltMinBiasPixel}
+include "HLTrigger/special/data/MBForAlignment.cff"
+path CandHLTMinBiasForAlignment = {hltMBForAlignment}
+
+
+//
+// Simple Min.- and Zero-Bias Triggers
+//
+include "HLTrigger/special/data/SimpleBias.cff"
+path HLTMinBias  = {hltMinBias}
+path HLTZeroBias = {hltZeroBias}

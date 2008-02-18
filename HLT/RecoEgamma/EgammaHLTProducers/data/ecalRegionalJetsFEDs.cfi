@@ -1,0 +1,40 @@
+
+  # -- needed for regional unpacking:
+  include "L1TriggerConfig/L1GeometryProducers/data/l1CaloGeometry.cfi"
+  include "L1TriggerConfig/L1GeometryProducers/data/l1CaloGeomRecordSource.cff"
+#  es_source l1CaloGeomRecordSource = EmptyESSource {
+#    string recordName = "L1CaloGeometryRecord"
+#    vuint32 firstValid = { 1 }
+#    bool iovIsRunNotTime = false
+#  }
+
+
+ module ecalRegionalJetsFEDs = EcalListOfFEDSProducer {
+
+   untracked bool debug = false
+
+   untracked bool EGamma = false
+   untracked bool Muon   = false
+   untracked bool Jets   = true
+
+   untracked bool JETS_doCentral = true
+   untracked bool JETS_doForward = true
+   untracked bool JETS_doTau = true
+
+    # untracked double JETS_regionEtaMargin = 10.
+    # untracked double JETS_regionPhiMargin = 3.1416
+
+    untracked double Ptmin_jets = 50
+
+       untracked double JETS_regionEtaMargin = 1
+       untracked double JETS_regionPhiMargin = 1
+   untracked InputTag CentralSource = l1extraParticles:Central
+   untracked InputTag ForwardSource = l1extraParticles:Forward
+   untracked InputTag TauSource = l1extraParticles:Tau
+
+
+   untracked string OutputLabel = ""
+ }
+
+
+

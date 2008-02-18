@@ -1,0 +1,18 @@
+module hltEgammaRegionalPixelSeedGenerator = EgammaHLTRegionalPixelSeedGeneratorProducers{
+    string HitProducer = "siPixelRecHits"
+    double ptMin = 1.5 #1.0
+    double vertexZ = 0.0
+    double originRadius = 0.02 #0.2
+    double originHalfLength = 15.0
+    double deltaEtaRegion = 0.3 # .177 #1.0
+    double deltaPhiRegion = 0.3 # .177 #1.0
+    InputTag candTag =  hltRecoEcalCandidate
+    InputTag candTagEle = pixelMatchElectrons
+    bool UseZInVertex = false
+  string TTRHBuilder = "WithTrackAngle"
+  PSet OrderedHitsFactoryPSet = {
+    string ComponentName = "StandardHitPairGenerator"
+    string SeedingLayers = "PixelLayerPairs"
+  }
+
+}

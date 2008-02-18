@@ -1,0 +1,33 @@
+
+  # -- needed for regional unpacking:
+  include "L1TriggerConfig/L1GeometryProducers/data/l1CaloGeometry.cfi"
+  include "L1TriggerConfig/L1GeometryProducers/data/l1CaloGeomRecordSource.cff"
+#  es_source l1CaloGeomRecordSource = EmptyESSource {
+#    string recordName = "L1CaloGeometryRecord"
+#    vuint32 firstValid = { 1 }
+#    bool iovIsRunNotTime = false
+#  }
+
+
+ module ecalRegionalMuonsFEDs = EcalListOfFEDSProducer {
+
+   untracked bool debug = false
+
+   untracked bool EGamma = false
+   untracked bool Muon   = true
+   untracked bool Jets   = false
+
+    # untracked double MU_regionEtaMargin = 1.0
+    # untracked double MU_regionPhiMargin = 1.0
+
+    untracked double Ptmin_muon = 0
+
+       untracked double MU_regionEtaMargin = 1
+       untracked double MU_regionPhiMargin = 1
+   untracked InputTag MuonSource = l1extraParticles
+
+   untracked string OutputLabel = ""
+ }
+
+
+

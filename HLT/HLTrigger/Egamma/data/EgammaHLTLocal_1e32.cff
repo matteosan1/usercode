@@ -1,0 +1,24 @@
+ 
+
+ include "L1TriggerConfig/L1GeometryProducers/data/l1CaloGeometry.cfi"
+ include "L1TriggerConfig/L1GeometryProducers/data/l1CaloGeomRecordSource.cff"
+
+
+ module  l1seedSingle = hltLevel1GTSeed from "HLTrigger/HLTfilters/data/hltLevel1GTSeed.cfi"
+ replace l1seedSingle.L1SeedsLogicalExpression = "L1_SingleIsoEG12"
+	
+ module  l1seedRelaxedSingle = hltLevel1GTSeed from "HLTrigger/HLTfilters/data/hltLevel1GTSeed.cfi"
+ replace l1seedRelaxedSingle.L1SeedsLogicalExpression = "L1_SingleEG15"
+
+ module  l1seedDouble = hltLevel1GTSeed from "HLTrigger/HLTfilters/data/hltLevel1GTSeed.cfi" 
+ replace l1seedDouble.L1SeedsLogicalExpression = "L1_DoubleIsoEG8"
+
+ module  l1seedRelaxedDouble = hltLevel1GTSeed from "HLTrigger/HLTfilters/data/hltLevel1GTSeed.cfi"
+ replace l1seedRelaxedDouble.L1SeedsLogicalExpression = "L1_DoubleEG10"
+
+ module  l1seedExclusiveDouble = hltLevel1GTSeed from "HLTrigger/HLTfilters/data/hltLevel1GTSeed.cfi" 
+ replace l1seedExclusiveDouble.L1SeedsLogicalExpression = "L1_ExclusiveDoubleIsoEG6"
+ 
+ module  l1seedSinglePrescaled = hltLevel1GTSeed from "HLTrigger/HLTfilters/data/hltLevel1GTSeed.cfi"
+ replace l1seedSinglePrescaled.L1SeedsLogicalExpression = "L1_SingleIsoEG10"
+ 

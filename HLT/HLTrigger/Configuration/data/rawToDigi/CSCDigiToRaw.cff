@@ -1,0 +1,10 @@
+#
+# Bryan Dahmes, LLNL
+# 27 April, 2007
+#
+# Definition of CSCDigiToRaw
+#
+
+module packCSC = cscpacker from "EventFilter/CSCRawToDigi/data/cscPacker.cfi"
+
+sequence CSCDigiToRaw = { packCSC }

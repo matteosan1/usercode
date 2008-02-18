@@ -1,0 +1,17 @@
+//
+// 1: from Digis on input file, running L1Emulator and L1Extra
+//
+
+//
+module hlt1GetDigi = hltGetDigi from "HLTrigger/HLTanalyzers/data/hltGetDigi.cfi"
+include "Configuration/StandardSequences/data/L1Emulator.cff"
+include "Configuration/StandardSequences/data/L1Extra.cff"
+//
+sequence hltBegin = { hlt1GetDigi & (L1Emulator , L1Extra) }
+//
+include "HLTrigger/Configuration/data/common/HLTSetupCommon.cff"
+//
+
+//
+include "HLTrigger/Configuration/data/common/HLTSetupFromDigis.cff"
+//
