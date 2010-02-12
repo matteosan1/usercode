@@ -1,0 +1,300 @@
+\section{Introduction}\label{sec:Introduction}
+
+The bremsstrahlung energy loss distribution of electrons propagating in matter is highly non-Gaussian.
+Because the Kalman filter relies solely on Gaussian probability
+density functions, it is not necessarily the optimal reconstruction
+algorithm for electron tracks. 
+To better model the energy loss a Gaussian mixture rather than a
+single Gaussian can be used and this is implemented in the
+Gaussian-sum filter (GSF) algorithm. 
+
+The GSF algorithm has been developed in the CMS reconstruction
+software and heavily used for electron reconstruction in the CMS
+detector. The GSF leads to trajectory states for each measurement
+point. In particular the momentum measuerements at the inner ($\pin$) and
+outer ($\pout$) state are available making possible to give an estimate
+of the amount of energy loss in the Tracker (fBrem = ($\pin$-$\pout$)/$\pin$).
+
+The Category Based Electron Identification selection relies on the
+fBrem measurement to categorize the Electrons and to try to separate
+them from fakes.
+The commisioning of the GSF Tracking is therefore crucial to validate
+the Electron Identification selection.
+
+The first collisions at CMS were recorded in December 2009 at energies of sqrt(s) = 900 GeV and 2.36 TeV. 
+The reconstructed electrons in this data have been studied extensively to commission 
+the electron reconstruction and identification. Unfortunately the number of electron candidates produced
+in these collisions is low and to better commission pure tracking quantities we have performed a full
+re-reconstruction of the GSF tracks using standard tracking seeds. 
+This allowed us to greatly increase the
+available statistic.
+
+In this note we focus on GSF track comparison between data and Monte Carlo.
+
+\section{Samples and MC Samples}\label{sec:Event Selection}
+
+The latest available data reprocessing, labelled as January 29th, has
+been used in this analysis.
+The events have been analyzed using the \verb=CMSSW_3_3_6_patch4=
+version of the CMS reconstruction software.
+The data have been then compared with the Monte Carlo prediction obtained from the simulated 900 GeV 
+Minimum Bias events:\\
+\/MinBias\/Summer09-STARTUP3X\_V8P\_900GeV-v1\/GEN-SIM-RECO 
+
+In reprocessing the data the standard parameters for electron
+reconstruction have been used.
+Also the collection of GSF tracks, that we have analyzed, have been reconstructed starting from the 
+seed collection used for general CTF tracking (\verb=newCombinedSeeds=).
+Since this study mainly concerns electron properties, the parameters of the GSF Tracking 
+algorithm (pattern recognition and fitting) have been set to the default values used in the 
+standard electron reconstruction.
+
+\section{Selections}\label{sec:Selections}
+
+\subsection{Event Selection}
+The available data statistic has been selected by run and lumi-section according to the
+particular conditions of the detector during the data taking. 
+For the GSF Tracking part of the study we have selected events from collisions at 900 GeV
+center of mass energy, requiring that the CMS magnetic field was 3.8T. 
+
+Among the selected good runs we have also applied the following selection on each event:
+\begin{itemize}
+\item BPTX 
+\item L1 technical trigger bit 34 fired and not 36, 37, 38, 39,
+\item hltPhysicsDeclared on
+\item at least one hit with 2 GeV energy in both HF,
+\item at least one vertex in the event with d0 < 2~cm, |z|<15~cm, with at least 4 degrees of freedom,
+\item in events with more than 10 reconstructed tracks at least 25\%
+  of them must be ``high purity''. 
+\end{itemize}
+
+These selections lead to the run/lumisection list shown in Table~\ref{tab:run lumis}.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{|l|l|c|}
+\hline
+Run  & Lumisec & \multicolumn{1}{l|}{Events} \\ \hline
+123815 & 8-9999 & 427 \\ \hline
+123818 & 2-42 & 1075 \\ \hline
+123906 & 18-28 & 186 \\ \hline
+123908 & 2-12 & 102 \\ \hline
+124006 & 7-9999 & 65 \\ \hline
+124008 & 1-1 & 46 \\ \hline
+124009 & 1-68 & 10736 \\ \hline
+124020 & 12-94 & 17579 \\ \hline
+124022 & 66-179 & 41341 \\ \hline
+124023 & 38-9999 & 35641 \\ \hline
+124024 & 2-83 & 29343 \\ \hline
+124025 & 5-13 & 2644 \\ \hline
+124027 & 24-9999 & 13301 \\ \hline
+124030 & 2-9999 & 18514 \\ \hline
+ &  & 171000 \\ \hline
+\end{tabular}
+\caption{List of the good run/lumisection used in the analysis with the corresponding number of events passing the selection described in the text.}
+\label{tab:run lumis}
+\end{center}
+\end{table}
+
+\subsection{Track Selection}
+
+The study of the GSF track properties has been carried on with a selected set of good tracks.
+To separate the badly reconstructed tracks to the good ones with have applied the following criteria:
+
+\begin{itemize}
+\item the tracks has to be at least 7 hits.
+\item the tracks must be qualified ``high purity'' and has to be reconstructed during the 0th and 1st iterations
+of iterative tracking procedure (using only pixel triplet and pair seeds). Since this information is not 
+directly available for GSF tracks we have first matched the GSF track to one of the reconstructed CTF tracks and
+then we have used the information stored in the CTF. The matching has been done by hits, requiring that the
+two tracks to have at least 50\% of shared hits (fraction computed on the shortest track).
+\end{itemize}
+
+As a cross check some of the following results have been checked for
+the full set of reconstructed tracks also.
+
+\section{Results}\label{sec:Results}
+
+In this section the complete set of results is presented. If not specified the following plots
+are normalized to the number of data entries and refer to high purity tracks.
+
+Tab.~\ref{tab:numbers} reports the number of events and tracks used in the analysis, together with the 
+number of tracks falling in the different categories. About 67\% of the analyzed tracks passed quality cuts, 
+while only few percent (~4\%) of them could not be associated to any reconstructed CTF track. 
+Looking more closely to the reconstructed electron candidates it turns out that almost 95\% of them 
+has an high purity GSF track.
+The Table~\ref{tab:numbers} also shows how the Monte Carlo simulation foresees about 20\% less reconstructed
+tracks.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+ & Events & Tracks & \multicolumn{1}{c|}{Tk/evt} & Quality & No High purity & No CTF match \\ \hline
+Data & \multicolumn{1}{c|}{171000} & \multicolumn{1}{c|}{1404937} & 8.22 & \multicolumn{1}{c|}{946228} & \multicolumn{1}{c|}{398277} & \multicolumn{1}{c|}{60432} \\ \hline
+MC & \multicolumn{1}{c|}{494675} & \multicolumn{1}{c|}{33374188} & 6.82 & \multicolumn{1}{c|}{2393783} & \multicolumn{1}{c|}{868378} & \multicolumn{1}{c|}{116527} \\ \hline
+ &  &  & 1.2 &  &  &  \\ \hline
+\end{tabular}
+\end{center}
+\caption{Number of data and minimum bias events analyzed. The table shows the corresponding number of reconstructed GSF Tracks split in different categories.}
+\label{tab:numbers}
+\end{table}
+
+Fig.~\ref{fig:pt distribution} shows the $\pt$ distribution of the GSF tracks in data and Monte Carlo. 
+The distributions are normalized to the total number of reconstructed GSF tracks in data showing how in
+the Barrel there is an excess in data. The $\pt$ distributions of GSF
+tracks are anyway well reproduced.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=1\textwidth]{Images/gsf_pt_log.eps}
+      \caption {$\pt$ distribution of GSF tracks in data (red) and MC (blue). The three plots shows, from left to right, the total distribution, tracks in the barrel and tracks in the Endcap. The three plots are normalized to the total number of reconstructed tracks in data.}
+    \label{fig:pt distribution}
+  \end{center}
+\end{figure}
+
+Fig.~\ref{fig:eta distribution high purity} (a) and (b) shows $\eta$
+distributions for GSF and CTF high purity tracks. There are some
+discrepancies in the high $\eta$ regions in both the distributions. 
+The bias is not completely understood but it is introduced by the
+quality requirements. If we remove this cut, Fig.~\ref{fig:eta
+  distribution high purity} (c) where all the tracks are selected, the
+agreement between data and MC improves. 
+%This last distribution is in good agreement with what observed by the Tracking group.
+
+\begin{figure}
+  \begin{center}
+    \subfigure[]{\includegraphics[width=0.45\textwidth]
+      {Images/gsf_eta.eps}}
+    \subfigure[]{\includegraphics[width=0.45\textwidth]
+      {Images/ctf_eta.eps}}
+    \subfigure[]{ \includegraphics[width=0.45\textwidth]{Images/ctf_eta_all.eps}}
+    \caption {$\eta$ distribution of the highpurity GSF (a) and CTF (b) Tracks. The $\eta$ distribution of all the tracks is shown in (c). Data is in red, MC in blue.}
+    \label{fig:eta distribution high purity}
+  \end{center}
+\end{figure}
+
+As already stated the fBrem variable (defined as $(\pin-\pout)/\pin$)
+gives an estimate of the energy loss of an electron indipendently by
+the Calorimeter using only the Tracker. This variable is extensively
+used in the Category Based Electron Identification so it is important
+to check how well it is reproduced by the MC simulation.
+Since the large majority of the reconstructed GSF tracks belong to
+pions, which doesn't brem too much, we expect a distribution peaked at 0.
+
+The fBrem distribution of the GSF tracks has been studied in $\pt$ and $\eta$ bins. The agreement between
+data and MC is very good in the central part of the detector ($|\eta| < 1.0$). Then, as the quantity of
+tracker material increases, the peak at in data seems to be slightly shifted towards 1 and does not match exactly 
+with the MC expectations.  
+In the Endcap the discrepancy is more pronounced.
+Fig.~\ref{fig:fbrem in eta bins} shows the fBrem variable in four $\eta$ bins: two in the barrel and two
+in the Endcap. The results for the + and - side of the detector are shown separately and no particular
+asymmetry can be revealed.
+
+\begin{figure}[p]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{Images/fbrem_vs_eta.eps}
+    \caption {fBrem distribution in $\eta$ bins for highpurity GSF Tracks in data (red) and MC (blue). The four
+$\eta$ bins are from top to bottom: $|\eta|$ < 1, $1<|\eta|<1.479$ ,$1.479<|\eta|< 2$, $|\eta| > 2$. Each row shows the distributions for + and - side of the CMS detector.}
+    \label{fig:fbrem in eta bins}
+  \end{center}
+\end{figure}
+
+The fbrem binning in $\pt$ of the GSF track confirms the shift of the peak in the Endcap, showing, at the
+same time, no $\pt$ dependence of the effect.
+These results are in agreement with what has been seen in the analysis of the electron candidates only.
+Fig.~\ref{fig:fbrem in pt bins} reports the results and Fig.~\ref{fig:fbrem tot} shows the total fbrem 
+distribution in Barrel and Endcap.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=1\textwidth]{Images/fbrem_vs_pt.eps}
+    \caption {fBrem distribution in $\pt$ bins for data (red) and MC (blue). From the top to the bottom the $\pt$  bins are defined as: $\pt < 1 \GeV$, $1< \pt < 5 \GeV$,$\pt > 5 \GeV$. Each row shows the distribution for Barrel (left) and Endcap (right).}
+    \label{fig:fbrem in pt bins}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{Images/fbrem_tot.eps}
+    \caption{Total fBrem distribution for high purity GSF Tracks in data (red) and MC (blue). The two plots show Barrel (left) and Endcap (right) distributions.}
+    \label{fig:fbrem tot}
+  \end{center}
+\end{figure}
+
+Another important variable related to GSF tracks that is used in the Electron Identification selection
+is the number of missing hits. This is the number of crossed layers without compatible hits
+in the back-propagation of the track to the beam-line.
+Fig.~\ref{fig:mssinghits} shows the missing hits variable comparison in Barrel and Endcap. The distributions
+show some discrepancies that need to be understood.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{Images/gsf_mishits.eps}
+    \caption {Missing hits distribution for high purity GSF Tracks in data (red) and MC (blue). The two plots show the distributions in Barrel (left) and Endcap (right).}
+    \label{fig:mssinghits}
+  \end{center}
+\end{figure}
+
+Electron Identification selection uses also an Impact Parameter cut (computed with respect to the 
+reconstructed vertex).
+Fig.~\ref{fig:ip} shows the impact parameter distributions which is in good agreement with MC except
+for the dip around 0.5 cm which is under investigation.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{Images/gsf_ip.eps}
+    \caption {Impact parameter computed with respect to the reconstructed vertex of high purity GSF Tracks in data (red) and MC (blue).}
+    \label{fig:ip}
+  \end{center}
+\end{figure}
+
+Other GSF tracks distributions have been checked even if not directly correlated with Electron Identification selection. 
+Fig.~\ref{fig:chi2} shows the $\chi^{2}$ of the GSF Tracks in Barrel and Endcap which is very well reproduced by the Monte Carlo simulation.
+Very well agreement also for the track momentum estimation given by the GSF (mode) and the associated 
+CTF track, the distributions for Barrel and Endcap are shown in Fig.~\ref{fig:pin over p}.
+
+We have also compared the number of hits per track for a GSF track and
+the corresponding CTF. 
+The variable that has been studied is the ratio nhits(GSF)/nhits(CTF)
+and it has been done in four bins of the ratio $\pout/\pin$ of the GSF track. 
+It turns out that the four distributions are in good agreement with the simulation. Beside that it
+is clear how the ratio of number of hits increases as the fraction $\pout/\pin$ decreases: the higher
+is the energy loss in the Tracker the harder is for the CTF patter
+recognition to produce a track as long as for the GSF one.
+Fig.~\ref{fig:nhits} shows the four distributions.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{Images/gsf_chi2.eps}
+    \caption {$\chi^{2}$ distribution for high purity GSF Tracks in data (red) and MC (blue). The two plots show the distributions in Barrel (left) and Endcap (right).}
+    \label{fig:chi2}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{Images/pin_over_p.eps}
+    \caption {Ratio between the $\pin$ momentum estimated as the mode of the GSF Track and the momentum of the associated CTF track. Data is in red, MC in blue.  The two plots show the distributions in Barrel (left) and Endcap (right).}
+    \label{fig:pin over p}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=1\textwidth]{Images/frac_nhits.eps}
+    \caption {Ratio between number of hits of high purity GSF Tracks and the associated CTF Track in data (red) and MC (blue). The distributions are shown in bins of the fraction $f = \pout$/$\pin$, from left to right: $f<.25$, $.25<f<.5$, $.5 < f<.75$, $f>.75$.}
+    \label{fig:nhits}
+  \end{center}
+\end{figure}
+
+\section{Conclusions}
+In the process of Commissioning the Category Based Electron Identification selection we wanted
+to check the reliability of pure tracking variables, like fBrem and missing hits, comparing
+collision data recorded during December 2009 data taking and Monte
+Carlo simulated minimum bias events.
+Unfortunately the number of electron candidates reconstructed during last year data taking was not 
+enough. To increase the available statistic we have performed a full re-reconstruction using 
+GSF Tracking algorithm starting from the seed collection used in the general CTF tracking.
+All the studied variables show a quite good agreement between the collision data and the simulation 
+even if more investigations are needed to understand the remaining discrepancies.

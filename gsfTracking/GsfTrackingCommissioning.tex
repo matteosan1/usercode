@@ -1,0 +1,184 @@
+\documentclass{cmspaper}
+%
+% LaTeX packages
+%
+\usepackage{graphicx}
+\usepackage{epic,rotating,epsfig}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{pstricks,pst-grad}
+\usepackage{subfigure}
+\usepackage{multirow} 
+\usepackage{subfigure}
+\usepackage{lineno}
+%\usepackage{feynmf}
+%\usepackage{xcolor}
+\usepackage{url} 
+\usepackage{amssymb} 
+\usepackage{textcomp} 
+\usepackage{hyperref} 
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\usepackage{amsfonts}
+\usepackage{multirow}
+\usepackage{float}
+
+\def\cm{\hbox{$\;\hbox{\rm cm}$}}
+\def\eV{\hbox{$\;\hbox{\rm eV}$}}
+\def\GeV{\hbox{$\;\hbox{\rm GeV}$}}
+\def\MeV{\hbox{$\;\hbox{\rm MeV}$}}
+\def\TeV{\hbox{$\;\hbox{\rm TeV}$}}
+\newcommand{\Zee}{\mbox{$\rm Z\rightarrow\rm e^{+} \rm e^{-}$}}
+\newcommand{\Wenu}{\mbox{$\rm W\rightarrow\rm e \rm \nu$}}
+\newcommand{\Z}{\mbox{$\rm Z$}}
+\newcommand{\W}{\mbox{$\rm W$}}
+\newcommand{\TeVcc}{\ensuremath{\,\mathrm{Te\kern -0.1em V\!/c}^2}}
+\newcommand{\GeVcc}{\ensuremath{\,\mathrm{~Ge\kern -0.1em V\!/c}^2}}
+\newcommand{\MeVcc}{\ensuremath{\,\mathrm{Me\kern -0.1em V\!/c}^2}}
+\newcommand{\GeVc}{\ensuremath{\mathrm{~Ge\kern -0.1em V}\!/c}}
+\newcommand{\nanob}{\mbox{{\rm ~nb}}}
+\newcommand{\fb}{\ensuremath{\mathrm{fb}}}
+\newcommand{\pb}{\ensuremath{\mathrm{pb}}}
+\newcommand{\ifb}{\ensuremath{\mathrm{fb^{-1}}}}
+\newcommand{\ipb}{\ensuremath{\mathrm{pb^{-1}}}}
+\newcommand{\Hmu}{\ensuremath{\mathrm{H}\to\mathrm{ZZ^{(\ast)}}\to4\mu}}
+\newcommand{\HZe}{\ensuremath{\mathrm{H}\to\mathrm{ZZ^{(\ast)}}\to4e}}
+\newcommand{\HWe}{\ensuremath{\mathrm{H}\to\mathrm{WW^{(\ast)}}\to e\nu e\nu }}
+\newcommand{\mmu}{\ensuremath{\mathrm{m_{4\mu}}}}
+\newcommand{\mH}{\ensuremath{m_{\mathrm{H}}}}
+\newcommand{\Lumi}{\ensuremath{{\cal L}}}
+\newcommand{\lnQ}{\ensuremath{\mathrm{ln}(Q)}}
+\newcommand{\mlnQ}{\ensuremath{-2\,\mathrm{ln}(Q)}}
+\newcommand{\LS}{\ensuremath{{\cal L}(S)}}
+\newcommand{\LB}{\ensuremath{{\cal L}(B)}}
+\newcommand{\LSB}{\ensuremath{{\cal L}(S+B)}}
+\newcommand{\mZ}{\ensuremath{m_\mathrm{Z}}}
+\newcommand{\Zbb}{\ensuremath{(Z/\gamma^*){\mathrm{b\bar{b}}}}}
+\newcommand{\ttbar}{\ensuremath{\mathrm{t\bar{t}}}}
+\newcommand{\ZZ}{\ensuremath{\mathrm{Z/\gamma^*Z/\gamma^*}}}
+\newcommand{\Zgam}{\ensuremath{\mathrm{Z/\gamma^*}}}
+\newcommand{\mumu}{\ensuremath{\mathrm{\mu^+\mu^-}}}
+\newcommand{\lsim}{\raisebox{-1.5mm}{$\:\stackrel{\textstyle{<}}{\textstyle{\sim}}\:$}}
+\newcommand{\gsim}{\raisebox{-1.5mm}{$\:\stackrel{\textstyle{>}}{\textstyle{\sim}}\:$}}
+\newcommand{\et}{\mbox{$\mathrm{E_{T}}$}}
+\newcommand{\met}{\mbox{$\mathrm{E\!\!\!/_{T}}$}}
+\newcommand{\etsc}{\mbox{$\mathrm{E_{T}^{SC}}$}}
+\newcommand{\dr}{\mbox{$\mathrm{\Delta R}$}}
+
+\newcommand{\dPhiIn}{\ensuremath{\mathrm{\Delta\phi_{in}}}}
+\newcommand{\dEtaIn}{\ensuremath{\Delta\eta_{\mathrm{in}}}}
+\newcommand{\hoe}{\ensuremath{\mathrm{H}/\mathrm{E}}}
+\newcommand{\sigmaIEtaIEta}{\ensuremath{\sigma_{\mathrm{i}\eta\mathrm{i}\eta}}}
+\newcommand{\sigmaEtaEta}{\ensuremath{\sigma_{\eta\eta}}}
+\newcommand{\eTwoByFive}{\ensuremath{\mathrm{E}^{2\times5}/\mathrm{E}^{5\times5}}}
+\newcommand{\eOneByFive}{\ensuremath{\mathrm{E}^{1\times5}/\mathrm{E}^{5\times5}}}
+\newcommand{\pin}{\ensuremath{\mathrm{p_{in}}}}
+\newcommand{\pout}{\ensuremath{\mathrm{p_{out}}}}
+\newcommand{\pt}{\ensuremath{\mathrm{p_{T}}}}
+\newcommand{\eseedpin}{\ensuremath{\mathrm{E_{seed}}/\mathrm{p_{in}}}}
+\newcommand{\eseedpout}{\ensuremath{\mathrm{E_{seed}}/\mathrm{p_{out}}}}
+\newcommand{\epin}{\ensuremath{\mathrm{E}/\mathrm{p_{in}}}}
+
+%
+
+%==========================================================
+
+\begin{document}
+\begin{titlepage}
+\internalnote{2010/xxx}
+\date{\today}
+\title{Electron GSF Tracking Commissioning with first LHC Data}
+\begin{Authlist}
+
+%M.~Sani\Aref{a}, 
+ 
+%\Instfoot{a}{a) University of California, San Diego} 
+
+\end{Authlist}
+\begin{abstract}
+The first LHC collisions at center of mass energies of 900 GeV and 2.36 TeV were recorded by the CMS
+detector in December 2009. 
+The Category Based Electron Identification selection relies on the
+fBrem variable measurement to categorize the Electrons, hence on the
+quality of the GSF Tracking.
+It is then of vital importance its commissioning with the first
+recorded data.
+In this analysis we perform a full comparison of GSF track variables as reconstructed in data and 
+in the simulated 900 GeV Monte Carlo events focusing on the relevant
+observables used in Electron Identification selection.
+
+\end{abstract}                          
+
+\end{titlepage}
+
+\clearpage 
+\tableofcontents
+\clearpage
+
+\linenumbers
+
+\newpage
+
+\pagenumbering{arabic}
+
+\input{body.tex}
+
+\pagebreak
+
+%\begin{thebibliography} {99}
+%\bibliographystyle{unsrt}
+%\bibitem{bib:cmsnote_2006_040}
+%S. Baffioni {\it et al.}, ``Electron Reconstruction in CMS'',
+%{}The European Physical Journal C, {\bf 49} (2007) 1099-1116
+%%CMS NOTE-2006/040.
+%\bibitem{bib:cmsanote_2009_164}
+%F. Beaudette {\it et al.}, ``Electron Reconstruction in CMS''
+%CMS AN-2009/164.
+%\bibitem{bib:cmsanote_2008_082}
+%J. Branson {\it et al.}, ``A cut based method for electron identification in CMS'' 
+%CMS AN-2008/082.
+%\bibitem{bib:cmsanote_2008_110}
+%E. Di Marco {\it et al.}, ``Electron Identification in the CMS experiment based on a likelihood algorithm'' 
+%CMS AN-2008/110.
+%\bibitem{bib:cmsanote_2005_065}
+%S. Baffioni {\it et al.}, ``Electron Selection and Identification in CMS'',
+%CMS AN-2005/065.
+%\bibitem{bib:cmsanote_2009_108}
+%G. Daskalakis {\it et al.}, ``Data driven selection cut tuning for electrons''
+%CMS AN-2009/108.
+%\bibitem{bib:pas_ewk_2009_004}
+%The CMS Collaboration,
+%``W and Z production in the electron channel at sqrts = 10 TeV''
+%CMS PAS EWK-2009-004.
+%\bibitem{SISCONE} G. P. Salam and G. Soyez, ``A practical Seedless Infrared-Safe Cone jet algorithm'', 
+%JHEP 05 (2007) 086, [arXiv:0704.0292].
+%\bibitem{splots} 
+% M.~Pivk and F.~R.~Le Diberder, 
+% %``SPlot: A statistical tool to unfold  data distributions,'' 
+% Nucl.\ Instrum.\ Meth.\ A {\bf 555} (2005) 356
+% [arXiv:physics/0402083].  
+% %%CITATION = NUIMA,A555,356;%%
+%\bibitem{bib:PFT2009_001}
+%The CMS Collaboration, 
+%``Particle-Flow Event reconstruction in CMS and Performance for Jets, Taus, and $E_T^{miss}$ '', 
+%CMS PAS PFT-09/001.
+%\bibitem{bib:PFT2009_006}
+%The CMS Collaboration, ``Electron reconstruction within the Particle Flow Algorithm'', 
+%CMS PAS PFT-09/006 (in preparation).
+%\bibitem{bib:heepIDNote} 
+%O. Charaf {\it et al.}, ``Electron ID at High Energies'', 
+%CMS AN-2008/045.
+%\bibitem{bib:heepTwiki} 
+%Electron ID and Isolation for high energy electron: \emph{https://twiki.cern.ch/twiki/bin/view/CMS/HEEPELectronID}
+%\bibitem{bib:AN_2009-159} 
+%W. Andrews {\it et al.}, ``Study of Photon Conversion Rejection'', 
+%CMS AN-2009/159.
+%\end{thebibliography}
+%
+%\input{Conclusions/Appendix.tex}
+
+\end{document}
+
