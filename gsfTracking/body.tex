@@ -6,16 +6,13 @@ density functions, it is not necessarily the optimal reconstruction
 algorithm for electron tracks. 
 To better model the energy loss a Gaussian mixture rather than a
 single Gaussian can be used and this is implemented in the
-Gaussian-sum filter (GSF) algorithm. 
+Gaussian-sum filter (GSF) algorithm~\cite{bib:gsf tracking}. 
 
 The GSF algorithm has been developed in the CMS reconstruction
 software and heavily used for electron reconstruction in the CMS
-detector. The GSF leads to trajectory states for each measurement
-point. In particular the momentum measurements at the inner ($\pin$) and
-outer ($\pout$) state are available making possible to give an estimate
-of the amount of energy loss in the Tracker ($\fbrem = (\pin-\pout)/\pin$).
+detector~\cite{bib:electron reconstruction}. The GSF leads to trajectory states for each measurement point. In particular the momentum measurements at the inner ($\pin$) and outer ($\pout$) state are available making possible to give an estimate of the amount of energy loss in the Tracker ($\fbrem = (\pin-\pout)/\pin$).
 
-The Category Based Electron Identification selection relies on the
+The Category Based Electron Identification selection~\cite{bib:electron identification} relies on the
 $\fbrem$ measurement to categorize the Electrons and to try to separate
 them from fakes.
 The commissioning of the GSF Tracking is therefore crucial to validate
@@ -23,7 +20,8 @@ the Electron Identification selection.
 
 The first collisions at CMS were recorded in December 2009 at energies of $\sqrt{s} = 900 \GeV$ and $2.36 \TeV$. 
 The reconstructed electrons in this data have been studied extensively to commission 
-the electron reconstruction and identification. Unfortunately the number of electron candidates produced
+the electron reconstruction and identification~\cite{bib:electron commissioning}.
+Unfortunately the number of electron candidates produced
 in these collisions is low and to better commission pure tracking quantities we have performed a full
 re-reconstruction of the GSF tracks using standard tracking seeds. 
 This allowed us to greatly increase the
@@ -45,9 +43,9 @@ In reprocessing the data the standard parameters for electron
 reconstruction have been used.
 Also the collection of GSF tracks, that we have analyzed, have been reconstructed starting from the 
 seed collection used for general CTF tracking (\verb=newCombinedSeeds=).
-Since this study mainly concerns electron properties, the parameters of the GSF Tracking 
-algorithm (pattern recognition and fitting) have been set to the default values used in the 
-standard electron reconstruction.
+Since this study is focused on the commissioning of the GSF algorithm used in
+electron reconstruction to increase the available statistic it has been applied
+to all the tracks (mainly produced by pions).
 
 \section{Selections}\label{sec:Selections}
 
