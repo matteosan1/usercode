@@ -1,0 +1,7 @@
+output=my_reduced_tuple_foo.root
+Fil=/hadoop/cms/store/user/matteo/Summer12/DYJetsToLL/DYJetsToLL_1368_1_fHB.root typ=1
+
+inputBranches reduction_input.dat
+outputBranches reduction_output.dat
+
+analyzer HtollAnalysis htollanalysis.dat
