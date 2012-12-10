@@ -1,3 +1,7 @@
 ### Example of .dat 
+
+doMuon=1
+
 puMap=
-puHist=aux/2012_5_9_Weights.root
+puHist=auto
+puTarget=aux/HCP2012_freezing_v2.json.69400.observed.pileup.root

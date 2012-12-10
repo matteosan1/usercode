@@ -26,6 +26,10 @@ class HtollAnalysis : public StatAnalysis {
   virtual bool SkimEvents(LoopAll&, int);
   virtual bool SelectEvents(LoopAll&, int);
   virtual bool Analysis(LoopAll&, Int_t);
+
+  bool ElectronId(LoopAll&, Int_t);
+
+  bool doMuon;
   
  protected:
   std::string name_;
