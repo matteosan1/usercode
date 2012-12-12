@@ -1,5 +1,5 @@
-output=RSmumu_reduced.root
-Fil=/tmp/sani/Hmumu.root typ=1
+output=VBFee_reduced.root
+Fil=/hadoop/cms/store/user/matteo/Summer12/Htoll/VBFee.root typ=1
 
 inputBranches htollanalysis/reduction_input.dat
 outputBranches htollanalysis/reduction_output.dat

@@ -1,6 +1,6 @@
 ### Example of .dat 
 
-doMuon=1
+doMuon=0
 
 puMap=
 puHist=auto

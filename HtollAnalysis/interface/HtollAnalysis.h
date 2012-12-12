@@ -28,7 +28,10 @@ class HtollAnalysis : public StatAnalysis {
   virtual bool Analysis(LoopAll&, Int_t);
 
   bool ElectronId(LoopAll&, Int_t);
-
+  void Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVector & Higgs,
+	    Int_t cat, Int_t vbfcat, 
+	    Float_t weight, Float_t pu_weight, bool isSyst, std::string name1);
+  
   bool doMuon;
   
  protected:
