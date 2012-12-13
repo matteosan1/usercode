@@ -64,3 +64,11 @@ type=2 name=elregr2
 type=2 name=elregr_err2
 type=2 name=elpt1
 type=2 name=elpt2
+
+type=2 name=dijet_deta
+type=2 name=dijet_mjj
+type=2 name=dijet_zep
+type=2 name=dijet_dphi_ll_jj
+type=2 name=dijet_j1pt
+type=2 name=dijet_j2pt
+type=2 name=dijet_has2jets

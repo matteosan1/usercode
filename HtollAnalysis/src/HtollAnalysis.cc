@@ -215,9 +215,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     l.FillTree("domuon", (int)doMuon);
     l.FillTree("rho", (float)l.rho_algo1);        
     l.FillTree("mass", (float)Higgs.M());
-    
+    TLorentzVector* lep1;
+    TLorentzVector* lep2;
+
     if (doMuon) {
       TLorentzVector* mu1 = (TLorentzVector*)l.mu_glo_p4->At(lept1);
+      lep1 = mu1;
       l.FillTree("et1", (float)mu1->Et());
       l.FillTree("eta1", (float)mu1->Eta());
       l.FillTree("phi1", (float)mu1->Phi());
@@ -233,6 +236,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("phiso1", l.mu_glo_photiso04[lept1]);
       
       TLorentzVector* mu2 = (TLorentzVector*)l.mu_glo_p4->At(lept2);
+      lep2 = mu2;
       l.FillTree("et2", (float)mu2->Et());
       l.FillTree("eta2", (float)mu2->Eta());
       l.FillTree("phi2", (float)mu2->Phi());
@@ -275,6 +279,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("elregr1", (float)l.el_std_regr_energy[lept1]);
       l.FillTree("elregr_err1", (float)l.el_std_regr_energyerr[lept1]);
       TLorentzVector* p1 = (TLorentzVector*)l.el_std_p4->At(lept1);
+      lep1 = p1;
       l.FillTree("elpt1", (float)(l.el_std_pin[lept1]*sin(p1->Theta())));
       
       TLorentzVector* el2 = (TLorentzVector*)l.el_std_sc->At(lept2);
@@ -290,6 +295,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("elregr2", (float)l.el_std_regr_energy[lept2]);
       l.FillTree("elregr_err2", (float)l.el_std_regr_energyerr[lept2]);
       TLorentzVector* p2 = (TLorentzVector*)l.el_std_p4->At(lept2);
+      lep2 = p2;
       l.FillTree("elpt2", (float)(l.el_std_pin[lept2]*sin(p2->Theta())));
 
       l.FillTree("mutype1"  ,(int)-9999);
@@ -333,6 +339,21 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     
     //int pass_hlt = checkEventHLT(l, hltPaths);  
     //l.FillTree("pass_hlt", pass_hlt);
+    float dijet_deta; 
+    float dijet_mjj;
+    float dijet_zep;
+    float dijet_dphi_ll_jj;
+    float dijet_j1pt;
+    float dijet_j2pt;
+    bool dijet_has2jets = DijetPreSelection(l,   lep1,   lep2, 
+        dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt);
+    l.FillTree("dijet_deta",          (float)dijet_deta);
+    l.FillTree("dijet_mjj",           (float)dijet_mjj);
+    l.FillTree("dijet_zep",           (float)dijet_zep);
+    l.FillTree("dijet_dphi_ll_jj",    (float)dijet_dphi_ll_jj);
+    l.FillTree("dijet_j1pt",          (float)dijet_j1pt);
+    l.FillTree("dijet_j2pt",          (float)dijet_j2pt);
+    l.FillTree("dijet_has2jets",      (float)dijet_has2jets);
 }
 
 bool HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
@@ -365,3 +386,38 @@ bool HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
   return result;
 }
 
+
+
+bool HtollAnalysis::DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLorentzVector* veto_p42, 
+    float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 
+    float & dijet_j1pt, float & dijet_j2pt) {
+    bool exist=false;
+
+    std::pair<int, int> myjets = l.Select2HighestPtJets(*veto_p41, *veto_p42 ); // Bool_t * jetid_flags)
+
+    if( myjets.first==-1 ) { // set defaults
+        dijet_deta        = -99;
+        dijet_mjj         = -99;
+        dijet_zep         = -99;
+        dijet_dphi_ll_jj  = -99;
+        dijet_j1pt        = -99;
+        dijet_j2pt        = -99;
+
+        exist             = false;
+    } else { // get jets and get values
+        TLorentzVector* jet1 = (TLorentzVector*) l.jet_algoPF1_p4->At(myjets.first);
+        TLorentzVector* jet2 = (TLorentzVector*) l.jet_algoPF1_p4->At(myjets.second);
+        TLorentzVector jj = *jet1 + *jet2;
+        TLorentzVector ll = *veto_p41 + *veto_p42;
+
+        dijet_deta        = abs(jet1->Eta() - jet2->Eta());
+        dijet_mjj         = jj.M();
+        dijet_zep         = (ll.Eta() - 0.5*(jet1->Eta()+jet2->Eta()));
+        dijet_dphi_ll_jj  = abs(jj.DeltaPhi(ll));
+        dijet_j1pt        = jet1->Pt();
+        dijet_j2pt        = jet2->Pt();
+
+        exist             = true;
+    }
+    return exist;
+}

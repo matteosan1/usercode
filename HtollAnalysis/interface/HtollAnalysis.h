@@ -32,6 +32,10 @@ class HtollAnalysis : public StatAnalysis {
 	    Int_t cat, Int_t vbfcat, 
 	    Float_t weight, Float_t pu_weight, bool isSyst, std::string name1);
   
+  bool DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLorentzVector* veto_p42, 
+      float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 
+      float & dijet_j1pt, float & dijet_j2pt);
+  
   bool doMuon;
   
  protected:
