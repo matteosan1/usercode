@@ -18,11 +18,16 @@ typ=+513  ind=11  draw=1    Nam=DYJetsToLL            Dir=/hadoop/cms/store/user
 #
 # Branches to use
 #
-inputBranches  htollanalysis/reduction_output.dat
+inputBranches htollanalysis/reduction_input.dat
+inputBranches htollanalysis/reduction_output.dat
+
+cuts htollanalysis/cuts.dat
+plotvariables htollanalysis/plotvariables_htollanalysis.dat 
+treevariables htollanalysis/treevariables_htollanalysis.dat
 
 ## define analyses to run
 ## syntax:
 ##   analyzer <class_name> <config_file>
 ##
 ## analyzer PhotonAnalysis photonanalysis.dat
-analyzer  HtollAnalysis  htollanalysis.dat
+analyzer  HtollAnalysis  htollanalysis/htollanalysis.dat
