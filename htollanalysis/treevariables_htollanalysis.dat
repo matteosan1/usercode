@@ -72,3 +72,21 @@ type=2 name=dijet_dphi_ll_jj
 type=2 name=dijet_j1pt
 type=2 name=dijet_j2pt
 type=2 name=dijet_has2jets
+
+type=2 name=mc_et1
+type=2 name=mc_eta1
+type=2 name=mc_phi1
+type=2 name=mc_et2
+type=2 name=mc_eta2
+type=2 name=mc_phi2
+type=2 name=fsr_et1
+type=2 name=fsr_eta1
+type=2 name=fsr_phi1
+type=2 name=fsr_et2
+type=2 name=fsr_eta2
+type=2 name=fsr_phi2
+
+type=2 name=higgs_pt
+type=2 name=higgs_phi
+type=2 name=higgs_eta
+type=2 name=higgs_mass

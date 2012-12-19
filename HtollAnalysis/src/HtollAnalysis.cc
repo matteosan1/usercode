@@ -118,7 +118,9 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
 	//p2->Boost(-higgs.BoostVector());
 	//std::cout << p2->X() << " " << p2->Y() << " " << p2->Z() << " "  << std::endl;
 	//std::cout << p2->Theta() << std::endl;
-	
+	if (higgs.M() < 130. && higgs.M() > 120. && doBlinding && l.itype[l.current] == 0)
+	  return false;
+
 	l.FillHist("massMu", 0, mass, weight);
 	//l.FillHist("theta2", 0, 1/4+3/2*pow(p2->Theta(), 2)+1/4*pow(p2->Theta(), 4), weight);
 	l.FillHist("theta2", 0, p2->Theta(), weight);
@@ -144,6 +146,10 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
       for (unsigned int j=i+1; j<goodEles.size(); j++) {
 	TLorentzVector* p2 = (TLorentzVector*)l.el_std_p4->At(goodEles[j]);
 	higgs = (*p1)+(*p2);
+
+	if (higgs.M() < 130. && higgs.M() > 120. && doBlinding && l.itype[l.current] == 0)
+	  return false;
+
 	l.FillHist("massEl", 0, higgs.M(), weight);
 	
 	Tree(l, goodEles[i], goodEles[j], higgs, cat, vbfcat, weight, pu_weight, false, "");
@@ -160,11 +166,102 @@ void HtollAnalysis::GetBranches(TTree *t, std::set<TBranch *>& s )
 
 // ----------------------------------------------------------------------------------------------------
 void HtollAnalysis::FillReductionVariables(LoopAll& l, int jentry) {
-  if(HtollAnalysisDEBUG) 
-    cout<<"myFillReduceVar START"<<endl;
-  
-  if(HtollAnalysisDEBUG) 
-    cout<<"myFillReduceVar END"<<endl;
+
+  if (l.itype[l.current] < 0) {
+    for (int i=0; i<l.gp_n; i++) {
+      if (l.gp_pdgid[i] == 25 && l.gp_status[i] == 3) {
+	TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(i);
+	*(l.higgs) = *p4;
+	break;
+      }
+    }
+
+    if (doMuon) {
+      for (int i=0; i<l.mu_glo_n; i++) {
+	Int_t mc1=-1;
+	Int_t mc2=-1;
+	Int_t pho=-1;
+	
+	l.FindMCLeptons(i, mc1, mc2, pho, 13);
+	// et, eta, phi
+	
+	if (mc1 != -1) {
+	  TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(mc1);
+	  l.mc_et[i] = p4->Et();
+	  l.mc_phi[i] = p4->Phi();
+	  l.mc_eta[i] = p4->Eta();
+	} else {
+	  l.mc_et[i] = -999.;
+	  l.mc_phi[i] = -999.;
+	  l.mc_eta[i] = -999.;
+	}
+	
+	if (pho != -1) {
+	  TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(pho);
+	  l.fsr_et[i] = p4->Et();
+	  l.fsr_phi[i] = p4->Phi();
+	  l.fsr_eta[i] = p4->Eta();
+	} else {
+	  l.fsr_et[i] = -999.;
+	  l.fsr_phi[i] = -999.;
+	  l.fsr_eta[i] = -999.;
+	}
+      }
+    } else {
+      for (int i=0; i<l.el_std_n; i++) {
+	Int_t mc1=-1;
+	Int_t mc2=-1;
+	Int_t pho=-1;
+	
+	l.FindMCLeptons(i, mc1, mc2, pho, 11);
+	// et, eta, phi
+	
+	if (mc1 != -1) {
+	  TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(mc1);
+	  l.mc_et[i] = p4->Et();
+	  l.mc_phi[i] = p4->Phi();
+	  l.mc_eta[i] = p4->Eta();
+	} else {
+	  l.mc_et[i] = -999.;
+	  l.mc_phi[i] = -999.;
+	  l.mc_eta[i] = -999.;
+	}
+	
+	if (pho != -1) {
+	  TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(pho);
+	  l.fsr_et[i] = p4->Et();
+	  l.fsr_phi[i] = p4->Phi();
+	  l.fsr_eta[i] = p4->Eta();
+	} else {
+	  l.fsr_et[i] = -999.;
+	  l.fsr_phi[i] = -999.;
+	  l.fsr_eta[i] = -999.;
+	}
+      }
+    }
+  } else {
+    if (doMuon) {
+      for (int i=0; i<l.mu_glo_n; i++) {
+	l.mc_et[i] = -999.;
+	l.mc_phi[i] = -999.;
+	l.mc_eta[i] = -999.;
+	
+	l.fsr_et[i] = -999.;
+	l.fsr_phi[i] = -999.;
+	l.fsr_eta[i] = -999.;
+      }
+    } else {
+      for (int i=0; i<l.el_std_n; i++) {
+	l.mc_et[i] = -999.;
+	l.mc_phi[i] = -999.;
+	l.mc_eta[i] = -999.;
+	
+	l.fsr_et[i] = -999.;
+	l.fsr_phi[i] = -999.;
+	l.fsr_eta[i] = -999.;
+      }
+    }
+  }
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -199,8 +296,17 @@ bool HtollAnalysis::SelectEvents(LoopAll& l, int jentry) {
 }
 
 // ----------------------------------------------------------------------------------------------------
-void HtollAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree) 
-{}
+void HtollAnalysis::ReducedOutputTree(LoopAll &l, TTree * outputTree) {
+  l.higgs = new TLorentzVector(0,0,0,0);
+
+  l.Branch_mc_et(outputTree);
+  l.Branch_mc_eta(outputTree);
+  l.Branch_mc_phi(outputTree);
+  l.Branch_fsr_et(outputTree);
+  l.Branch_fsr_eta(outputTree);
+  l.Branch_fsr_phi(outputTree);
+  l.Branch_higgs(outputTree);
+}
 
 // ----------------------------------------------------------------------------------------------------
 void HtollAnalysis::ResetAnalysis()
@@ -235,7 +341,13 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("chiso1", l.mu_glo_chhadiso04[lept1]);
       l.FillTree("neiso1", l.mu_glo_nehadiso04[lept1]);
       l.FillTree("phiso1", l.mu_glo_photiso04[lept1]);
-      
+      l.FillTree("mc_et1", l.mc_et[lept1]);
+      l.FillTree("mc_eta1", (float)l.mc_eta[lept1]);
+      l.FillTree("mc_phi1", (float)l.mc_phi[lept1]);
+      l.FillTree("fsr_et1", (float)l.fsr_et[lept1]);
+      l.FillTree("fsr_eta1", (float)l.fsr_eta[lept1]);
+      l.FillTree("fsr_phi1", (float)l.fsr_phi[lept1]);
+
       lep2 = (TLorentzVector*)l.mu_glo_p4->At(lept2);
       l.FillTree("et2", (float)lep2->Et());
       l.FillTree("eta2", (float)lep2->Eta());
@@ -262,7 +374,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("elregr_err2", (float)9999.);
       l.FillTree("elpt1", (float)-9999.);
       l.FillTree("elpt2", (float)-9999.);
-      
+      l.FillTree("mc_et2", (float)l.mc_et[lept2]);
+      l.FillTree("mc_eta2", (float)l.mc_eta[lept2]);
+      l.FillTree("mc_phi2", (float)l.mc_phi[lept2]);
+      l.FillTree("fsr_et2", (float)l.fsr_et[lept2]);
+      l.FillTree("fsr_eta2", (float)l.fsr_eta[lept2]);
+      l.FillTree("fsr_phi2", (float)l.fsr_phi[lept2]);
       //l.FillTree("cosDphi", (float)TMath::Cos(lead_p4.Phi()-sublead_p4.Phi()));
 
     } else {
@@ -280,6 +397,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("elregr_err1", (float)l.el_std_regr_energyerr[lept1]);
       lep1 = (TLorentzVector*)l.el_std_p4->At(lept1);
       l.FillTree("elpt1", (float)(l.el_std_pin[lept1]*sin(lep1->Theta())));
+      l.FillTree("mc_et1", (float)l.mc_et[lept1]);
+      l.FillTree("mc_eta1", (float)l.mc_eta[lept1]);
+      l.FillTree("mc_phi1", (float)l.mc_phi[lept1]);
+      l.FillTree("fsr_et1", (float)l.fsr_et[lept1]);
+      l.FillTree("fsr_eta1", (float)l.fsr_eta[lept1]);
+      l.FillTree("fsr_phi1", (float)l.fsr_phi[lept1]);
       
       lep2 = (TLorentzVector*)l.el_std_sc->At(lept2);
       l.FillTree("et2", (float)lep2->Et());
@@ -295,6 +418,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("elregr_err2", (float)l.el_std_regr_energyerr[lept2]);
       lep2 = (TLorentzVector*)l.el_std_p4->At(lept2);
       l.FillTree("elpt2", (float)(l.el_std_pin[lept2]*sin(lep2->Theta())));
+      l.FillTree("mc_et2", (float)l.mc_et[lept2]);
+      l.FillTree("mc_eta2", (float)l.mc_eta[lept2]);
+      l.FillTree("mc_phi2", (float)l.mc_phi[lept2]);
+      l.FillTree("fsr_et2", (float)l.fsr_et[lept2]);
+      l.FillTree("fsr_eta2", (float)l.fsr_eta[lept2]);
+      l.FillTree("fsr_phi2", (float)l.fsr_phi[lept2]);
 
       l.FillTree("mutype1"  ,(int)-9999);
       l.FillTree("muchi21"  ,(float)-9999.);
@@ -325,6 +454,11 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     l.FillTree("MET", (float)l.met_pfmet);
     l.FillTree("MET_phi", (float)l.met_phi_pfmet);
     l.FillTree("cat", (int)cat);
+    
+    l.FillTree("higgs_pt", (float)l.higgs->Pt());
+    l.FillTree("higgs_phi", (float)l.higgs->Phi());
+    l.FillTree("higgs_eta", (float)l.higgs->Eta());
+    l.FillTree("higgs_mass", (float)l.higgs->M());
     
     // FIXME 0 vtx for the moment
     TVector3* vtx = (TVector3*)l.vtx_std_xyz->At(0);

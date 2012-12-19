@@ -37,7 +37,7 @@ class HtollAnalysis : public StatAnalysis {
       float & dijet_j1pt, float & dijet_j2pt);
   
   bool doMuon;
-  
+  bool doBlinding;
  protected:
   std::string name_;
 };

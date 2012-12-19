@@ -21,6 +21,7 @@ typ=0     ind=2   draw=1    Nam=qqh_m125_elel_8TeV    Fil=/nfs-6/userdata/matteo
 #
 inputBranches htollanalysis/reduction_input.dat
 inputBranches htollanalysis/reduction_output.dat
+inputBranches htollanalysis/htollanalysis_input.dat
 
 cuts htollanalysis/cuts.dat
 plotvariables htollanalysis/plotvariables_htollanalysis.dat 

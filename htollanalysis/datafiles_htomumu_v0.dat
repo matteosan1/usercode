@@ -20,6 +20,7 @@ typ=+513  ind=11  draw=1    Nam=DYJetsToLL            Dir=/hadoop/cms/store/user
 #
 inputBranches htollanalysis/reduction_input.dat
 inputBranches htollanalysis/reduction_output.dat
+inputBranches htollanalysis/htollanalysis_input.dat
 
 cuts htollanalysis/cuts.dat
 plotvariables htollanalysis/plotvariables_htollanalysis.dat 

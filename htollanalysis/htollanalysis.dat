@@ -1,6 +1,7 @@
 ### Example of .dat 
 
 doMuon=1
+doBlinding=1
 
 puMap=
 puHist=auto
