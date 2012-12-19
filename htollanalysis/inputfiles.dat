@@ -2,7 +2,8 @@ intL=370 histfile=out.root output=shifo.root
 
 #typ=0 ind=0 draw=1  Nam=RSmumu  Fil=/afs/cern.ch/user/s/sani/work/globe/src/h2gglobe/AnalysisScripts/RSmumu_reduced.root lum=1.0e+10 xsec=3048 kfac=1.0  scal=1.
 #typ=0 ind=0 draw=1  Nam=Hmumu  Fil=/afs/cern.ch/user/s/sani/work/globe/src/h2gglobe/AnalysisScripts/Hmumu_reduced.root lum=1.0e+10 xsec=3048 kfac=1.0  scal=1.
-typ=0 ind=0 draw=1  Nam=Hee  Fil=/hadoop/cms/store/user/matteo/Summer12/Htoll/Hee_reduced.root lum=1.0e+10 xsec=3048 kfac=1.0  scal=1.
+#typ=0 ind=0 draw=1  Nam=Hee  Fil=/hadoop/cms/store/user/matteo/Summer12/Htoll/Hee_reduced.root lum=1.0e+10 xsec=3048 kfac=1.0  scal=1.
+typ=0 ind=0 draw=1  Nam=Hee  Dir=/hadoop/cms/store/user/matteo/Summer12/Htoll lum=1.0e+10 xsec=3532.8 kfac=1.0  scal=1.
 
 cuts htollanalysis/cuts.dat
 plotvariables htollanalysis/plotvariables_htollanalysis.dat 

@@ -26,6 +26,7 @@ void HtollAnalysis::Init(LoopAll& l) {
      Pileup Reweighting
      https://twiki.cern.ch/twiki/bin/viewauth/CMS/PileupReweighting
      ----------------------------------------------------------------------------------------------  */
+
   if (l.typerun != l.kReduce) {
     if (puHist != "" && puHist != "auto" ) {
       if(DEBUG) 
@@ -77,6 +78,7 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
   //apply pileup reweighting
   float weight = 1.;
   float pu_weight = 1.;
+  
   if (l.itype[l.current] != 0) {
     unsigned int n_pu = l.pu_n;
     pu_weight = getPuWeight(l.pu_n, l.itype[l.current], &(l.sampleContainer[l.current_sample_index]), jentry == 1);
@@ -215,15 +217,14 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     l.FillTree("domuon", (int)doMuon);
     l.FillTree("rho", (float)l.rho_algo1);        
     l.FillTree("mass", (float)Higgs.M());
-    TLorentzVector* lep1;
-    TLorentzVector* lep2;
+    TLorentzVector* lep1=0;
+    TLorentzVector* lep2=0;
 
     if (doMuon) {
-      TLorentzVector* mu1 = (TLorentzVector*)l.mu_glo_p4->At(lept1);
-      lep1 = mu1;
-      l.FillTree("et1", (float)mu1->Et());
-      l.FillTree("eta1", (float)mu1->Eta());
-      l.FillTree("phi1", (float)mu1->Phi());
+      lep1 = (TLorentzVector*)l.mu_glo_p4->At(lept1);
+      l.FillTree("et1", (float)lep1->Et());
+      l.FillTree("eta1", (float)lep1->Eta());
+      l.FillTree("phi1", (float)lep1->Phi());
       l.FillTree("mutype1", (int)l.mu_glo_type[lept1]);
       l.FillTree("muchi21", (float)l.mu_glo_chi2[lept1]/l.mu_glo_dof[lept1]);
       l.FillTree("much1", (int)l.mu_glo_validChmbhits[lept1]);
@@ -235,11 +236,10 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("neiso1", l.mu_glo_nehadiso04[lept1]);
       l.FillTree("phiso1", l.mu_glo_photiso04[lept1]);
       
-      TLorentzVector* mu2 = (TLorentzVector*)l.mu_glo_p4->At(lept2);
-      lep2 = mu2;
-      l.FillTree("et2", (float)mu2->Et());
-      l.FillTree("eta2", (float)mu2->Eta());
-      l.FillTree("phi2", (float)mu2->Phi());
+      lep2 = (TLorentzVector*)l.mu_glo_p4->At(lept2);
+      l.FillTree("et2", (float)lep2->Et());
+      l.FillTree("eta2", (float)lep2->Eta());
+      l.FillTree("phi2", (float)lep2->Phi());
       l.FillTree("mutype2", (int)l.mu_glo_type[lept2]);
       l.FillTree("muchi22", (float)l.mu_glo_chi2[lept2]/l.mu_glo_dof[lept2]);
       l.FillTree("much2", (int)l.mu_glo_validChmbhits[lept2]);
@@ -266,10 +266,10 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       //l.FillTree("cosDphi", (float)TMath::Cos(lead_p4.Phi()-sublead_p4.Phi()));
 
     } else {
-      TLorentzVector* el1 = (TLorentzVector*)l.el_std_sc->At(lept1);
-      l.FillTree("et1", (float)el1->Et());
-      l.FillTree("eta1", (float)el1->Eta());
-      l.FillTree("phi1", (float)el1->Phi());
+      lep1 = (TLorentzVector*)l.el_std_sc->At(lept1);
+      l.FillTree("et1", (float)lep1->Et());
+      l.FillTree("eta1", (float)lep1->Eta());
+      l.FillTree("phi1", (float)lep1->Phi());
       l.FillTree("chiso1", l.el_std_pfiso_charged[lept1]);
       l.FillTree("neiso1", l.el_std_pfiso_neutral[lept1]);
       l.FillTree("phiso1", l.el_std_pfiso_photon[lept1]);
@@ -278,14 +278,13 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("elmva1", (float)l.el_std_mva_trig[lept1]);
       l.FillTree("elregr1", (float)l.el_std_regr_energy[lept1]);
       l.FillTree("elregr_err1", (float)l.el_std_regr_energyerr[lept1]);
-      TLorentzVector* p1 = (TLorentzVector*)l.el_std_p4->At(lept1);
-      lep1 = p1;
-      l.FillTree("elpt1", (float)(l.el_std_pin[lept1]*sin(p1->Theta())));
+      lep1 = (TLorentzVector*)l.el_std_p4->At(lept1);
+      l.FillTree("elpt1", (float)(l.el_std_pin[lept1]*sin(lep1->Theta())));
       
-      TLorentzVector* el2 = (TLorentzVector*)l.el_std_sc->At(lept2);
-      l.FillTree("et2", (float)el2->Et());
-      l.FillTree("eta2", (float)el2->Eta());
-      l.FillTree("phi2", (float)el2->Phi());
+      lep2 = (TLorentzVector*)l.el_std_sc->At(lept2);
+      l.FillTree("et2", (float)lep2->Et());
+      l.FillTree("eta2", (float)lep2->Eta());
+      l.FillTree("phi2", (float)lep2->Phi());
       l.FillTree("chiso2", l.el_std_pfiso_charged[lept2]);
       l.FillTree("neiso2", l.el_std_pfiso_neutral[lept2]);
       l.FillTree("phiso2", l.el_std_pfiso_photon[lept2]);
@@ -294,9 +293,8 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("elmva2", (float)l.el_std_mva_trig[lept2]);
       l.FillTree("elregr2", (float)l.el_std_regr_energy[lept2]);
       l.FillTree("elregr_err2", (float)l.el_std_regr_energyerr[lept2]);
-      TLorentzVector* p2 = (TLorentzVector*)l.el_std_p4->At(lept2);
-      lep2 = p2;
-      l.FillTree("elpt2", (float)(l.el_std_pin[lept2]*sin(p2->Theta())));
+      lep2 = (TLorentzVector*)l.el_std_p4->At(lept2);
+      l.FillTree("elpt2", (float)(l.el_std_pin[lept2]*sin(lep2->Theta())));
 
       l.FillTree("mutype1"  ,(int)-9999);
       l.FillTree("muchi21"  ,(float)-9999.);
@@ -345,8 +343,8 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     float dijet_dphi_ll_jj;
     float dijet_j1pt;
     float dijet_j2pt;
-    bool dijet_has2jets = DijetPreSelection(l,   lep1,   lep2, 
-        dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt);
+    bool dijet_has2jets = DijetPreSelection(l, lep1, lep2, 
+					    dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt);
     l.FillTree("dijet_deta",          (float)dijet_deta);
     l.FillTree("dijet_mjj",           (float)dijet_mjj);
     l.FillTree("dijet_zep",           (float)dijet_zep);
@@ -389,35 +387,35 @@ bool HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
 
 
 bool HtollAnalysis::DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLorentzVector* veto_p42, 
-    float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 
-    float & dijet_j1pt, float & dijet_j2pt) {
-    bool exist=false;
-
-    std::pair<int, int> myjets = l.Select2HighestPtJets(*veto_p41, *veto_p42 ); // Bool_t * jetid_flags)
-
-    if( myjets.first==-1 ) { // set defaults
-        dijet_deta        = -99;
-        dijet_mjj         = -99;
-        dijet_zep         = -99;
-        dijet_dphi_ll_jj  = -99;
-        dijet_j1pt        = -99;
-        dijet_j2pt        = -99;
-
-        exist             = false;
-    } else { // get jets and get values
-        TLorentzVector* jet1 = (TLorentzVector*) l.jet_algoPF1_p4->At(myjets.first);
-        TLorentzVector* jet2 = (TLorentzVector*) l.jet_algoPF1_p4->At(myjets.second);
-        TLorentzVector jj = *jet1 + *jet2;
-        TLorentzVector ll = *veto_p41 + *veto_p42;
-
-        dijet_deta        = abs(jet1->Eta() - jet2->Eta());
-        dijet_mjj         = jj.M();
-        dijet_zep         = (ll.Eta() - 0.5*(jet1->Eta()+jet2->Eta()));
-        dijet_dphi_ll_jj  = abs(jj.DeltaPhi(ll));
-        dijet_j1pt        = jet1->Pt();
-        dijet_j2pt        = jet2->Pt();
-
-        exist             = true;
-    }
-    return exist;
+				      float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 
+				      float & dijet_j1pt, float & dijet_j2pt) {
+  bool exist=false;
+  
+  std::pair<int, int> myjets = l.Select2HighestPtJets(*veto_p41, *veto_p42 ); // Bool_t * jetid_flags)
+  
+  if( myjets.first==-1 || myjets.second == -1) { // set defaults
+    dijet_deta        = -99;
+    dijet_mjj         = -99;
+    dijet_zep         = -99;
+    dijet_dphi_ll_jj  = -99;
+    dijet_j1pt        = -99;
+    dijet_j2pt        = -99;
+    
+    exist             = false;
+  } else { // get jets and get values
+    TLorentzVector* jet1 = (TLorentzVector*) l.jet_algoPF1_p4->At(myjets.first);
+    TLorentzVector* jet2 = (TLorentzVector*) l.jet_algoPF1_p4->At(myjets.second);
+    TLorentzVector jj = (*jet1) + (*jet2);
+    TLorentzVector ll = *veto_p41 + *veto_p42;
+    
+    dijet_deta        = abs(jet1->Eta() - jet2->Eta());
+    dijet_mjj         = jj.M();
+    dijet_zep         = (ll.Eta() - 0.5*(jet1->Eta()+jet2->Eta()));
+    dijet_dphi_ll_jj  = abs(jj.DeltaPhi(ll));
+    dijet_j1pt        = jet1->Pt();
+    dijet_j2pt        = jet2->Pt();
+    
+    exist             = true;
+  }
+  return exist;
 }

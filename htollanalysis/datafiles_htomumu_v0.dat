@@ -5,15 +5,15 @@ intL=20000. histfile=CMS-HMuMu.root output=eventsList.txt
 #
 #typ=0     ind=0   draw=1    Nam=Data                  Dir=/store/group/phys_higgs/cmshgg/reduced/hcp2012_unblind_reduction_v2/data/Run2012B-13Jul2012-v1                                                                                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
 
-typ=-113  ind=1   draw=1    Nam=ggh_m125_mumu_8TeV    Fil=/nfs-6/userdata/matteo/Hmm.root                          red=0 lum=1000000.0   xsec=4.3e-03  kfac=1.0      scal=1.
-typ=-213  ind=2   draw=1    Nam=qqh_m125_mumu_8TeV    Fil=/nfs-6/userdata/matteo/VBFmm.root                        red=0 lum=1000000.0   xsec=3.5e-04  kfac=1.0      scal=1.
-typ=-513  ind=3   draw=1    Nam=RSG_m125_mumu_8TeV    Fil=/nfs-6/userdata/matteo/RSmm.root                         red=0 lum=1000000.0   xsec=4.7e-03  kfac=1.0      scal=1.
+typ=-113  ind=1   draw=1    Nam=ggh_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/matteo/Summer12/reduced/Hmm   red=0 lum=1000000.0   xsec=4.3e-03  kfac=1.0      scal=1.
+typ=-213  ind=2   draw=1    Nam=qqh_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/matteo/Summer12/reduced/VBFmm red=0 lum=1000000.0   xsec=3.5e-04  kfac=1.0      scal=1.
+typ=-513  ind=3   draw=1    Nam=RSG_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/matteo/Summer12/reduced/RSmm  red=0 lum=1000000.0   xsec=4.7e-03  kfac=1.0      scal=1.
 
 
 ##
 ## DY MC
 ##
-typ=+513  ind=11  draw=1    Nam=DYJetsToLL            Dir=/hadoop/cms/store/user/capalmer/reduced/20121211135834_DYJetsToLL_M-50_2MuonSkim_test      red=0   lum=1.e10     xsec=2950.0   kfac=1.15     scal=1.
+typ=+513  ind=11  draw=1    Nam=DYJetsToLL            Dir=/hadoop/cms/store/user/matteo/Summer12/reduced/DYJetsToMM_M-50     red=0   lum=1.e10     xsec=3532.8   kfac=1.15     scal=1.
 
 #
 # Branches to use

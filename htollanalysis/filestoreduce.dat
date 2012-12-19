@@ -1,7 +1,13 @@
-output=VBFee_reduced.root
-Fil=/hadoop/cms/store/user/matteo/Summer12/Htoll/VBFee.root typ=1
+output=Hmm_reduced.root
+#Fil=/hadoop/cms/store/user/matteo/Summer12/Htoll/VBFee.root typ=1
+Fil=/nfs-6/userdata/matteo/Hmm.root typ=1
 
 inputBranches htollanalysis/reduction_input.dat
 outputBranches htollanalysis/reduction_output.dat
 
 analyzer HtollAnalysis htollanalysis/htollanalysis.dat
+
+
+
+#Hee.root  Hmm.root
+
