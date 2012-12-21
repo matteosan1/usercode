@@ -3,24 +3,50 @@ intL=20000. histfile=CMS-HMuMu.root output=eventsList.txt
 #
 # Data
 #
-#typ=0     ind=0   draw=1    Nam=Data                  Dir=/store/group/phys_higgs/cmshgg/reduced/hcp2012_unblind_reduction_v2/data/Run2012B-13Jul2012-v1                                                                                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20121221113407_run2012A_DM                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20121221113612_run2012C_DM                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20121221113826_run2012A_recovery_DM       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20121221114356_run2012C_recovery_DM       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20121221114530_run2012B_DM                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
 
-typ=-113  ind=1   draw=1    Nam=ggh_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/matteo/Summer12/reduced/Hmm   red=0 lum=1000000.0   xsec=4.3e-03  kfac=1.0      scal=1.
-typ=-213  ind=2   draw=1    Nam=qqh_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/matteo/Summer12/reduced/VBFmm red=0 lum=1000000.0   xsec=3.5e-04  kfac=1.0      scal=1.
-typ=-513  ind=3   draw=1    Nam=RSG_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/matteo/Summer12/reduced/RSmm  red=0 lum=1000000.0   xsec=4.7e-03  kfac=1.0      scal=1.
+typ=-113  ind=1   draw=1    Nam=ggh_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/capalmer/reduced/20121221110557_Hmm   red=0 lum=1000000.0   xsec=4.3e-03  kfac=1.0      scal=1.
+typ=-213  ind=2   draw=1    Nam=qqh_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/capalmer/reduced/20121221111329_VBFmm red=0 lum=1000000.0   xsec=3.5e-04  kfac=1.0      scal=1.
+typ=-513  ind=3   draw=1    Nam=RSG_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/capalmer/reduced/20121221111207_RSmm  red=0 lum=1000000.0   xsec=4.7e-03  kfac=1.0      scal=1.
+
+
+
 
 
 ##
 ## DY MC
 ##
-typ=+513  ind=11  draw=1    Nam=DYJetsToLL            Dir=/hadoop/cms/store/user/matteo/Summer12/reduced/DYJetsToMM_M-50     red=0   lum=1.e10     xsec=3532.8   kfac=1.15     scal=1.
+typ=+513   ind=11  draw=1    Nam=DYJetsToLL            Dir=/hadoop/cms/store/user/capalmer/reduced/20121221111517_DYJetsToLL_M-50_2MuonSkim     red=0   lum=1.e10     xsec=3532.8   kfac=1.15     scal=1.
+typ=+6013  ind=12  draw=1    Nam=QCD_EN_MU_1520        Dir=/hadoop/cms/store/user/capalmer/reduced/20121221112019_QCD_EN_MU_1520                red=0   lum=1.e10     xsec=2.74e+6  kfac=1.       scal=1.
+typ=+6113  ind=13  draw=1    Nam=QCD_EN_MU_2030        Dir=/hadoop/cms/store/user/capalmer/reduced/20121221112337_QCD_EN_MU_2030                red=0   lum=1.e10     xsec=1.87e+6  kfac=1.       scal=1.
+typ=+6213  ind=14  draw=1    Nam=QCD_EN_MU_3050        Dir=/hadoop/cms/store/user/capalmer/reduced/20121221112732_QCD_EN_MU_3050                red=0   lum=1.e10     xsec=8.06e+5  kfac=1.       scal=1.
+typ=+6313  ind=15  draw=1    Nam=QCD_EN_MU_5080        Dir=/hadoop/cms/store/user/capalmer/reduced/20121221112855_QCD_EN_MU_5080                red=0   lum=1.e10     xsec=1.76e+5  kfac=1.       scal=1.
+typ=+6413  ind=16  draw=1    Nam=QCD_EN_MU_80120       Dir=/hadoop/cms/store/user/capalmer/reduced/20121221113112_QCD_EN_MU_80120               red=0   lum=1.e10     xsec=4.04e+4  kfac=1.       scal=1.
+typ=+6513  ind=17  draw=1    Nam=QCD_EN_MU_120170      Dir=/hadoop/cms/store/user/capalmer/reduced/20121221111801_QCD_EN_MU_120170              red=0   lum=1.e10     xsec=7.46e+3  kfac=1.       scal=1.
+typ=+6613  ind=18  draw=1    Nam=QCD_EN_MU_170300      Dir=/hadoop/cms/store/user/capalmer/reduced/20121221112208_QCD_EN_MU_170300              red=0   lum=1.e10     xsec=2.30e+3  kfac=1.       scal=1.
+typ=+6713  ind=19  draw=1    Nam=QCD_EN_MU_300470      Dir=/hadoop/cms/store/user/capalmer/reduced/20121221112553_QCD_EN_MU_300470              red=0   lum=1.e10     xsec=1.52e+2  kfac=1.       scal=1.
+typ=+713   ind=20  draw=1    Nam=WJetsMM               Dir=/hadoop/cms/store/user/capalmer/reduced/20121221113241_WJetsMM                       red=0   lum=1.e10     xsec=30400.   kfac=1.       scal=1.
+
+
+
+
+
+
+
+
+
+
 
 #
 # Branches to use
 #
 inputBranches htollanalysis/reduction_input.dat
 inputBranches htollanalysis/reduction_output.dat
-inputBranches htollanalysis/htollanalysis_input.dat
+#inputBranches htollanalysis/htollanalysis_input.dat
 
 cuts htollanalysis/cuts.dat
 plotvariables htollanalysis/plotvariables_htollanalysis.dat 
@@ -31,4 +57,4 @@ treevariables htollanalysis/treevariables_htollanalysis.dat
 ##   analyzer <class_name> <config_file>
 ##
 ## analyzer PhotonAnalysis photonanalysis.dat
-analyzer  HtollAnalysis  htollanalysis/htollanalysis.dat
+analyzer  HtollAnalysis  htollanalysis/htollanalysis.dat doMuon=1
