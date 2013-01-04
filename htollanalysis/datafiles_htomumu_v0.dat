@@ -44,7 +44,7 @@ typ=+713   ind=20  draw=1    Nam=WJetsMM               Dir=/hadoop/cms/store/use
 #
 # Branches to use
 #
-inputBranches htollanalysis/reduction_input.dat
+#inputBranches htollanalysis/reduction_input.dat
 inputBranches htollanalysis/reduction_output.dat
 #inputBranches htollanalysis/htollanalysis_input.dat
 

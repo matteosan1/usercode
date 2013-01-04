@@ -3,23 +3,22 @@ intL=20000. histfile=CMS-Helel.root output=eventsList.txt
 #
 # Data
 #
-#typ=0     ind=0   draw=1    Nam=Data                  Dir=/store/group/phys_higgs/cmshgg/reduced/hcp2012_unblind_reduction_v2/data/Run2012B-13Jul2012-v1                                                                                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
 
-#typ=-111  ind=1   draw=1    Nam=ggh_m125_elel_8TeV    Fil=/nfs-6/userdata/matteo/Hee.root                          red=0 lum=1000000.0   xsec=9.9e-09  kfac=1.0      scal=1.
-typ=0     ind=2   draw=1    Nam=qqh_m125_elel_8TeV    Fil=/nfs-6/userdata/matteo/VBFee.root                        lum=1000000.0   xsec=8.0e-09  kfac=1.0      scal=1.
-#typ=-511  ind=5   draw=1    Nam=RSG_m125_elel_8TeV    Fil=/nfs-6/userdata/matteo/RSee.root                         red=0 lum=1000000.0   xsec=1.0e-08  kfac=1.0      scal=1.
+typ=-111  ind=1   draw=1    Nam=ggh_m125_elel_8TeV    Fil=/nfs-6/userdata/matteo/Hee.root                          red=0 lum=1000000.0   xsec=9.9e-09  kfac=1.0      scal=1.
+typ=-211  ind=2   draw=1    Nam=qqh_m125_elel_8TeV    Fil=/nfs-6/userdata/matteo/VBFee.root                        lum=1000000.0   xsec=8.0e-09  kfac=1.0      scal=1.
+typ=-511  ind=5   draw=1    Nam=RSG_m125_elel_8TeV    Fil=/nfs-6/userdata/matteo/RSee.root                         red=0 lum=1000000.0   xsec=1.0e-08  kfac=1.0      scal=1.
 
 
 ##
 ## DY MC
 ##
-#typ=+511  ind=10  draw=1    Nam=DYJetsToLL            Dir=/hadoop/cms/store/user/capalmer/reduced/20121211141123_DYJetsToLL_M-50_2ElectronSkim_test  red=0   lum=1.e10     xsec=2950.0   kfac=1.15     scal=1.
+typ=+511  ind=10  draw=1    Nam=DYJetsToLL            Dir=/hadoop/cms/store/user/capalmer/reduced/20121211141123_DYJetsToLL_M-50_2ElectronSkim_test  red=0   lum=1.e10     xsec=2950.0   kfac=1.15     scal=1.
 
 
 #
 # Branches to use
 #
-inputBranches htollanalysis/reduction_input.dat
+#inputBranches htollanalysis/reduction_input.dat
 inputBranches htollanalysis/reduction_output.dat
 inputBranches htollanalysis/htollanalysis_input.dat
 
@@ -33,4 +32,4 @@ treevariables htollanalysis/treevariables_htollanalysis.dat
 ##   analyzer <class_name> <config_file>
 ##
 ## analyzer PhotonAnalysis photonanalysis.dat
-analyzer  HtollAnalysis  htollanalysis/htollanalysis.dat
+analyzer  HtollAnalysis  htollanalysis/htollanalysis.dat doMuon=0
