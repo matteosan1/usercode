@@ -37,6 +37,28 @@ class HtollAnalysis : public StatAnalysis {
       float & dijet_j1pt, float & dijet_j2pt);
   
   bool doMuon;
+  TMVA::Reader *tmvaReader_vbfmumu;
+  Float_t tmva_vbfmumu_mjj;
+  Float_t tmva_vbfmumu_zep;
+  Float_t tmva_vbfmumu_deta;
+  Float_t tmva_vbfmumu_dphi_ll_jj;
+  Float_t tmva_vbfmumu_j1pt;
+  Float_t tmva_vbfmumu_j2pt;
+  Float_t tmva_vbfmumu_has2jets;
+  Float_t tmva_vbfmumu_itype;
+  
+  
+  int nCategories_;
+  float massMin,massMax;
+  int nDataBins;
+  std::vector<int> bkgPolOrderByCat;
+  std::map<int,std::string> signalLabels;
+  void buildBkgModel(LoopAll& l, const std::string & postfix); 
+  void FillRooContainer(LoopAll& l, int cur_type, float mass, int category, float weight);
+  std::string GetSignalLabel(int id);
+  void FillSignalLabelMap(LoopAll & l);
+  std::vector<int> sigPointsToBook;
+  
   bool doBlinding;
  protected:
   std::string name_;

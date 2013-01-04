@@ -6,3 +6,12 @@ doBlinding=1
 puMap=
 puHist=auto
 puTarget=aux/HCP2012_freezing_v2.json.69400.observed.pileup.root
+
+massMin=100
+massMax=150
+nDataBins=200
+
+bkgPolOrderByCat=3,3
+nCategories_=2
+
+sigPointsToBook=125
