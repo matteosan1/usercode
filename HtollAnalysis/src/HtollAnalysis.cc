@@ -87,10 +87,13 @@ void HtollAnalysis::Init(LoopAll& l) {
   tmvaReader_vbfmumu->BookMVA("Gradient", "htollanalysis/TMVA_vbfmumumva_Gradient.weights.xml" );
 
   // setup roocontainer
+  FillSignalLabelMap(l);
 
+  l.rooContainer->AddGlobalSystematic("lumi",1.044,1.00);
   l.rooContainer->SetNCategories(nCategories_);
   l.rooContainer->AddObservable("CMS_hll_mass" ,massMin,massMax);
   l.rooContainer->AddConstant("IntLumi",l.intlumi_);
+  l.rooContainer->BlindData(!doBlinding);
     
   //// SM Model
   //l.rooContainer->AddConstant("XSBR_ggh_125",0.0350599);
@@ -105,6 +108,7 @@ void HtollAnalysis::Init(LoopAll& l) {
     int sig = sigPointsToBook[isig];
     l.rooContainer->CreateDataSet("CMS_hll_mass",Form("sig_ggh_mass_m%d",sig),nDataBins);
     l.rooContainer->CreateDataSet("CMS_hll_mass",Form("sig_vbf_mass_m%d",sig),nDataBins);
+    l.rooContainer->CreateDataSet("CMS_hll_mass",Form("sig_rsg_mass_m%d",sig),nDataBins);
   }
 
   std::string postfix=(dataIs2011?"":"_8TeV");
