@@ -65,6 +65,7 @@ type=2 name=elregr_err2
 type=2 name=elpt1
 type=2 name=elpt2
 
+type=2 name=dijet_vbfmumumva
 type=2 name=dijet_deta
 type=2 name=dijet_mjj
 type=2 name=dijet_zep

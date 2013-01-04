@@ -1,7 +1,7 @@
 default=2
-htyp=0 plot=-1 ncat=1  xbins=30  ybins=0 xmin=0     xmax=3.14  ymin=0 ymax=0 name=theta2 xaxis= yaxis=
-htyp=0 plot=-1 ncat=1  xbins=160 ybins=0 xmin=100.0 xmax=180.0 ymin=0 ymax=0 name=massMu xaxis= yaxis=
-htyp=0 plot=-1 ncat=1  xbins=160 ybins=0 xmin=100.0 xmax=180.0 ymin=0 ymax=0 name=massEl xaxis= yaxis=
+htyp=0 plot=-1 ncat=2  xbins=30  ybins=0 xmin=0     xmax=3.14  ymin=0 ymax=0 name=theta2 xaxis= yaxis=
+htyp=0 plot=-1 ncat=2  xbins=160 ybins=0 xmin=100.0 xmax=180.0 ymin=0 ymax=0 name=massMu xaxis= yaxis=
+htyp=0 plot=-1 ncat=2  xbins=160 ybins=0 xmin=100.0 xmax=180.0 ymin=0 ymax=0 name=massEl xaxis= yaxis=
 
 
 
