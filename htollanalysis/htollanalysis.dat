@@ -11,7 +11,7 @@ massMin=100
 massMax=150
 nDataBins=200
 
-bkgPolOrderByCat=3,3
+bkgPolOrderByCat=5,5
 nCategories_=2
 
 sigPointsToBook=125
