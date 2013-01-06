@@ -1,5 +1,8 @@
 #include "HtollAnalysis/interface/HtollAnalysis.h"
 
+#include "JetAnalysis/interface/JetHandler.h"
+#include "CMGTools/External/interface/PileupJetIdentifier.h"
+
 #include <iostream>
 
 #define HtollAnalysisDEBUG 0
@@ -9,7 +12,17 @@ using namespace std;
 // ----------------------------------------------------------------------------------------------------
 HtollAnalysis::HtollAnalysis()  : 
   name_("HtollAnalysis") 
-{}
+{
+    recomputeBetas = false;
+    recorrectJets = false;
+    rerunJetMva = false;
+    recomputeJetWp = false;
+    applyJer = false;
+    jerShift = 0.;
+    applyJecUnc = false;
+    jecShift = 0.;
+    jetHandler_ = 0;
+}
 
 // ----------------------------------------------------------------------------------------------------
 HtollAnalysis::~HtollAnalysis() 
@@ -89,11 +102,11 @@ void HtollAnalysis::Init(LoopAll& l) {
   // setup roocontainer
   FillSignalLabelMap(l);
 
+  l.rooContainer->BlindData(doBlinding);
   l.rooContainer->AddGlobalSystematic("lumi",1.044,1.00);
   l.rooContainer->SetNCategories(nCategories_);
   l.rooContainer->AddObservable("CMS_hll_mass" ,massMin,massMax);
   l.rooContainer->AddConstant("IntLumi",l.intlumi_);
-  l.rooContainer->BlindData(!doBlinding);
     
   //// SM Model
   //l.rooContainer->AddConstant("XSBR_ggh_125",0.0350599);
@@ -114,6 +127,21 @@ void HtollAnalysis::Init(LoopAll& l) {
   std::string postfix=(dataIs2011?"":"_8TeV");
   // build the model
   buildBkgModel(l, postfix);
+
+
+  //
+  // Jet Handler for sorting out jet energies
+  //
+
+  if( recomputeBetas || recorrectJets || rerunJetMva || recomputeJetWp || applyJer || applyJecUnc || l.typerun != l.kFill ) {  
+	  std::cout << "JetHandler: \n"
+		  << "recomputeBetas " << recomputeBetas << "\n"
+		  << "recorrectJets " << recorrectJets << "\n"
+		  << "rerunJetMva " << rerunJetMva << "\n"
+		  << "recomputeJetWp " << recomputeJetWp
+		  << std::endl;
+    jetHandler_ = new JetHandler(jetHandlerCfg, l);
+  }
 
 }
 
@@ -253,6 +281,18 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
     //std::cout << l.sampleContainer[l.current_sample_index].weight << " " << weight/l.sampleContainer[l.current_sample_index].weight << " " << n_pu << std::endl;
   }
 
+  PhotonAnalysis::postProcessJets(l, -1);
+  static std::vector<unsigned char> jet_id_flags;
+  jet_id_flags.clear();
+  jet_id_flags.resize(l.jet_algoPF1_n);
+  for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet ) {
+    jet_id_flags[ijet] = PileupJetIdentifier::passJetId(l.jet_algoPF1_cutbased_wp_level[ijet], PileupJetIdentifier::kLoose);
+    //std::cout<<"jet# pass "<<ijet<<" "<<jet_id_flags[ijet]<<std::endl;
+	}
+	  
+	bool* jetid_flags = (bool*)&jet_id_flags[0];
+
+
   TLorentzVector higgs;
   float mass = -99;
   Int_t cat = 0, vbfcat = 0;
@@ -293,7 +333,7 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
         l.FillHist("massMu", cat, mass, weight);
         //l.FillHist("theta2", 0, 1/4+3/2*pow(p2->Theta(), 2)+1/4*pow(p2->Theta(), 4), weight);
         l.FillHist("theta2", cat, p2->Theta(), weight);
-        Tree(l, goodMuons[i], goodMuons[j], higgs, cat, vbfcat, weight, pu_weight, false, "");
+        Tree(l, goodMuons[i], goodMuons[j], higgs, cat, vbfcat, weight, pu_weight, false, "", jetid_flags);
       }
     }
   } else {
@@ -323,7 +363,7 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
         cat = (abs(p1->Eta())>=1.4442 || abs(p2->Eta())>=1.4442);
         l.FillHist("massEl", cat, mass, weight);
         
-        Tree(l, goodEles[i], goodEles[j], higgs, cat, vbfcat, weight, pu_weight, false, "");
+        Tree(l, goodEles[i], goodEles[j], higgs, cat, vbfcat, weight, pu_weight, false, "", jetid_flags);
       }
     }
   }
@@ -526,7 +566,8 @@ void HtollAnalysis::ResetAnalysis()
 {}
 
 void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVector & Higgs, Int_t cat, Int_t vbfcat, 
-       Float_t weight, Float_t pu_weight, bool isSyst, std::string name1) {
+       Float_t weight, Float_t pu_weight, bool isSyst, std::string name1, bool* jetid_flags) {
+	
     
     l.FillTree("run", (float)l.run);
     l.FillTree("lumis", (float)l.lumis);
@@ -691,7 +732,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     float dijet_j1pt;
     float dijet_j2pt;
     bool dijet_has2jets = DijetPreSelection(l,   lep1,   lep2, 
-        dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt);
+        dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt, jetid_flags);
     l.FillTree("dijet_deta",          (float)dijet_deta);
     l.FillTree("dijet_mjj",           (float)dijet_mjj);
     l.FillTree("dijet_zep",           (float)dijet_zep);
@@ -751,10 +792,10 @@ bool HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
 
 bool HtollAnalysis::DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLorentzVector* veto_p42, 
     float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 
-    float & dijet_j1pt, float & dijet_j2pt) {
+    float & dijet_j1pt, float & dijet_j2pt, bool* jetid_flags) {
     bool exist=false;
 
-    std::pair<int, int> myjets = l.Select2HighestPtJets(*veto_p41, *veto_p42 ); // Bool_t * jetid_flags)
+    std::pair<int, int> myjets = l.Select2HighestPtJets(*veto_p41, *veto_p42, jetid_flags);
 
     if( myjets.first==-1 || myjets.second==-1 ) { // set defaults
         dijet_deta        = -99;
