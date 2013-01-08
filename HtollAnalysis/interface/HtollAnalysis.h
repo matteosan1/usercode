@@ -58,6 +58,7 @@ class HtollAnalysis : public StatAnalysis {
   std::string GetSignalLabel(int id);
   void FillSignalLabelMap(LoopAll & l);
   std::vector<int> sigPointsToBook;
+  std::string jetHandlerCfg;
   
   bool doBlinding;
  protected:
