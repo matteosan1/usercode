@@ -15,3 +15,6 @@ bkgPolOrderByCat=5,5
 nCategories_=2
 
 sigPointsToBook=125
+
+jetHandlerCfg=jetHandler_cfg.py
+recorrectJets=1
