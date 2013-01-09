@@ -36,6 +36,7 @@ type=0 name=munmatch1
 type=0 name=mupixhit1
 type=0 name=mutklay1
 type=2 name=mudb1
+type=2 name=mutkpterr1
 type=2 name=chiso1
 type=2 name=neiso1
 type=2 name=phiso1
@@ -49,6 +50,7 @@ type=0 name=munmatch2
 type=0 name=mupixhit2
 type=0 name=mutklay2
 type=2 name=mudb2
+type=2 name=mutkpterr2
 type=2 name=chiso2
 type=2 name=neiso2
 type=2 name=phiso2

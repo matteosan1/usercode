@@ -7,12 +7,12 @@ puMap=
 puHist=auto
 puTarget=aux/HCP2012_freezing_v2.json.69400.observed.pileup.root
 
-massMin=100
-massMax=150
-nDataBins=200
+massMin=110
+massMax=180
+nDataBins=280
 
-bkgPolOrderByCat=5,5
-nCategories_=2
+bkgPolOrderByCat=5,5,5,5
+nCategories_=4
 
 sigPointsToBook=125
 
