@@ -295,7 +295,10 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
 
   TLorentzVector higgs;
   float mass = -99;
-  Int_t cat = 0, vbfcat = 0;
+  Int_t cat = 0;
+  Int_t vbfcat = -1;
+  TLorentzVector* lep1=0;
+  TLorentzVector* lep2=0;
   
   if (doMuon) {
     std::vector<int> goodMuons;
@@ -313,6 +316,9 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
     
     if (goodMuons.size() < 2)
       return false;
+    else {
+      l.FillHist("nummucand",0,goodMuons.size(),weight);
+    }
     
     for (unsigned int i=0; i<goodMuons.size()-1; i++) {
       TLorentzVector* p1 = (TLorentzVector*)l.mu_glo_p4->At(goodMuons[i]);
@@ -334,6 +340,8 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
         //l.FillHist("theta2", 0, 1/4+3/2*pow(p2->Theta(), 2)+1/4*pow(p2->Theta(), 4), weight);
         l.FillHist("theta2", cat, p2->Theta(), weight);
         Tree(l, goodMuons[i], goodMuons[j], higgs, cat, vbfcat, weight, pu_weight, false, "", jetid_flags);
+        lep1=(TLorentzVector*)l.mu_glo_p4->At(goodMuons[i]);
+        lep2=(TLorentzVector*)l.mu_glo_p4->At(goodMuons[j]);
       }
     }
   } else {
@@ -348,6 +356,9 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
     
     if (goodEles.size() < 2)
       return false;
+    else {
+      l.FillHist("numelcand",0,goodEles.size(),weight);
+    }
     
     for (unsigned int i=0; i<goodEles.size()-1; i++) {
       TLorentzVector* p1 = (TLorentzVector*)l.el_std_p4->At(goodEles[i]);
@@ -364,8 +375,30 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
         l.FillHist("massEl", cat, mass, weight);
         
         Tree(l, goodEles[i], goodEles[j], higgs, cat, vbfcat, weight, pu_weight, false, "", jetid_flags);
+        lep1=(TLorentzVector*)l.el_std_p4->At(goodEles[i]);
+        lep2=(TLorentzVector*)l.el_std_p4->At(goodEles[j]);
       }
     }
+  }
+
+  float dijet_deta; 
+  float dijet_mjj;
+  float dijet_zep;
+  float dijet_dphi_ll_jj;
+  float dijet_j1pt;
+  float dijet_j2pt;
+  bool dijet_has2jets = DijetPreSelection(l,   lep1,   lep2, 
+      dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt, jetid_flags);
+  
+  if(dijet_has2jets){
+      if(dijet_mjj>500 && dijet_deta>3.0 && dijet_dphi_ll_jj>2.6 && dijet_j1pt>30 && dijet_j2pt>30){
+          vbfcat=0;
+      }
+      if(dijet_mjj>250 && dijet_deta>3.0 && dijet_dphi_ll_jj>2.6 && dijet_j1pt>30 && dijet_j2pt>20){
+          vbfcat=1;
+      }
+
+      cat=2+vbfcat;
   }
   
   FillRooContainer(l, cur_type, mass, cat, weight);
@@ -592,6 +625,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("mupixhit1", (int)l.mu_glo_pixelhits[lept1]);
       l.FillTree("mutklay1", (int)l.mu_tkLayers[lept1]);
       l.FillTree("mudb1", (float)l.mu_dbCorr[lept1]);
+      l.FillTree("mutkpterr1", (float)l.mu_glo_tkpterr[lept1]);
       l.FillTree("chiso1", l.mu_glo_chhadiso04[lept1]);
       l.FillTree("neiso1", l.mu_glo_nehadiso04[lept1]);
       l.FillTree("phiso1", l.mu_glo_photiso04[lept1]);
@@ -613,6 +647,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("mupixhit2", (int)l.mu_glo_pixelhits[lept2]);
       l.FillTree("mutklay2", (int)l.mu_tkLayers[lept2]);
       l.FillTree("mudb2", (float)l.mu_dbCorr[lept2]);
+      l.FillTree("mutkpterr2", (float)l.mu_glo_tkpterr[lept2]);
       l.FillTree("chiso2", l.mu_glo_chhadiso04[lept2]);
       l.FillTree("neiso2", l.mu_glo_nehadiso04[lept2]);
       l.FillTree("phiso2", l.mu_glo_photiso04[lept2]);
