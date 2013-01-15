@@ -19,6 +19,7 @@ type=2 name=full_weight
 type=2 name=MET
 type=2 name=MET_phi
 type=2 name=mass
+type=2 name=mass_corr
 type=0 name=cat
 type=0 name=vbfcat
 type=2 name=vtx_x
@@ -51,6 +52,8 @@ type=0 name=mupixhit2
 type=0 name=mutklay2
 type=2 name=mudb2
 type=2 name=mutkpterr2
+type=0 name=muid1
+type=0 name=muid2
 type=2 name=chiso2
 type=2 name=neiso2
 type=2 name=phiso2
@@ -66,6 +69,8 @@ type=2 name=elregr2
 type=2 name=elregr_err2
 type=2 name=elpt1
 type=2 name=elpt2
+type=0 name=elid1
+type=0 name=elid2
 
 type=2 name=dijet_vbfmumumva
 type=2 name=dijet_deta
