@@ -34,7 +34,7 @@ class HtollAnalysis : public StatAnalysis {
   
   bool DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLorentzVector* veto_p42, 
       float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 
-      float & dijet_j1pt, float & dijet_j2pt, bool* passing_jets=0);
+      float & dijet_j1pt, float & dijet_j2pt, float & dijet_j1eta, float & dijet_j2eta, bool* passing_jets=0);
   
   bool doMuon;
   TMVA::Reader *tmvaReader_vbfmumu;

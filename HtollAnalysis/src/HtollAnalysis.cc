@@ -299,7 +299,12 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
   Int_t vbfcat = -1;
   TLorentzVector* lep1=0;
   TLorentzVector* lep2=0;
-  
+  Int_t lep1_ind=-1;
+  Int_t lep2_ind=-1;
+
+  float highestpt=0;
+
+
   if (doMuon) {
     std::vector<int> goodMuons;
     
@@ -325,23 +330,22 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
       
       for (unsigned int j=i+1; j<goodMuons.size(); j++) {
         TLorentzVector* p2 = (TLorentzVector*)l.mu_glo_p4->At(goodMuons[j]);
-        higgs = (*p1)+(*p2);
-        mass = higgs.M();
+        TLorentzVector temp_ll = (*p1)+(*p2);
+        if(highestpt<temp_ll.Pt()){
+            lep1=p1;
+            lep2=p2;
+            lep1_ind=goodMuons[i];
+            lep2_ind=goodMuons[j];
+            higgs=(*p1)+(*p2);
+            mass = higgs.M();
+            highestpt=temp_ll.Pt();
+            cat = (abs(lep1->Eta())>=1.4442 || abs(lep2->Eta())>=1.4442);
+        }
         //std::cout << higgs.X() << " " << higgs.Y() << " " << higgs.Z() << " "  << std::endl;
         //std::cout << p2->X() << " " << p2->Y() << " " << p2->Z() << " "  << std::endl;
         //p2->Boost(-higgs.BoostVector());
         //std::cout << p2->X() << " " << p2->Y() << " " << p2->Z() << " "  << std::endl;
         //std::cout << p2->Theta() << std::endl;
-        if (mass < 130. && mass > 120. && doBlinding && l.itype[l.current] == 0)
-          return false;
-       
-        cat = (abs(p1->Eta())>1. || abs(p2->Eta())>1.);
-        l.FillHist("massMu", cat, mass, weight);
-        //l.FillHist("theta2", 0, 1/4+3/2*pow(p2->Theta(), 2)+1/4*pow(p2->Theta(), 4), weight);
-        l.FillHist("theta2", cat, p2->Theta(), weight);
-        Tree(l, goodMuons[i], goodMuons[j], higgs, cat, vbfcat, weight, pu_weight, false, "", jetid_flags);
-        lep1=(TLorentzVector*)l.mu_glo_p4->At(goodMuons[i]);
-        lep2=(TLorentzVector*)l.mu_glo_p4->At(goodMuons[j]);
       }
     }
   } else {
@@ -365,20 +369,22 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
       
       for (unsigned int j=i+1; j<goodEles.size(); j++) {
         TLorentzVector* p2 = (TLorentzVector*)l.el_std_p4->At(goodEles[j]);
-        higgs = (*p1)+(*p2);
-        mass = higgs.M();
-
-        if (mass < 130. && mass > 120. && doBlinding && cur_type == 0)
-          return false;
-
-        cat = (abs(p1->Eta())>=1.4442 || abs(p2->Eta())>=1.4442);
-        l.FillHist("massEl", cat, mass, weight);
-        
-        Tree(l, goodEles[i], goodEles[j], higgs, cat, vbfcat, weight, pu_weight, false, "", jetid_flags);
-        lep1=(TLorentzVector*)l.el_std_p4->At(goodEles[i]);
-        lep2=(TLorentzVector*)l.el_std_p4->At(goodEles[j]);
+        TLorentzVector temp_ll = (*p1)+(*p2);
+        if(highestpt<temp_ll.Pt()){
+            lep1=p1;
+            lep2=p2;
+            lep1_ind=goodEles[i];
+            lep2_ind=goodEles[j];
+            higgs=(*p1)+(*p2);
+            mass = higgs.M();
+            highestpt=temp_ll.Pt();
+            cat = (abs(lep1->Eta())>1. || abs(lep2->Eta())>1.);
+        }
       }
     }
+   
+    //l.FillHist("theta2", 0, 1/4+3/2*pow(p2->Theta(), 2)+1/4*pow(p2->Theta(), 4), weight);
+    //l.FillHist("theta2", cat, p2->Theta(), weight);
   }
 
   float dijet_deta; 
@@ -387,8 +393,11 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
   float dijet_dphi_ll_jj;
   float dijet_j1pt;
   float dijet_j2pt;
+  float dijet_j1eta;
+  float dijet_j2eta;
   bool dijet_has2jets = DijetPreSelection(l,   lep1,   lep2, 
-      dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt, jetid_flags);
+      dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt, 
+      dijet_j1eta, dijet_j2eta, jetid_flags);
   
   if(dijet_has2jets){
       if(dijet_mjj>500 && dijet_deta>3.0 && dijet_dphi_ll_jj>2.6 && dijet_j1pt>30 && dijet_j2pt>30){
@@ -400,6 +409,8 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
 
       cat=2+vbfcat;
   }
+    
+  Tree(l, lep1_ind, lep2_ind, higgs, cat, vbfcat, weight, pu_weight, false, "", jetid_flags);
   
   FillRooContainer(l, cur_type, mass, cat, weight);
   return true;
@@ -601,6 +612,8 @@ void HtollAnalysis::ResetAnalysis()
 void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVector & Higgs, Int_t cat, Int_t vbfcat, 
        Float_t weight, Float_t pu_weight, bool isSyst, std::string name1, bool* jetid_flags) {
 	
+    if(lept1==-1 || lept2==-1) return; 
+        
     
     l.FillTree("run", (float)l.run);
     l.FillTree("lumis", (float)l.lumis);
@@ -766,9 +779,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     float dijet_dphi_ll_jj;
     float dijet_j1pt;
     float dijet_j2pt;
+    float dijet_j1eta;
+    float dijet_j2eta;
     bool dijet_has2jets = DijetPreSelection(l,   lep1,   lep2, 
-        dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt, jetid_flags);
-    l.FillTree("dijet_deta",          (float)dijet_deta);
+        dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt, 
+        dijet_j1eta, dijet_j2eta, jetid_flags);
+    
     l.FillTree("dijet_mjj",           (float)dijet_mjj);
     l.FillTree("dijet_zep",           (float)dijet_zep);
     l.FillTree("dijet_deta",          (float)dijet_deta);
@@ -788,6 +804,24 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
   
     float dijet_mva = tmvaReader_vbfmumu->EvaluateMVA("Gradient");
     l.FillTree("dijet_vbfmumumva",     (float)dijet_mva);
+    float mass=Higgs.M();
+
+    if( !(mass < 130. && mass > 120. && doBlinding && l.itype[l.current] == 0) ){
+        l.FillHist("mass", cat, mass, weight);
+    }
+
+    if(mass>110 && mass<160){
+        l.FillHist("nvtx",        cat,  l.vtx_std_n,  weight);
+        l.FillHist("ljet_pt",     cat,  dijet_j1pt,  weight);
+        l.FillHist("ljet_eta",    cat,  dijet_j1eta,  weight);
+        l.FillHist("sjet_pt",     cat,  dijet_j2pt,  weight);
+        l.FillHist("sjet_eta",    cat,  dijet_j2eta,  weight);
+        l.FillHist("dijet_mjj",   cat,  dijet_mjj,    weight);
+        l.FillHist("dijet_deta",  cat,  dijet_deta,    weight);
+        l.FillHist("ll_pt",       cat,  Higgs.Pt(),  weight);
+        l.FillHist("ll_eta",      cat,  Higgs.Eta(),  weight);
+    }
+
 }
 
 bool HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
@@ -827,7 +861,7 @@ bool HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
 
 bool HtollAnalysis::DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLorentzVector* veto_p42, 
     float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 
-    float & dijet_j1pt, float & dijet_j2pt, bool* jetid_flags) {
+    float & dijet_j1pt, float & dijet_j2pt, float & dijet_j1eta, float & dijet_j2eta, bool* jetid_flags) {
     bool exist=false;
 
     std::pair<int, int> myjets = l.Select2HighestPtJets(*veto_p41, *veto_p42, jetid_flags);
@@ -839,6 +873,8 @@ bool HtollAnalysis::DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLor
         dijet_dphi_ll_jj  = -99;
         dijet_j1pt        = -99;
         dijet_j2pt        = -99;
+        dijet_j1eta       = -99;
+        dijet_j2eta       = -99;
 
         exist             = false;
     } else { // get jets and get values
@@ -853,6 +889,8 @@ bool HtollAnalysis::DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLor
         dijet_dphi_ll_jj  = abs(jj.DeltaPhi(ll));
         dijet_j1pt        = jet1->Pt();
         dijet_j2pt        = jet2->Pt();
+        dijet_j1eta       = jet1->Eta();
+        dijet_j2eta       = jet2->Eta();
 
         exist             = true;
     }
