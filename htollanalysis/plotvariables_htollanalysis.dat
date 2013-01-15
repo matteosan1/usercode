@@ -1,9 +1,17 @@
 default=2
-htyp=0 plot=-1 ncat=4  xbins=30  ybins=0 xmin=0     xmax=3.14  ymin=0 ymax=0 name=theta2    xaxis= yaxis=
-htyp=0 plot=-1 ncat=4  xbins=160 ybins=0 xmin=100.0 xmax=180.0 ymin=0 ymax=0 name=massMu    xaxis= yaxis=
-htyp=0 plot=-1 ncat=4  xbins=160 ybins=0 xmin=100.0 xmax=180.0 ymin=0 ymax=0 name=massEl    xaxis= yaxis=
-htyp=0 plot=-1 ncat=1  xbins=160 ybins=0 xmin=100.0 xmax=180.0 ymin=0 ymax=0 name=nummucand xaxis= yaxis=
-htyp=0 plot=-1 ncat=1  xbins=160 ybins=0 xmin=100.0 xmax=180.0 ymin=0 ymax=0 name=numelcand xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=30  ybins=0 xmin=0     xmax=3.14  ymin=0 ymax=0 name=theta2        xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=160 ybins=0 xmin=50.0  xmax=180.0 ymin=0 ymax=0 name=mass          xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=50  ybins=0 xmin=0.    xmax=50.   ymin=0 ymax=0 name=nvtx          xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=40  ybins=0 xmin=20.   xmax=1000  ymin=0 ymax=0 name=ljet_pt       xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=40  ybins=0 xmin=-5.5  xmax=5.5   ymin=0 ymax=0 name=ljet_eta      xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=40  ybins=0 xmin=20.   xmax=1000  ymin=0 ymax=0 name=sjet_pt       xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=40  ybins=0 xmin=-5.5  xmax=5.5   ymin=0 ymax=0 name=sjet_eta      xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=40  ybins=0 xmin=200   xmax=2000  ymin=0 ymax=0 name=dijet_mjj     xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=40  ybins=0 xmin=0     xmax=9.    ymin=0 ymax=0 name=dijet_deta    xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=40  ybins=0 xmin=0.    xmax=1000  ymin=0 ymax=0 name=ll_pt         xaxis= yaxis=
+htyp=0 plot=-1 ncat=4  xbins=40  ybins=0 xmin=-2.5  xmax=2.5   ymin=0 ymax=0 name=ll_eta        xaxis= yaxis=
+htyp=0 plot=-1 ncat=1  xbins=6   ybins=0 xmin=0     xmax=6     ymin=0 ymax=0 name=nummucand     xaxis= yaxis=
+htyp=0 plot=-1 ncat=1  xbins=6   ybins=0 xmin=0     xmax=6     ymin=0 ymax=0 name=numelcand     xaxis= yaxis=
 
 
 
