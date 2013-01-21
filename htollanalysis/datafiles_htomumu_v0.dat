@@ -1,46 +1,45 @@
-intL=697. histfile=CMS-HMuMu.root output=eventsList.txt
+intL=19400. histfile=CMS-HMuMu.root output=eventsList.txt
 
 #
 # Data
 #
-# 697/pb in this one
 typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20130108163226_run2012A_DM                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
-##typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20130108163600_run2012A_recovery_DM       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
-##typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20130108163850_run2012B_DM                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
-##typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20130108163351_run2012C_DM                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
-##typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20130108163727_run2012C_recovery_DM       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20130108163600_run2012A_recovery_DM       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20130108163850_run2012B_DM                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20130108163351_run2012C_DM                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/capalmer/reduced/20130108163727_run2012C_recovery_DM       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130118033801_run2012D_DM                  tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
 
 typ=-113  ind=1   draw=1    Nam=ggh_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161016_Hmm      red=0 lum=1000000.0   xsec=4.3e-03  kfac=1.0      scal=1.
 typ=-213  ind=2   draw=1    Nam=qqh_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161301_VBFmm    red=0 lum=1000000.0   xsec=3.5e-04  kfac=1.0      scal=1.
-typ=-513  ind=3   draw=1    Nam=RSG_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161137_RSmm     red=0 lum=1000000.0   xsec=4.7e-03  kfac=1.0      scal=1.
-
+##typ=-513  ind=3   draw=1    Nam=RSG_m125_mumu_8TeV    Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161137_RSmm     red=0 lum=1000000.0   xsec=4.7e-03  kfac=1.0      scal=1.
 
 
 ##
 ## DY MC
 ##
-typ=+513   ind=11  draw=1    Nam=DYJetsToLL                                     Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161417_DYJetsToLL_M-50_2MuonSkim     red=0   lum=1.e10     xsec=3532.8   kfac=1.00     scal=1.
-typ=+6013  ind=12  draw=1    Nam=QCD_EN_MU_1520                                 Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161802_QCD_EN_MU_1520                red=0   lum=1.e10     xsec=2.74e+6  kfac=1.       scal=1.
-typ=+6113  ind=13  draw=1    Nam=QCD_EN_MU_2030                                 Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162045_QCD_EN_MU_2030                red=0   lum=1.e10     xsec=1.87e+6  kfac=1.       scal=1.
-typ=+6213  ind=14  draw=1    Nam=QCD_EN_MU_3050                                 Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162348_QCD_EN_MU_3050                red=0   lum=1.e10     xsec=8.06e+5  kfac=1.       scal=1.
-typ=+6313  ind=15  draw=1    Nam=QCD_EN_MU_5080                                 Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162511_QCD_EN_MU_5080                red=0   lum=1.e10     xsec=1.76e+5  kfac=1.       scal=1.
-typ=+6413  ind=16  draw=1    Nam=QCD_EN_MU_80120                                Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162639_QCD_EN_MU_80120               red=0   lum=1.e10     xsec=4.04e+4  kfac=1.       scal=1.
-typ=+6513  ind=17  draw=1    Nam=QCD_EN_MU_120170                               Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161643_QCD_EN_MU_120170              red=0   lum=1.e10     xsec=7.46e+3  kfac=1.       scal=1.
-typ=+6613  ind=18  draw=1    Nam=QCD_EN_MU_170300                               Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161916_QCD_EN_MU_170300              red=0   lum=1.e10     xsec=2.30e+3  kfac=1.       scal=1.
-typ=+6713  ind=19  draw=1    Nam=QCD_EN_MU_300470                               Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162214_QCD_EN_MU_300470              red=0   lum=1.e10     xsec=1.52e+2  kfac=1.       scal=1.
-typ=+713   ind=20  draw=1    Nam=WJetsMM                                        Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162801_WJetsMM                       red=0   lum=1.e10     xsec=30400.   kfac=1.       scal=1.
-typ=+813    ind=21  draw=1   Nam=TTJets_FullLeptMGDecays_2MuonSkim               Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144125_TTJets_FullLeptMGDecays_2MuonSkim                    red=0   lum=1.e10     xsec=13.43    kfac=1.       scal=1.
-typ=+9013   ind=22  draw=1   Nam=WWJetsTo2L2Nu_2MuonSkim                         Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144317_WWJetsTo2L2Nu_2MuonSkim                              red=0   lum=1.e10     xsec=4.7      kfac=1.       scal=1.
-typ=+9113   ind=23  draw=1   Nam=WWTo2L2Nu_2MuonSkim                             Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144437_WWTo2L2Nu_2MuonSkim                                  red=0   lum=1.e10     xsec=1.0      kfac=1.       scal=1.
-typ=+9213   ind=24  draw=1   Nam=WZJetsTo2L2Q_2MuonSkim                          Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144607_WZJetsTo2L2Q_2MuonSkim                               red=0   lum=1.e10     xsec=1.755    kfac=1.       scal=1.
-typ=+9313   ind=25  draw=1   Nam=WZJetsTo2Q2Nu_2MuonSkim                         Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144733_WZJetsTo2Q2Nu_2MuonSkim                              red=0   lum=1.e10     xsec=0.705    kfac=1.       scal=1.
-typ=+9413   ind=26  draw=1   Nam=WZJetsTo3LNu_2MuonSkim                          Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144853_WZJetsTo3LNu_2MuonSkim                               red=0   lum=1.e10     xsec=0.8674   kfac=1.       scal=1.
-typ=+9513   ind=27  draw=1   Nam=WZTo3LNu_2MuonSkim                              Dir=/hadoop/cms/store/user/capalmer/reduced/20130108145014_WZTo3LNu_2MuonSkim                                   red=0   lum=1.e10     xsec=0.4123   kfac=1.       scal=1.
-typ=+9613   ind=28  draw=1   Nam=ZZJetsTo2L2Q_2MuonSkim                          Dir=/hadoop/cms/store/user/capalmer/reduced/20130108145146_ZZJetsTo2L2Q_2MuonSkim                               red=0   lum=1.e10     xsec=0.91     kfac=1.       scal=1.
-typ=+9713   ind=29  draw=1   Nam=ZZJetsTo4L_2MuonSkim                            Dir=/hadoop/cms/store/user/capalmer/reduced/20130108145308_ZZJetsTo4L_2MuonSkim                                 red=0   lum=1.e10     xsec=0.1296   kfac=1.       scal=1.
-typ=+9813   ind=30  draw=1   Nam=ZZTo4L_2MuonSkim                                Dir=/hadoop/cms/store/user/capalmer/reduced/20130108145812_ZZTo4L_2MuonSkim                                     red=0   lum=1.e10     xsec=0.07716  kfac=1.       scal=1.
+typ=+513   ind=11  draw=1    Nam=DYJetsToLL            Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161417_DYJetsToLL_M-50_2MuonSkim     red=0   lum=1.e10     xsec=3532.8   kfac=1.     scal=1.
+typ=+6013  ind=12  draw=1    Nam=QCD_EN_MU_1520        Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161802_QCD_EN_MU_1520                red=0   lum=1.e10     xsec=3.29e+6  kfac=1.       scal=1.
+typ=+6113  ind=13  draw=1    Nam=QCD_EN_MU_2030        Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162045_QCD_EN_MU_2030                red=0   lum=1.e10     xsec=2.24e+6  kfac=1.       scal=1.
+typ=+6213  ind=14  draw=1    Nam=QCD_EN_MU_3050        Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162348_QCD_EN_MU_3050                red=0   lum=1.e10     xsec=9.67e+5  kfac=1.       scal=1.
+typ=+6313  ind=15  draw=1    Nam=QCD_EN_MU_5080        Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162511_QCD_EN_MU_5080                red=0   lum=1.e10     xsec=2.11e+5  kfac=1.       scal=1.
+typ=+6413  ind=16  draw=1    Nam=QCD_EN_MU_80120       Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162639_QCD_EN_MU_80120               red=0   lum=1.e10     xsec=4.85e+4  kfac=1.       scal=1.
+typ=+6513  ind=17  draw=1    Nam=QCD_EN_MU_120170      Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161643_QCD_EN_MU_120170              red=0   lum=1.e10     xsec=8.95e+3  kfac=1.       scal=1.
+typ=+6613  ind=18  draw=1    Nam=QCD_EN_MU_170300      Dir=/hadoop/cms/store/user/capalmer/reduced/20130108161916_QCD_EN_MU_170300              red=0   lum=1.e10     xsec=2.76e+3  kfac=1.       scal=1.
+typ=+6713  ind=19  draw=1    Nam=QCD_EN_MU_300470      Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162214_QCD_EN_MU_300470              red=0   lum=1.e10     xsec=1.82e+2  kfac=1.       scal=1.
+typ=+713   ind=20  draw=1    Nam=WJetsMM               Dir=/hadoop/cms/store/user/capalmer/reduced/20130108162801_WJetsMM                       red=0   lum=1.e10     xsec=36480.   kfac=1.       scal=1.
 
+typ=+813    ind=21  draw=1    Nam=TTJets_FullLeptMGDecays_2MuonSkim               Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144125_TTJets_FullLeptMGDecays_2MuonSkim                    red=0   lum=1.e10     xsec=16.43    kfac=1.2       scal=1.
 
+typ=+9013   ind=22  draw=1    Nam=WWJetsTo2L2Nu_2MuonSkim                         Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144317_WWJetsTo2L2Nu_2MuonSkim                              red=0   lum=1.e10     xsec=4.7      kfac=1.2       scal=1.
+typ=+9113   ind=23  draw=1    Nam=WWTo2L2Nu_2MuonSkim                             Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144437_WWTo2L2Nu_2MuonSkim                                  red=0   lum=1.e10     xsec=1.0      kfac=1.2       scal=1.
+typ=+9213   ind=24  draw=1    Nam=WZJetsTo2L2Q_2MuonSkim                          Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144607_WZJetsTo2L2Q_2MuonSkim                               red=0   lum=1.e10     xsec=1.755    kfac=1.2       scal=1.
+typ=+9313   ind=25  draw=1    Nam=WZJetsTo2Q2Nu_2MuonSkim                         Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144733_WZJetsTo2Q2Nu_2MuonSkim                              red=0   lum=1.e10     xsec=0.705    kfac=1.2       scal=1.
+typ=+9413   ind=26  draw=1    Nam=WZJetsTo3LNu_2MuonSkim                          Dir=/hadoop/cms/store/user/capalmer/reduced/20130108144853_WZJetsTo3LNu_2MuonSkim                               red=0   lum=1.e10     xsec=0.8674   kfac=1.2       scal=1.
+typ=+9513   ind=27  draw=1    Nam=WZTo3LNu_2MuonSkim                              Dir=/hadoop/cms/store/user/capalmer/reduced/20130108145014_WZTo3LNu_2MuonSkim                                   red=0   lum=1.e10     xsec=0.4123   kfac=1.2       scal=1.
+typ=+9613   ind=28  draw=1    Nam=ZZJetsTo2L2Q_2MuonSkim                          Dir=/hadoop/cms/store/user/capalmer/reduced/20130108145146_ZZJetsTo2L2Q_2MuonSkim                               red=0   lum=1.e10     xsec=0.91     kfac=1.2       scal=1.
+typ=+9713   ind=29  draw=1    Nam=ZZJetsTo4L_2MuonSkim                            Dir=/hadoop/cms/store/user/capalmer/reduced/20130108145308_ZZJetsTo4L_2MuonSkim                                 red=0   lum=1.e10     xsec=0.1296   kfac=1.2       scal=1.
+typ=+9813   ind=30  draw=1    Nam=ZZTo4L_2MuonSkim                                Dir=/hadoop/cms/store/user/capalmer/reduced/20130108145812_ZZTo4L_2MuonSkim                                     red=0   lum=1.e10     xsec=0.07716  kfac=1.2       scal=1.
 
 
 #

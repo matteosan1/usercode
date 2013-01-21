@@ -1,35 +1,63 @@
-intL=20000. histfile=CMS-Helel.root output=eventsList.txt
+intL=19400. histfile=CMS-HElEl.root output=eventsList.txt
 
 #
 # Data
 #
+# 697/pb in this one
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055124_run2012A_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055153_run2012A_recovery_DE       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055214_run2012B_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055315_run2012C_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055435_run2012C_recovery_DE       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130116070021_run2012D_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
 
-typ=-111  ind=1   draw=1    Nam=ggh_m125_elel_8TeV    Fil=/nfs-6/userdata/matteo/Hee.root                          red=0 lum=1000000.0   xsec=9.9e-09  kfac=1.0      scal=1.
-typ=-211  ind=2   draw=1    Nam=qqh_m125_elel_8TeV    Fil=/nfs-6/userdata/matteo/VBFee.root                        lum=1000000.0   xsec=8.0e-09  kfac=1.0      scal=1.
-typ=-511  ind=5   draw=1    Nam=RSG_m125_elel_8TeV    Fil=/nfs-6/userdata/matteo/RSee.root                         red=0 lum=1000000.0   xsec=1.0e-08  kfac=1.0      scal=1.
-
+typ=-123  ind=1   draw=1    Nam=ggh_m125_ee_8TeV      Dir=/hadoop/cms/store/user/matteo/reduced/20130111051905_hee      red=0 lum=1000000.0   xsec=4.3e-03  kfac=4.8e-05      scal=1.
+typ=-223  ind=2   draw=1    Nam=qqh_m125_ee_8TeV      Dir=/hadoop/cms/store/user/matteo/reduced/20130111054017_vbfee    red=0 lum=1000000.0   xsec=3.5e-04  kfac=4.8e-05      scal=1.
+##typ=-523  ind=3   draw=1    Nam=RSG_m125_ee_8TeV    Dir=/hadoop/cms/store/user/matteo/reduced/20130111054042_rsee     red=0 lum=1000000.0   xsec=4.7e-03  kfac=1.0      scal=1.
 
 ##
 ## DY MC
 ##
-typ=+511  ind=10  draw=1    Nam=DYJetsToLL            Dir=/hadoop/cms/store/user/capalmer/reduced/20121211141123_DYJetsToLL_M-50_2ElectronSkim_test  red=0   lum=1.e10     xsec=2950.0   kfac=1.15     scal=1.
+typ=+513   ind=11  draw=1    Nam=DYJetsToLL        Dir=/hadoop/cms/store/user/matteo/reduced/20130116062353_DYJetsEE   red=0   lum=1.e10     xsec=3532.8   kfac=1.       scal=1.
+typ=+6023  ind=12  draw=1    Nam=QCD_BC_2030       Dir=/hadoop/cms/store/user/matteo/reduced/20130111054125_bc2030     red=0   lum=1.e10     xsec=167388   kfac=1.       scal=1.
+typ=+6123  ind=13  draw=1    Nam=QCD_BC_3080       Dir=/hadoop/cms/store/user/matteo/reduced/20130111054502_bc3080     red=0   lum=1.e10     xsec=167242   kfac=1.       scal=1.
+typ=+6223  ind=14  draw=1    Nam=QCD_BC_80170      Dir=/hadoop/cms/store/user/matteo/reduced/20130111054547_bc80170    red=0   lum=1.e10     xsec=12981    kfac=1.       scal=1.
+typ=+6323  ind=15  draw=1    Nam=QCD_BC_170250     Dir=/hadoop/cms/store/user/matteo/reduced/20130111054102_bc170250   red=0   lum=1.e10     xsec=632      kfac=1.       scal=1.
+typ=+6423  ind=16  draw=1    Nam=QCD_BC_250350     Dir=/hadoop/cms/store/user/matteo/reduced/20130111054440_bc250350   red=0   lum=1.e10     xsec=103      kfac=1.       scal=1.
+typ=+6523  ind=17  draw=1    Nam=QCD_BC_350        Dir=/hadoop/cms/store/user/matteo/reduced/20130111054524_bc350      red=0   lum=1.e10     xsec=24       kfac=1.       scal=1.
+typ=+6033  ind=18  draw=1    Nam=QCD_EM_2030       Dir=/hadoop/cms/store/user/matteo/reduced/20130111054638_em2030     red=0   lum=1.e10     xsec=2914840  kfac=1.       scal=1.
+typ=+6133  ind=19  draw=1    Nam=QCD_EM_3080       Dir=/hadoop/cms/store/user/matteo/reduced/20130111054725_em3080     red=0   lum=1.e10     xsec=4615893  kfac=1.       scal=1.
+typ=+6233  ind=18  draw=1    Nam=QCD_EM_80170      Dir=/hadoop/cms/store/user/matteo/reduced/20130111054814_em80170    red=0   lum=1.e10     xsec=183295   kfac=1.       scal=1.
+typ=+6333  ind=19  draw=1    Nam=QCD_EM_170250     Dir=/hadoop/cms/store/user/matteo/reduced/20130111054609_em170250   red=0   lum=1.e10     xsec=4586     kfac=1.       scal=1.
+typ=+6433  ind=18  draw=1    Nam=QCD_EM_250350     Dir=/hadoop/cms/store/user/matteo/reduced/20130111054700_em250350   red=0   lum=1.e10     xsec=557      kfac=1.       scal=1.
+typ=+6533  ind=19  draw=1    Nam=QCD_EM_350        Dir=/hadoop/cms/store/user/matteo/reduced/20130111054747_em350      red=0   lum=1.e10     xsec=89       kfac=1.       scal=1.
+typ=+723   ind=20  draw=1    Nam=WJetsEE           Dir=/hadoop/cms/store/user/matteo/reduced/20130111054839_WJetsEE    red=0   lum=1.e10     xsec=36480.   kfac=1.       scal=1.
 
+typ=+823    ind=21  draw=1    Nam=TTJets_FullLeptMGDecays_2ElSkim   Dir=/hadoop/cms/store/user/matteo/reduced/20130111055625_TTJets_EE         red=0   lum=1.e10     xsec=13.43    kfac=1.2       scal=1.
+typ=+9023   ind=22  draw=1    Nam=WWJetsTo2L2Nu_2ElSkim             Dir=/hadoop/cms/store/user/matteo/reduced/20130111055718_WWJetsTo2L2Nu_EE  red=0   lum=1.e10     xsec=4.7      kfac=1.2       scal=1.
+typ=+9123   ind=23  draw=1    Nam=WWTo2L2Nu_2ElSkim                 Dir=/hadoop/cms/store/user/matteo/reduced/20130111055735_WWTo2L2Nu_EE      red=0   lum=1.e10     xsec=1.0      kfac=1.2       scal=1.
+typ=+9223   ind=24  draw=1    Nam=WZJetsTo2L2Q_2ElSkim              Dir=/hadoop/cms/store/user/matteo/reduced/20130111055751_WZJetsTo2L2Q_EE   red=0   lum=1.e10     xsec=1.755    kfac=1.2       scal=1.
+typ=+9323   ind=25  draw=1    Nam=WZJetsTo2Q2Nu_2ElSkim             Dir=/hadoop/cms/store/user/matteo/reduced/20130111055812_WZJetsTo2Q2Nu_EE  red=0   lum=1.e10     xsec=0.705    kfac=1.2       scal=1.
+typ=+9423   ind=26  draw=1    Nam=WZJetsTo3LNu_2ElSkim              Dir=/hadoop/cms/store/user/matteo/reduced/20130111055826_WZJetsTo3LNu_EE   red=0   lum=1.e10     xsec=0.8674   kfac=1.2       scal=1.
+typ=+9523   ind=27  draw=1    Nam=WZTo3LNu_2ElSkim                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055847_WZTo3LNu_EE       red=0   lum=1.e10     xsec=0.4123   kfac=1.2       scal=1.
+typ=+9623   ind=28  draw=1    Nam=ZZJetsTo2L2Q_2ElSkim              Dir=/hadoop/cms/store/user/matteo/reduced/20130111055912_ZZJetsTo2L2Q_EE   red=0   lum=1.e10     xsec=0.91     kfac=1.2       scal=1.
+typ=+9723   ind=29  draw=1    Nam=ZZJetsTo4L_2ElSkim                Dir=/hadoop/cms/store/user/matteo/reduced/20130115044531_ZZJetsTo4L_EE     red=0   lum=1.e10     xsec=0.1296   kfac=1.2       scal=1.
+typ=+9823   ind=30  draw=1    Nam=ZZTo4L_2ElSkim                    Dir=/hadoop/cms/store/user/matteo/reduced/20130111060014_ZZTo4L_EE         red=0   lum=1.e10     xsec=0.07716  kfac=1.2       scal=1.
 
 #
 # Branches to use
 #
 #inputBranches htollanalysis/reduction_input.dat
 inputBranches htollanalysis/reduction_output.dat
-inputBranches htollanalysis/htollanalysis_input.dat
+#inputBranches htollanalysis/htollanalysis_input.dat
 
 cuts htollanalysis/cuts.dat
 plotvariables htollanalysis/plotvariables_htollanalysis.dat 
 treevariables htollanalysis/treevariables_htollanalysis.dat
-
 
 ## define analyses to run
 ## syntax:
 ##   analyzer <class_name> <config_file>
 ##
 ## analyzer PhotonAnalysis photonanalysis.dat
-analyzer  HtollAnalysis  htollanalysis/htollanalysis.dat doMuon=0
+analyzer  HtollAnalysis  htollanalysis/htollanalysis.dat doMuon=0 doBlinding=0
