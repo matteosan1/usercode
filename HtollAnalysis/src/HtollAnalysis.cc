@@ -47,39 +47,39 @@ void HtollAnalysis::Init(LoopAll& l) {
   if (l.typerun != l.kReduce) {
     if (puHist != "" && puHist != "auto" ) {
       if(DEBUG) 
-  cout << "Opening PU file"<<endl;
+	cout << "Opening PU file"<<endl;
       TFile* puFile = TFile::Open( puHist );
       if (puFile) {
-  TH1 * target = 0;
-  
-  if( puTarget != "" ) {
-    TFile * puTargetFile = TFile::Open( puTarget ); 
-    assert( puTargetFile != 0 );
-    target = (TH1*)puTargetFile->Get("pileup");
-    if( target == 0 ) { target = (TH1*)puTargetFile->Get("target_pu"); }
-    target->Scale( 1. / target->Integral() );
-  }
-  
-  if( puMap != "" ) {
-    loadPuMap(puMap, puFile, target); 
-  } else {
-    loadPuWeights(0, puFile, target);
-  }
-  puFile->Close();
+	TH1 * target = 0;
+	
+	if( puTarget != "" ) {
+	  TFile * puTargetFile = TFile::Open( puTarget ); 
+	  assert( puTargetFile != 0 );
+	  target = (TH1*)puTargetFile->Get("pileup");
+	  if( target == 0 ) { target = (TH1*)puTargetFile->Get("target_pu"); }
+	  target->Scale( 1. / target->Integral() );
+	}
+	
+	if( puMap != "" ) {
+	  loadPuMap(puMap, puFile, target); 
+	} else {
+	  loadPuWeights(0, puFile, target);
+	}
+	puFile->Close();
       }
       else {
-  cout<<"Error opening " <<puHist<<" pileup reweighting histogram, using 1.0"<<endl; 
-  weights[0].resize(50);
-  for (unsigned int i=0; i<weights[0].size(); i++) weights[0][i] = 1.0;
+	cout<<"Error opening " <<puHist<<" pileup reweighting histogram, using 1.0"<<endl; 
+	weights[0].resize(50);
+	for (unsigned int i=0; i<weights[0].size(); i++) weights[0][i] = 1.0;
       }
       if(DEBUG) 
-  cout << "Opening PU file END"<<endl;
+	cout << "Opening PU file END"<<endl;
     } else if ( puHist == "auto" ) {
       TFile * puTargetFile = TFile::Open( puTarget ); 
       assert( puTargetFile != 0 );
       puTargetHist = (TH1*)puTargetFile->Get("pileup");
       if( puTargetHist == 0 ) { 
-  puTargetHist = (TH1*)puTargetFile->Get("target_pu"); 
+	puTargetHist = (TH1*)puTargetFile->Get("target_pu"); 
       }
       puTargetHist = (TH1*)puTargetHist->Clone();
       puTargetHist->SetDirectory(0);
@@ -98,10 +98,10 @@ void HtollAnalysis::Init(LoopAll& l) {
   tmvaReader_vbfmumu->AddVariable("dijet_has2jets",       &tmva_vbfmumu_has2jets  );
   tmvaReader_vbfmumu->AddSpectator("itype",               &tmva_vbfmumu_itype     );
   tmvaReader_vbfmumu->BookMVA("Gradient", "htollanalysis/TMVA_vbfmumumva_Gradient.weights.xml" );
-
+  
   // setup roocontainer
   FillSignalLabelMap(l);
-
+  
   l.rooContainer->BlindData(doBlinding);
   l.rooContainer->AddGlobalSystematic("lumi",1.044,1.00);
   l.rooContainer->SetNCategories(nCategories_);
@@ -134,141 +134,160 @@ void HtollAnalysis::Init(LoopAll& l) {
   //
 
   if( recomputeBetas || recorrectJets || rerunJetMva || recomputeJetWp || applyJer || applyJecUnc || l.typerun != l.kFill ) {  
-	  std::cout << "JetHandler: \n"
-		  << "recomputeBetas " << recomputeBetas << "\n"
-		  << "recorrectJets " << recorrectJets << "\n"
-		  << "rerunJetMva " << rerunJetMva << "\n"
-		  << "recomputeJetWp " << recomputeJetWp
-		  << std::endl;
+    std::cout << "JetHandler: \n"
+	      << "recomputeBetas " << recomputeBetas << "\n"
+	      << "recorrectJets " << recorrectJets << "\n"
+	      << "rerunJetMva " << rerunJetMva << "\n"
+	      << "recomputeJetWp " << recomputeJetWp
+	      << std::endl;
     jetHandler_ = new JetHandler(jetHandlerCfg, l);
   }
-
+  
+  hltSelection.push_back("HLT_Mu17_Mu8_v*");
+  hltSelection.push_back("HLT_Mu17_TkMu8_v*");
+  hltSelection.push_back("HLT_IsoMu24_v*");
+  hltSelection.push_back("*Ele*");
 }
 
 // ----------------------------------------------------------------------------------------------------
 void HtollAnalysis::buildBkgModel(LoopAll& l, const std::string & postfix)
 {
-
-    // sanity check
-    if( bkgPolOrderByCat.size() != nCategories_ ) {
-        std::cout << "Number of categories not consistent with specified background model " << nCategories_ << " " << bkgPolOrderByCat.size() << std::endl;
-        assert( 0 );
+  
+  // sanity check
+  if( bkgPolOrderByCat.size() != nCategories_ ) {
+    std::cout << "Number of categories not consistent with specified background model " << nCategories_ << " " << bkgPolOrderByCat.size() << std::endl;
+    assert( 0 );
+  }
+  
+  l.rooContainer->AddRealVar("CMS_hll_pol6_0"+postfix,-0.1,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_pol6_1"+postfix,-0.1,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_pol6_2"+postfix,-0.1,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_pol6_3"+postfix,-0.01,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_pol6_4"+postfix,-0.01,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_pol6_5"+postfix,-0.01,-1.0,1.0);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol6_0"+postfix,"@0*@0","CMS_hll_pol6_0"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol6_1"+postfix,"@0*@0","CMS_hll_pol6_1"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol6_2"+postfix,"@0*@0","CMS_hll_pol6_2"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol6_3"+postfix,"@0*@0","CMS_hll_pol6_3"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol6_4"+postfix,"@0*@0","CMS_hll_pol6_4"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol6_5"+postfix,"@0*@0","CMS_hll_pol6_4"+postfix);
+  
+  l.rooContainer->AddRealVar("CMS_hll_pol5_0"+postfix,-0.1,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_pol5_1"+postfix,-0.1,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_pol5_2"+postfix,-0.1,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_pol5_3"+postfix,-0.01,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_pol5_4"+postfix,-0.01,-1.0,1.0);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol5_0"+postfix,"@0*@0","CMS_hll_pol5_0"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol5_1"+postfix,"@0*@0","CMS_hll_pol5_1"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol5_2"+postfix,"@0*@0","CMS_hll_pol5_2"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol5_3"+postfix,"@0*@0","CMS_hll_pol5_3"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modpol5_4"+postfix,"@0*@0","CMS_hll_pol5_4"+postfix);
+  
+  l.rooContainer->AddRealVar("CMS_hll_quartic0"+postfix,-0.1,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_quartic1"+postfix,-0.1,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_quartic2"+postfix,-0.1,-1.0,1.0);
+  l.rooContainer->AddRealVar("CMS_hll_quartic3"+postfix,-0.01,-1.0,1.0);
+  l.rooContainer->AddFormulaVar("CMS_hll_modquartic0"+postfix,"@0*@0","CMS_hll_quartic0"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modquartic1"+postfix,"@0*@0","CMS_hll_quartic1"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modquartic2"+postfix,"@0*@0","CMS_hll_quartic2"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modquartic3"+postfix,"@0*@0","CMS_hll_quartic3"+postfix);
+  
+  l.rooContainer->AddRealVar("CMS_hll_quad0"+postfix,-0.1,-1.5,1.5);
+  l.rooContainer->AddRealVar("CMS_hll_quad1"+postfix,-0.01,-1.5,1.5);
+  l.rooContainer->AddFormulaVar("CMS_hll_modquad0"+postfix,"@0*@0","CMS_hll_quad0"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modquad1"+postfix,"@0*@0","CMS_hll_quad1"+postfix);
+  
+  l.rooContainer->AddRealVar("CMS_hll_cubic0"+postfix,-0.1,-1.5,1.5);
+  l.rooContainer->AddRealVar("CMS_hll_cubic1"+postfix,-0.1,-1.5,1.5);
+  l.rooContainer->AddRealVar("CMS_hll_cubic2"+postfix,-0.01,-1.5,1.5);
+  l.rooContainer->AddFormulaVar("CMS_hll_modcubic0"+postfix,"@0*@0","CMS_hll_cubic0"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modcubic1"+postfix,"@0*@0","CMS_hll_cubic1"+postfix);
+  l.rooContainer->AddFormulaVar("CMS_hll_modcubic2"+postfix,"@0*@0","CMS_hll_cubic2"+postfix);
+  
+  l.rooContainer->AddRealVar("CMS_hll_lin0"+postfix,-0.01,-1.5,1.5);
+  l.rooContainer->AddFormulaVar("CMS_hll_modlin0"+postfix,"@0*@0","CMS_hll_lin0"+postfix);
+  
+  l.rooContainer->AddRealVar("CMS_hll_plaw0"+postfix,0.01,-10,10);
+  
+  // prefix for models parameters
+  std::map<int,std::string> parnames;
+  parnames[1] = "modlin";
+  parnames[2] = "modquad";
+  parnames[3] = "modcubic";
+  parnames[4] = "modquartic";
+  parnames[5] = "modpol5_";
+  parnames[6] = "modpol6_";
+  parnames[-1] = "plaw";
+  
+  // map order to categories flags + parameters names
+  std::map<int, std::pair<std::vector<int>, std::vector<std::string> > > catmodels;
+  // fill the map
+  for(int icat=0; icat<nCategories_; ++icat) {
+    // get the poly order for this category
+    int catmodel = bkgPolOrderByCat[icat];
+    std::vector<int> & catflags = catmodels[catmodel].first;
+    std::vector<std::string> & catpars = catmodels[catmodel].second;
+    // if this is the first time we find this order, build the parameters
+    if( catflags.empty() ) {
+      assert( catpars.empty() );
+      // by default no category has the new model
+      catflags.resize(nCategories_, 0);
+      std::string & parname = parnames[catmodel];
+      if( catmodel > 0 ) {
+	for(int iorder = 0; iorder<catmodel; ++iorder) {
+	  catpars.push_back( Form( "CMS_hll_%s%d%s", parname.c_str(), iorder, +postfix.c_str() ) );
+	}
+      } else {
+	if( catmodel != -1 ) {
+	  std::cout << "The only supported negative bkg poly order is -1, ie 1-parmeter power law" << std::endl;
+	  assert( 0 );
+	}
+	catpars.push_back( Form( "CMS_hll_%s%d%s", parname.c_str(), 0, +postfix.c_str() ) );
+      }
+    } else if ( catmodel != -1 ) {
+      assert( catflags.size() == nCategories_ && catpars.size() == catmodel );
     }
-
-    l.rooContainer->AddRealVar("CMS_hll_pol6_0"+postfix,-0.1,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_pol6_1"+postfix,-0.1,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_pol6_2"+postfix,-0.1,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_pol6_3"+postfix,-0.01,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_pol6_4"+postfix,-0.01,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_pol6_5"+postfix,-0.01,-1.0,1.0);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol6_0"+postfix,"@0*@0","CMS_hll_pol6_0"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol6_1"+postfix,"@0*@0","CMS_hll_pol6_1"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol6_2"+postfix,"@0*@0","CMS_hll_pol6_2"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol6_3"+postfix,"@0*@0","CMS_hll_pol6_3"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol6_4"+postfix,"@0*@0","CMS_hll_pol6_4"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol6_5"+postfix,"@0*@0","CMS_hll_pol6_4"+postfix);
-
-    l.rooContainer->AddRealVar("CMS_hll_pol5_0"+postfix,-0.1,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_pol5_1"+postfix,-0.1,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_pol5_2"+postfix,-0.1,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_pol5_3"+postfix,-0.01,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_pol5_4"+postfix,-0.01,-1.0,1.0);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol5_0"+postfix,"@0*@0","CMS_hll_pol5_0"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol5_1"+postfix,"@0*@0","CMS_hll_pol5_1"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol5_2"+postfix,"@0*@0","CMS_hll_pol5_2"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol5_3"+postfix,"@0*@0","CMS_hll_pol5_3"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modpol5_4"+postfix,"@0*@0","CMS_hll_pol5_4"+postfix);
-
-    l.rooContainer->AddRealVar("CMS_hll_quartic0"+postfix,-0.1,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_quartic1"+postfix,-0.1,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_quartic2"+postfix,-0.1,-1.0,1.0);
-    l.rooContainer->AddRealVar("CMS_hll_quartic3"+postfix,-0.01,-1.0,1.0);
-    l.rooContainer->AddFormulaVar("CMS_hll_modquartic0"+postfix,"@0*@0","CMS_hll_quartic0"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modquartic1"+postfix,"@0*@0","CMS_hll_quartic1"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modquartic2"+postfix,"@0*@0","CMS_hll_quartic2"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modquartic3"+postfix,"@0*@0","CMS_hll_quartic3"+postfix);
-
-    l.rooContainer->AddRealVar("CMS_hll_quad0"+postfix,-0.1,-1.5,1.5);
-    l.rooContainer->AddRealVar("CMS_hll_quad1"+postfix,-0.01,-1.5,1.5);
-    l.rooContainer->AddFormulaVar("CMS_hll_modquad0"+postfix,"@0*@0","CMS_hll_quad0"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modquad1"+postfix,"@0*@0","CMS_hll_quad1"+postfix);
-
-    l.rooContainer->AddRealVar("CMS_hll_cubic0"+postfix,-0.1,-1.5,1.5);
-    l.rooContainer->AddRealVar("CMS_hll_cubic1"+postfix,-0.1,-1.5,1.5);
-    l.rooContainer->AddRealVar("CMS_hll_cubic2"+postfix,-0.01,-1.5,1.5);
-    l.rooContainer->AddFormulaVar("CMS_hll_modcubic0"+postfix,"@0*@0","CMS_hll_cubic0"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modcubic1"+postfix,"@0*@0","CMS_hll_cubic1"+postfix);
-    l.rooContainer->AddFormulaVar("CMS_hll_modcubic2"+postfix,"@0*@0","CMS_hll_cubic2"+postfix);
-
-    l.rooContainer->AddRealVar("CMS_hll_lin0"+postfix,-0.01,-1.5,1.5);
-    l.rooContainer->AddFormulaVar("CMS_hll_modlin0"+postfix,"@0*@0","CMS_hll_lin0"+postfix);
-
-    l.rooContainer->AddRealVar("CMS_hll_plaw0"+postfix,0.01,-10,10);
-
-    // prefix for models parameters
-    std::map<int,std::string> parnames;
-    parnames[1] = "modlin";
-    parnames[2] = "modquad";
-    parnames[3] = "modcubic";
-    parnames[4] = "modquartic";
-    parnames[5] = "modpol5_";
-    parnames[6] = "modpol6_";
-    parnames[-1] = "plaw";
-
-    // map order to categories flags + parameters names
-    std::map<int, std::pair<std::vector<int>, std::vector<std::string> > > catmodels;
-    // fill the map
-    for(int icat=0; icat<nCategories_; ++icat) {
-        // get the poly order for this category
-        int catmodel = bkgPolOrderByCat[icat];
-        std::vector<int> & catflags = catmodels[catmodel].first;
-        std::vector<std::string> & catpars = catmodels[catmodel].second;
-        // if this is the first time we find this order, build the parameters
-        if( catflags.empty() ) {
-            assert( catpars.empty() );
-            // by default no category has the new model
-            catflags.resize(nCategories_, 0);
-            std::string & parname = parnames[catmodel];
-            if( catmodel > 0 ) {
-                for(int iorder = 0; iorder<catmodel; ++iorder) {
-                    catpars.push_back( Form( "CMS_hll_%s%d%s", parname.c_str(), iorder, +postfix.c_str() ) );
-                }
-            } else {
-                if( catmodel != -1 ) {
-                    std::cout << "The only supported negative bkg poly order is -1, ie 1-parmeter power law" << std::endl;
-                    assert( 0 );
-                }
-                catpars.push_back( Form( "CMS_hll_%s%d%s", parname.c_str(), 0, +postfix.c_str() ) );
-            }
-        } else if ( catmodel != -1 ) {
-            assert( catflags.size() == nCategories_ && catpars.size() == catmodel );
-        }
-        // chose category order
-        catflags[icat] = 1;
+    // chose category order
+    catflags[icat] = 1;
+  }
+  
+  // now loop over the models and allocate the pdfs
+  for(std::map<int, std::pair<std::vector<int>, std::vector<std::string> > >::iterator modit = catmodels.begin();
+      modit!=catmodels.end(); ++modit ) {
+    std::vector<int> & catflags = modit->second.first;
+    std::vector<std::string> & catpars = modit->second.second;
+    
+    if( modit->first > 0 ) {
+      l.rooContainer->AddSpecificCategoryPdf(&catflags[0],"data_pol_model"+postfix,
+					     "0","CMS_hll_mass",catpars,70+catpars.size());
+      // >= 71 means RooBernstein of order >= 1
+    } else {
+      l.rooContainer->AddSpecificCategoryPdf(&catflags[0],"data_pol_model"+postfix,
+					     "0","CMS_hll_mass",catpars,6);
+      // 6 is power law
     }
-
-    // now loop over the models and allocate the pdfs
-    for(std::map<int, std::pair<std::vector<int>, std::vector<std::string> > >::iterator modit = catmodels.begin();
-    modit!=catmodels.end(); ++modit ) {
-        std::vector<int> & catflags = modit->second.first;
-        std::vector<std::string> & catpars = modit->second.second;
-
-        if( modit->first > 0 ) {
-            l.rooContainer->AddSpecificCategoryPdf(&catflags[0],"data_pol_model"+postfix,
-                "0","CMS_hll_mass",catpars,70+catpars.size());
-            // >= 71 means RooBernstein of order >= 1
-        } else {
-            l.rooContainer->AddSpecificCategoryPdf(&catflags[0],"data_pol_model"+postfix,
-                "0","CMS_hll_mass",catpars,6);
-            // 6 is power law
-        }
-    }
+  }
 }
 
+void HtollAnalysis::SortLeptons(std::vector<int>& indices, TClonesArray* mom) {
+  
+  for (unsigned int i=0; i<indices.size()-1; i++) {
+    float p1 = ((TLorentzVector*)mom->At(i))->Pt(); 
+    
+    for (unsigned int j=i+1; j<indices.size(); j++) {
+      float p2 = ((TLorentzVector*)mom->At(j))->Pt(); 
+      if (p1 < p2) {
+	int temp = indices[j];
+	indices[j] = indices[i];
+	indices[i] = temp;
+      }
+    }
+  }
+}
 
 // ----------------------------------------------------------------------------------------------------
 bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
-
+  
   //apply pileup reweighting
   float weight = 1.;
   float pu_weight = 1.;
@@ -280,7 +299,7 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
     weight = pu_weight * l.sampleContainer[l.current_sample_index].weight;
     //std::cout << l.sampleContainer[l.current_sample_index].weight << " " << weight/l.sampleContainer[l.current_sample_index].weight << " " << n_pu << std::endl;
   }
-
+  
   PhotonAnalysis::postProcessJets(l, -1);
   static std::vector<unsigned char> jet_id_flags;
   jet_id_flags.clear();
@@ -288,11 +307,11 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
   for(int ijet=0; ijet<l.jet_algoPF1_n; ++ijet ) {
     jet_id_flags[ijet] = PileupJetIdentifier::passJetId(l.jet_algoPF1_cutbased_wp_level[ijet], PileupJetIdentifier::kLoose);
     //std::cout<<"jet# pass "<<ijet<<" "<<jet_id_flags[ijet]<<std::endl;
-	}
-	  
-	bool* jetid_flags = (bool*)&jet_id_flags[0];
-
-
+  }
+  
+  bool* jetid_flags = (bool*)&jet_id_flags[0];
+  
+  
   TLorentzVector higgs;
   float mass = -99;
   Int_t cat = 0;
@@ -301,27 +320,28 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
   TLorentzVector* lep2=0;
   Int_t lep1_ind=-1;
   Int_t lep2_ind=-1;
-
+  
   float highestpt=0;
-
-
+  
+  
   if (doMuon) {
     std::vector<int> goodMuons;
     
     for (int i=0; i<l.mu_glo_n; i++) {
       TLorentzVector* p4 = (TLorentzVector*)l.mu_glo_p4->At(i);
       if (p4->Pt() > 20.) {
-        if (l.MuonTightID2012(i, -1)) {
-          if (l.MuonIsolation2012(i, p4->Pt(), true)) {
-            goodMuons.push_back(i);
-          }
-        }
+        //if (l.MuonTightID2012(i, -1)) {
+	// if (l.MuonIsolation2012(i, p4->Pt(), true)) {
+	goodMuons.push_back(i);
+	//  }
+	//}
       }
     }
     
     if (goodMuons.size() < 2)
       return false;
     else {
+      SortLeptons(goodMuons, l.mu_glo_p4);
       l.FillHist("nummucand",0,goodMuons.size(),weight);
     }
     
@@ -332,14 +352,14 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
         TLorentzVector* p2 = (TLorentzVector*)l.mu_glo_p4->At(goodMuons[j]);
         TLorentzVector temp_ll = (*p1)+(*p2);
         if(highestpt<temp_ll.Pt()){
-            lep1=p1;
-            lep2=p2;
-            lep1_ind=goodMuons[i];
-            lep2_ind=goodMuons[j];
-            higgs=(*p1)+(*p2);
-            mass = higgs.M();
-            highestpt=temp_ll.Pt();
-            cat = (abs(lep1->Eta())>=1.4442 || abs(lep2->Eta())>=1.4442);
+	  lep1=p1;
+	  lep2=p2;
+	  lep1_ind=goodMuons[i];
+	  lep2_ind=goodMuons[j];
+	  higgs=(*p1)+(*p2);
+	  mass = higgs.M();
+	  highestpt=temp_ll.Pt();
+	  cat = (abs(lep1->Eta())>=1.4442 || abs(lep2->Eta())>=1.4442);
         }
         //std::cout << higgs.X() << " " << higgs.Y() << " " << higgs.Z() << " "  << std::endl;
         //std::cout << p2->X() << " " << p2->Y() << " " << p2->Z() << " "  << std::endl;
@@ -354,13 +374,14 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
     for (int i=0; i<l.el_std_n; i++) {
       TLorentzVector* p4 = (TLorentzVector*)l.el_std_p4->At(i);
       if (p4->Pt() > 20.)
-        if (ElectronId(l, i))
-          goodEles.push_back(i);
+        //if (ElectronId(l, i))
+	goodEles.push_back(i);
     }
     
     if (goodEles.size() < 2)
       return false;
     else {
+      SortLeptons(goodEles, l.el_std_p4);
       l.FillHist("numelcand",0,goodEles.size(),weight);
     }
     
@@ -371,22 +392,22 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
         TLorentzVector* p2 = (TLorentzVector*)l.el_std_p4->At(goodEles[j]);
         TLorentzVector temp_ll = (*p1)+(*p2);
         if(highestpt<temp_ll.Pt()){
-            lep1=p1;
-            lep2=p2;
-            lep1_ind=goodEles[i];
-            lep2_ind=goodEles[j];
-            higgs=(*p1)+(*p2);
-            mass = higgs.M();
-            highestpt=temp_ll.Pt();
-            cat = (abs(lep1->Eta())>1. || abs(lep2->Eta())>1.);
+	  lep1=p1;
+	  lep2=p2;
+	  lep1_ind=goodEles[i];
+	  lep2_ind=goodEles[j];
+	  higgs=(*p1)+(*p2);
+	  mass = higgs.M();
+	  highestpt=temp_ll.Pt();
+	  cat = (abs(lep1->Eta())>1. || abs(lep2->Eta())>1.);
         }
       }
     }
-   
+    
     //l.FillHist("theta2", 0, 1/4+3/2*pow(p2->Theta(), 2)+1/4*pow(p2->Theta(), 4), weight);
     //l.FillHist("theta2", cat, p2->Theta(), weight);
   }
-
+  
   float dijet_deta; 
   float dijet_mjj;
   float dijet_zep;
@@ -396,20 +417,20 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
   float dijet_j1eta;
   float dijet_j2eta;
   bool dijet_has2jets = DijetPreSelection(l,   lep1,   lep2, 
-      dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt, 
-      dijet_j1eta, dijet_j2eta, jetid_flags);
+					  dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt, 
+					  dijet_j1eta, dijet_j2eta, jetid_flags);
   
   if(dijet_has2jets){
-      if(dijet_mjj>500 && dijet_deta>3.0 && dijet_dphi_ll_jj>2.6 && dijet_j1pt>30 && dijet_j2pt>30){
-          vbfcat=0;
-      }
-      if(dijet_mjj>250 && dijet_deta>3.0 && dijet_dphi_ll_jj>2.6 && dijet_j1pt>30 && dijet_j2pt>20){
-          vbfcat=1;
-      }
-
-      cat=2+vbfcat;
-  }
+    if(dijet_mjj>500 && dijet_deta>3.0 && dijet_dphi_ll_jj>2.6 && dijet_j1pt>30 && dijet_j2pt>30){
+      vbfcat=0;
+    }
+    if(dijet_mjj>250 && dijet_deta>3.0 && dijet_dphi_ll_jj>2.6 && dijet_j1pt>30 && dijet_j2pt>20){
+      vbfcat=1;
+    }
     
+    cat=2+vbfcat;
+  }
+  
   Tree(l, lep1_ind, lep2_ind, higgs, cat, vbfcat, weight, pu_weight, false, "", jetid_flags);
   
   FillRooContainer(l, cur_type, mass, cat, weight);
@@ -418,42 +439,42 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
 
 void HtollAnalysis::FillRooContainer(LoopAll& l, int cur_type, float mass, int category, float weight)
 {
-    if (cur_type == 0 ) {
-        l.rooContainer->InputDataPoint("data_mass",category,mass);
-    } else if (cur_type > 0 ) {
-        if( doMcOptimization ) {
-            l.rooContainer->InputDataPoint("data_mass",category,mass,weight);
-        } else if ( cur_type != 3 && cur_type != 4 ) {
-            l.rooContainer->InputDataPoint("bkg_mass",category,mass,weight);
-        }
-    } else if (cur_type < 0) {
-        l.rooContainer->InputDataPoint("sig_"+GetSignalLabel(cur_type),category,mass,weight);
+  if (cur_type == 0 ) {
+    l.rooContainer->InputDataPoint("data_mass",category,mass);
+  } else if (cur_type > 0 ) {
+    if( doMcOptimization ) {
+      l.rooContainer->InputDataPoint("data_mass",category,mass,weight);
+    } else if ( cur_type != 3 && cur_type != 4 ) {
+      l.rooContainer->InputDataPoint("bkg_mass",category,mass,weight);
     }
+  } else if (cur_type < 0) {
+    l.rooContainer->InputDataPoint("sig_"+GetSignalLabel(cur_type),category,mass,weight);
+  }
 }
 
 void HtollAnalysis::FillSignalLabelMap(LoopAll & l)
 {
-    signalLabels[-113]="ggh_mass_m125";
-    signalLabels[-213]="vbf_mass_m125";
-    signalLabels[-313]="wzh_mass_m125";
-    signalLabels[-413]="tth_mass_m125";
-    signalLabels[-513]="rsg_mass_m125";
+  signalLabels[-113]="ggh_mass_m125";
+  signalLabels[-213]="vbf_mass_m125";
+  signalLabels[-313]="wzh_mass_m125";
+  signalLabels[-413]="tth_mass_m125";
+  signalLabels[-513]="rsg_mass_m125";
 }
 
 std::string HtollAnalysis::GetSignalLabel(int id){
-
-    // For the lazy man, can return a memeber of the map rather than doing it yourself
-    std::map<int,std::string>::iterator it = signalLabels.find(id);
-
-    if (it!=signalLabels.end()){
-        return it->second;
-
-    } else {
-
-        std::cerr << "No Signal Type defined in map with id - " << id << std::endl;
-        return "NULL";
-    }
-
+  
+  // For the lazy man, can return a memeber of the map rather than doing it yourself
+  std::map<int,std::string>::iterator it = signalLabels.find(id);
+  
+  if (it!=signalLabels.end()){
+    return it->second;
+    
+  } else {
+    
+    std::cerr << "No Signal Type defined in map with id - " << id << std::endl;
+    return "NULL";
+  }
+  
 }
 
 
@@ -467,95 +488,95 @@ void HtollAnalysis::FillReductionVariables(LoopAll& l, int jentry) {
   if (l.itype[l.current] < 0) {
     for (int i=0; i<l.gp_n; i++) {
       if (l.gp_pdgid[i] == 25 && l.gp_status[i] == 3) {
-  TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(i);
-  *(l.higgs) = *p4;
-  break;
+	TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(i);
+	*(l.higgs) = *p4;
+	break;
       }
     }
-
+    
     if (doMuon) {
       for (int i=0; i<l.mu_glo_n; i++) {
-  Int_t mc1=-1;
-  Int_t mc2=-1;
-  Int_t pho=-1;
-  
-  l.FindMCLeptons(i, mc1, mc2, pho, 13);
-  // et, eta, phi
-  
-  if (mc1 != -1) {
-    TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(mc1);
-    l.mc_et[i] = p4->Et();
-    l.mc_phi[i] = p4->Phi();
-    l.mc_eta[i] = p4->Eta();
-  } else {
-    l.mc_et[i] = -999.;
-    l.mc_phi[i] = -999.;
-    l.mc_eta[i] = -999.;
-  }
-  
-  if (pho != -1) {
-    TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(pho);
-    l.fsr_et[i] = p4->Et();
-    l.fsr_phi[i] = p4->Phi();
-    l.fsr_eta[i] = p4->Eta();
-  } else {
-    l.fsr_et[i] = -999.;
-    l.fsr_phi[i] = -999.;
-    l.fsr_eta[i] = -999.;
-  }
+	Int_t mc1=-1;
+	Int_t mc2=-1;
+	Int_t pho=-1;
+	
+	l.FindMCLeptons(i, mc1, mc2, pho, 13);
+	// et, eta, phi
+	
+	if (mc1 != -1) {
+	  TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(mc1);
+	  l.mc_et[i] = p4->Et();
+	  l.mc_phi[i] = p4->Phi();
+	  l.mc_eta[i] = p4->Eta();
+	} else {
+	  l.mc_et[i] = -999.;
+	  l.mc_phi[i] = -999.;
+	  l.mc_eta[i] = -999.;
+	}
+	
+	if (pho != -1) {
+	  TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(pho);
+	  l.fsr_et[i] = p4->Et();
+	  l.fsr_phi[i] = p4->Phi();
+	  l.fsr_eta[i] = p4->Eta();
+	} else {
+	  l.fsr_et[i] = -999.;
+	  l.fsr_phi[i] = -999.;
+	  l.fsr_eta[i] = -999.;
+	}
       }
     } else {
       for (int i=0; i<l.el_std_n; i++) {
-  Int_t mc1=-1;
-  Int_t mc2=-1;
-  Int_t pho=-1;
-  
-  l.FindMCLeptons(i, mc1, mc2, pho, 11);
-  // et, eta, phi
-  
-  if (mc1 != -1) {
-    TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(mc1);
-    l.mc_et[i] = p4->Et();
-    l.mc_phi[i] = p4->Phi();
-    l.mc_eta[i] = p4->Eta();
-  } else {
-    l.mc_et[i] = -999.;
-    l.mc_phi[i] = -999.;
-    l.mc_eta[i] = -999.;
-  }
-  
-  if (pho != -1) {
-    TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(pho);
-    l.fsr_et[i] = p4->Et();
-    l.fsr_phi[i] = p4->Phi();
-    l.fsr_eta[i] = p4->Eta();
-  } else {
-    l.fsr_et[i] = -999.;
-    l.fsr_phi[i] = -999.;
-    l.fsr_eta[i] = -999.;
-  }
+	Int_t mc1=-1;
+	Int_t mc2=-1;
+	Int_t pho=-1;
+	
+	l.FindMCLeptons(i, mc1, mc2, pho, 11);
+	// et, eta, phi
+	
+	if (mc1 != -1) {
+	  TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(mc1);
+	  l.mc_et[i] = p4->Et();
+	  l.mc_phi[i] = p4->Phi();
+	  l.mc_eta[i] = p4->Eta();
+	} else {
+	  l.mc_et[i] = -999.;
+	  l.mc_phi[i] = -999.;
+	  l.mc_eta[i] = -999.;
+	}
+	
+	if (pho != -1) {
+	  TLorentzVector* p4 = (TLorentzVector*)l.gp_p4->At(pho);
+	  l.fsr_et[i] = p4->Et();
+	  l.fsr_phi[i] = p4->Phi();
+	  l.fsr_eta[i] = p4->Eta();
+	} else {
+	  l.fsr_et[i] = -999.;
+	  l.fsr_phi[i] = -999.;
+	  l.fsr_eta[i] = -999.;
+	}
       }
     }
   } else {
     if (doMuon) {
       for (int i=0; i<l.mu_glo_n; i++) {
-  l.mc_et[i] = -999.;
-  l.mc_phi[i] = -999.;
-  l.mc_eta[i] = -999.;
-  
-  l.fsr_et[i] = -999.;
-  l.fsr_phi[i] = -999.;
-  l.fsr_eta[i] = -999.;
+	l.mc_et[i] = -999.;
+	l.mc_phi[i] = -999.;
+	l.mc_eta[i] = -999.;
+	
+	l.fsr_et[i] = -999.;
+	l.fsr_phi[i] = -999.;
+	l.fsr_eta[i] = -999.;
       }
     } else {
       for (int i=0; i<l.el_std_n; i++) {
-  l.mc_et[i] = -999.;
-  l.mc_phi[i] = -999.;
-  l.mc_eta[i] = -999.;
-  
-  l.fsr_et[i] = -999.;
-  l.fsr_phi[i] = -999.;
-  l.fsr_eta[i] = -999.;
+	l.mc_et[i] = -999.;
+	l.mc_phi[i] = -999.;
+	l.mc_eta[i] = -999.;
+	
+	l.fsr_et[i] = -999.;
+	l.fsr_phi[i] = -999.;
+	l.fsr_eta[i] = -999.;
       }
     }
   }
@@ -563,6 +584,9 @@ void HtollAnalysis::FillReductionVariables(LoopAll& l, int jentry) {
 
 // ----------------------------------------------------------------------------------------------------
 bool HtollAnalysis::SelectEventsReduction(LoopAll& l, int jentry) {
+
+  if (l.itype[l.current] == 0 && !checkEventHLT(l, hltSelection))
+    return false;
 
   // Two muons/electrons with pT > 20
   int goodMu = 0;
@@ -625,7 +649,9 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     l.FillTree("mass", (float)Higgs.M());
     TLorentzVector* lep1=0;
     TLorentzVector* lep2=0;
-
+    int muid1 = 0, muid2 = 0;
+    int elid1 = 0, elid2 = 0;
+ 
     if (doMuon) {
       lep1 = (TLorentzVector*)l.mu_glo_p4->At(lept1);
       l.FillTree("et1", (float)lep1->Et());
@@ -649,6 +675,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("fsr_eta1", (float)l.fsr_eta[lept1]);
       l.FillTree("fsr_phi1", (float)l.fsr_phi[lept1]);
 
+      if (l.MuonLooseID2012(lept1) && l.MuonIsolation2012(lept1, lep1->Pt(), false))
+	muid1 += 1;
+      if (l.MuonTightID2012(lept1, -1) && l.MuonIsolation2012(lept1, lep1->Pt(), true))
+	muid1 += 2;
+      l.FillTree("muid1", (int)muid1);
+      
       lep2 = (TLorentzVector*)l.mu_glo_p4->At(lept2);
       l.FillTree("et2", (float)lep2->Et());
       l.FillTree("eta2", (float)lep2->Eta());
@@ -683,7 +715,14 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("fsr_eta2", (float)l.fsr_eta[lept2]);
       l.FillTree("fsr_phi2", (float)l.fsr_phi[lept2]);
       //l.FillTree("cosDphi", (float)TMath::Cos(lead_p4.Phi()-sublead_p4.Phi()));
+      //std::cout << "FSR:" << l.fsr_et[lept1] << " " << l.fsr_et[lept2] << std::endl;
 
+      if (l.MuonLooseID2012(lept2) && l.MuonIsolation2012(lept2, lep2->Pt(), false))
+	muid2 += 1;
+      if (l.MuonTightID2012(lept2, -1) && l.MuonIsolation2012(lept2, lep2->Pt(), true))
+	muid2 += 2;
+      l.FillTree("muid2", (int)muid2);
+      
     } else {
       lep1 = (TLorentzVector*)l.el_std_sc->At(lept1);
       l.FillTree("et1", (float)lep1->Et());
@@ -706,6 +745,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("fsr_eta1", (float)l.fsr_eta[lept1]);
       l.FillTree("fsr_phi1", (float)l.fsr_phi[lept1]);
       
+      if (l.ElectronLooseEGammaID(lept1, -1))
+	elid1 += 1;
+      if (l.ElectronTightEGammaID(lept1, -1))
+	elid1 += 2;
+      l.FillTree("elid1", (int)elid1); 
+
       lep2 = (TLorentzVector*)l.el_std_sc->At(lept2);
       l.FillTree("et2", (float)lep2->Et());
       l.FillTree("eta2", (float)lep2->Eta());
@@ -726,6 +771,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("fsr_et2", (float)l.fsr_et[lept2]);
       l.FillTree("fsr_eta2", (float)l.fsr_eta[lept2]);
       l.FillTree("fsr_phi2", (float)l.fsr_phi[lept2]);
+
+      if (l.ElectronLooseEGammaID(lept2, -1))
+	elid2 += 1;
+      if (l.ElectronTightEGammaID(lept2, -1))
+	elid2 += 2;
+      l.FillTree("elid2", (int)elid2); 
 
       l.FillTree("mutype1"  ,(int)-9999);
       l.FillTree("muchi21"  ,(float)-9999.);
@@ -752,6 +803,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     l.FillTree("pu_weight", (float)pu_weight);
     l.FillTree("pu_n", (float)l.pu_n);
     l.FillTree("mass", (float)Higgs.M());
+    l.FillTree("mass_corr", (float)FSRRecovery(l, lep1, lep2));
     l.FillTree("vbfcat", (int)vbfcat);
     l.FillTree("MET", (float)l.met_pfmet);
     l.FillTree("MET_phi", (float)l.met_phi_pfmet);
@@ -782,8 +834,8 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     float dijet_j1eta;
     float dijet_j2eta;
     bool dijet_has2jets = DijetPreSelection(l,   lep1,   lep2, 
-        dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt, 
-        dijet_j1eta, dijet_j2eta, jetid_flags);
+					    dijet_deta, dijet_mjj, dijet_zep, dijet_dphi_ll_jj, dijet_j1pt, dijet_j2pt, 
+					    dijet_j1eta, dijet_j2eta, jetid_flags);
     
     l.FillTree("dijet_mjj",           (float)dijet_mjj);
     l.FillTree("dijet_zep",           (float)dijet_zep);
@@ -805,25 +857,26 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     float dijet_mva = tmvaReader_vbfmumu->EvaluateMVA("Gradient");
     l.FillTree("dijet_vbfmumumva",     (float)dijet_mva);
     float mass=Higgs.M();
-
+    
     if( !(mass < 130. && mass > 120. && doBlinding && l.itype[l.current] == 0) ){
-        l.FillHist("mass", cat, mass, weight);
+      l.FillHist("mass", cat, mass, weight);
     }
 
     if(mass>110 && mass<160){
-        l.FillHist("nvtx",        cat,  l.vtx_std_n,  weight);
-        l.FillHist("ljet_pt",     cat,  dijet_j1pt,  weight);
-        l.FillHist("ljet_eta",    cat,  dijet_j1eta,  weight);
-        l.FillHist("sjet_pt",     cat,  dijet_j2pt,  weight);
-        l.FillHist("sjet_eta",    cat,  dijet_j2eta,  weight);
-        l.FillHist("dijet_mjj",   cat,  dijet_mjj,    weight);
-        l.FillHist("dijet_deta",  cat,  dijet_deta,    weight);
-        l.FillHist("ll_pt",       cat,  Higgs.Pt(),  weight);
-        l.FillHist("ll_eta",      cat,  Higgs.Eta(),  weight);
+      l.FillHist("nvtx",        cat,  l.vtx_std_n,  weight);
+      l.FillHist("ljet_pt",     cat,  dijet_j1pt,  weight);
+      l.FillHist("ljet_eta",    cat,  dijet_j1eta,  weight);
+      l.FillHist("sjet_pt",     cat,  dijet_j2pt,  weight);
+      l.FillHist("sjet_eta",    cat,  dijet_j2eta,  weight);
+      l.FillHist("dijet_mjj",   cat,  dijet_mjj,    weight);
+      l.FillHist("dijet_deta",  cat,  dijet_deta,    weight);
+      l.FillHist("ll_pt",       cat,  Higgs.Pt(),  weight);
+      l.FillHist("ll_eta",      cat,  Higgs.Eta(),  weight);
     }
-
+    
 }
 
+/*
 bool HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
   
   bool result = false;
@@ -856,8 +909,7 @@ bool HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
   
   return result;
 }
-
-
+*/
 
 bool HtollAnalysis::DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLorentzVector* veto_p42, 
     float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 
@@ -895,4 +947,149 @@ bool HtollAnalysis::DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLor
         exist             = true;
     }
     return exist;
+}
+ 
+struct SelectedPhotons { 
+  int index;
+  float pt;
+  float dR;
+};
+
+
+float HtollAnalysis::FSRRecovery(LoopAll& l, TLorentzVector* lep1, TLorentzVector* lep2) {
+  
+  std::vector<SelectedPhotons> selectedPhotons;
+
+  for (int i=0; i<l.pfcand_n; i++) {
+    if (l.pfcand_pdgid[i] == 4) {
+      TLorentzVector* cand = (TLorentzVector*)l.pfcand_p4->At(i);
+      float dR1 = lep1->DeltaR(*cand);
+      float dR2 = lep2->DeltaR(*cand);
+      
+      if ((dR1 < 0.5 && dR1 > 0.07) || (dR2<0.5 && dR2 > 0.07)) {
+	
+	float chIso = 0.;
+	float neuIso = 0.;
+	float phoIso = 0.;
+	
+	for (int j=0; j<l.pfcand_n; j++) {
+	  
+	  // to add PU correction isolation
+	  if (i==j)
+	    continue;
+	  
+	  if (l.pfcand_pdgid[j] == 1) {
+	    TLorentzVector* temp = (TLorentzVector*)l.pfcand_p4->At(j);
+	    float pt = temp->Pt();
+	    
+	    if (pt > 0.2) {
+	      float dR = temp->DeltaR(*cand);
+	      if (dR < 0.3)
+		chIso += pt;
+	    }
+	  }
+	  
+	  if (l.pfcand_pdgid[j] == 2 || l.pfcand_pdgid[j] == 4) {
+	    TLorentzVector* temp = (TLorentzVector*)l.pfcand_p4->At(j);
+	    float pt = temp->Pt();
+	    
+	    if (pt > 0.5) {
+	      float dR = temp->DeltaR(*cand);
+	      float dR1 = temp->DeltaR(*lep1);
+	      float dR2 = temp->DeltaR(*lep2);
+	      
+	      if (dR < 0.3 && dR1 > 0.07 && dR2 > 0.07)
+		phoIso += pt;
+	    }
+	  }
+	  
+	  if (l.pfcand_pdgid[j] == 5) {
+	    TLorentzVector* temp = (TLorentzVector*)l.pfcand_p4->At(j);
+	    float pt = temp->Pt();
+	    
+	    if (pt > 0.5) {
+	      float dR = temp->DeltaR(*cand);
+	      if (dR < 0.3)
+		neuIso += pt;
+	    }
+	  }
+	}
+	
+	float iso = (chIso + phoIso + neuIso)/cand->Pt();
+	//std::cout << "ISO: " << iso << std::endl;
+	if (iso < 1.0) {
+	  SelectedPhotons s;
+	  s.index = i;
+	  s.pt = cand->Pt();
+	  s.dR = std::min(dR1, dR2);
+	  selectedPhotons.push_back(s);
+	}
+      }
+    }
+  }
+  
+  int indexHarder = -1;
+  int indexCloser = -1;
+  float harder = 4.;
+  float closer = 999.;
+  
+  for (unsigned int i=0; i<selectedPhotons.size(); i++) {
+    //std::cout << selectedPhotons[i].pt << " " << selectedPhotons[i].dR << std::endl;
+    if (harder < selectedPhotons[i].pt) {
+      harder = selectedPhotons[i].pt;
+      indexHarder = selectedPhotons[i].index;
+    }
+    
+    if (closer < selectedPhotons[i].dR) {
+      closer = selectedPhotons[i].dR;
+      indexCloser = selectedPhotons[i].index;
+    }
+  }
+  
+  TLorentzVector higgs = (*lep1)+(*lep2);
+  float correctedMass = higgs.M();
+  
+  if (indexHarder != -1) {
+    TLorentzVector* cand = (TLorentzVector*)l.pfcand_p4->At(indexHarder);
+    TLorentzVector higgs = (*lep1)+(*lep2)+(*cand);
+    correctedMass = higgs.M();
+  } else if (indexHarder == -1 && indexCloser != -1) {
+    TLorentzVector* cand = (TLorentzVector*)l.pfcand_p4->At(indexCloser);
+    TLorentzVector higgs = (*lep1)+(*lep2)+(*cand);
+    correctedMass = higgs.M();
+  }
+  
+  return correctedMass;
+}
+
+bool HtollAnalysis::checkEventHLT(LoopAll& l, std::vector<std::string> paths) {
+
+  bool result = false;
+  std::vector<unsigned short> hltNumbers;
+
+  for (unsigned int i=0; i<paths.size(); i++) { 
+    //std::cout << i << " " << paths[i] << std::endl;
+    //std::cout << "_______________________" << std::endl;
+    TRegexp e(TString(paths[i].c_str()), true);
+    for (unsigned int j=0; j<l.hlt_path_names_HLT->size(); j++) {
+      TString str1((*l.hlt_path_names_HLT)[j].c_str());
+      //std::cout << (*l.hlt_path_names_HLT)[j] << std::endl;
+      if (str1.Contains(e)) {	
+	//std::cout << (*l.hlt_path_names_HLT)[j] << std::endl;
+	hltNumbers.push_back(j);
+      }
+    }
+  }
+
+  //system ("sleep 100000000");
+  for (int j=0; j< hltNumbers.size(); j++) {
+    for (int i=0; i<(*l.hlt_bit).size(); i++) {
+      if (hltNumbers[j] == (*l.hlt_bit)[i]) {
+	result = true;
+	break;
+      }
+    }
+  }
+
+  return result;
 }

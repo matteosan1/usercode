@@ -33,9 +33,13 @@ class HtollAnalysis : public StatAnalysis {
 	    Float_t weight, Float_t pu_weight, bool isSyst, std::string name1, bool* passing_jets=0);
   
   bool DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLorentzVector* veto_p42, 
-      float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 
-      float & dijet_j1pt, float & dijet_j2pt, float & dijet_j1eta, float & dijet_j2eta, bool* passing_jets=0);
-  
+			 float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 
+			 float & dijet_j1pt, float & dijet_j2pt, float & dijet_j1eta, float & dijet_j2eta, bool* passing_jets=0);
+
+  float FSRRecovery(LoopAll& l, TLorentzVector* lep1, TLorentzVector* lep2);
+  void SortLeptons(std::vector<int>&, TClonesArray*);
+  bool checkEventHLT(LoopAll& l, std::vector<std::string> paths);
+
   bool doMuon;
   TMVA::Reader *tmvaReader_vbfmumu;
   Float_t tmva_vbfmumu_mjj;
@@ -63,6 +67,7 @@ class HtollAnalysis : public StatAnalysis {
   bool doBlinding;
  protected:
   std::string name_;
+  std::vector<std::string> hltSelection;
 };
 
 #endif
