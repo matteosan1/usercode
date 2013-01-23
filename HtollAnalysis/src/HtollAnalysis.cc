@@ -330,11 +330,11 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
     for (int i=0; i<l.mu_glo_n; i++) {
       TLorentzVector* p4 = (TLorentzVector*)l.mu_glo_p4->At(i);
       if (p4->Pt() > 20.) {
-        //if (l.MuonTightID2012(i, -1)) {
-	// if (l.MuonIsolation2012(i, p4->Pt(), true)) {
-	goodMuons.push_back(i);
-	//  }
-	//}
+        if (l.MuonLooseID2012(i)) {
+	  if (l.MuonIsolation2012(i, p4->Pt(), false)) {
+	    goodMuons.push_back(i);
+	  }
+	}
       }
     }
     
@@ -359,7 +359,7 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
 	  higgs=(*p1)+(*p2);
 	  mass = higgs.M();
 	  highestpt=temp_ll.Pt();
-	  cat = (abs(lep1->Eta())>=1.4442 || abs(lep2->Eta())>=1.4442);
+	  cat = (fabs(lep1->Eta())>=1.4442 || fabs(lep2->Eta())>=1.4442);
         }
         //std::cout << higgs.X() << " " << higgs.Y() << " " << higgs.Z() << " "  << std::endl;
         //std::cout << p2->X() << " " << p2->Y() << " " << p2->Z() << " "  << std::endl;
@@ -399,7 +399,7 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
 	  higgs=(*p1)+(*p2);
 	  mass = higgs.M();
 	  highestpt=temp_ll.Pt();
-	  cat = (abs(lep1->Eta())>1. || abs(lep2->Eta())>1.);
+	  cat = (fabs(lep1->Eta())>1.4442 || fabs(lep2->Eta())>1.4442);
         }
       }
     }
@@ -421,18 +421,18 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
 					  dijet_j1eta, dijet_j2eta, jetid_flags);
   
   if(dijet_has2jets){
-    if(dijet_mjj>500 && dijet_deta>3.0 && dijet_dphi_ll_jj>2.6 && dijet_j1pt>30 && dijet_j2pt>30){
-      vbfcat=0;
-    }
     if(dijet_mjj>250 && dijet_deta>3.0 && dijet_dphi_ll_jj>2.6 && dijet_j1pt>30 && dijet_j2pt>20){
       vbfcat=1;
     }
-    
-    cat=2+vbfcat;
+    if(dijet_mjj>500 && dijet_deta>3.0 && dijet_dphi_ll_jj>2.6 && dijet_j1pt>30 && dijet_j2pt>30){
+      vbfcat=0;
+    }
+        
+    if (vbfcat != -1) 
+      cat=2+vbfcat;
   }
-  
+
   Tree(l, lep1_ind, lep2_ind, higgs, cat, vbfcat, weight, pu_weight, false, "", jetid_flags);
-  
   FillRooContainer(l, cur_type, mass, cat, weight);
   return true;
 }
