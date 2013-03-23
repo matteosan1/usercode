@@ -11,3 +11,9 @@ gp_p4:1
 gp_pdgid:1
 gp_status:1
 gp_mother:1
+
+hlt_bit:2
+hlt_path_names_HLT:2
+hlt_n:2
+hlt_p4:2
+hlt_candpath:2

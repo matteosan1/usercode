@@ -30,6 +30,9 @@ type=0 name=domuon
 type=2 name=et1
 type=2 name=eta1
 type=2 name=phi1
+type=2 name=etnocorr1
+type=2 name=etanocorr1
+type=2 name=phinocorr1
 type=0 name=mutype1
 type=2 name=muchi21
 type=0 name=much1
@@ -44,6 +47,9 @@ type=2 name=phiso1
 type=2 name=et2
 type=2 name=eta2
 type=2 name=phi2
+type=2 name=etnocorr2
+type=2 name=etanocorr2
+type=2 name=phinocorr2
 type=0 name=mutype2
 type=2 name=muchi22
 type=0 name=much2
@@ -60,12 +66,10 @@ type=2 name=phiso2
 type=0 name=elmisshits1
 type=0 name=elconv1
 type=2 name=elmva1
-type=2 name=elregr1
 type=2 name=elregr_err1
 type=0 name=elmisshits2
 type=0 name=elconv2
 type=2 name=elmva2
-type=2 name=elregr2
 type=2 name=elregr_err2
 type=2 name=elpt1
 type=2 name=elpt2

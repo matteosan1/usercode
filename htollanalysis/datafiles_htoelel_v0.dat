@@ -4,16 +4,24 @@ intL=19400. histfile=CMS-HElEl.root output=eventsList.txt
 # Data
 #
 # 697/pb in this one
-typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055124_run2012A_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
-typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055153_run2012A_recovery_DE       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
-typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055214_run2012B_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
-typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055315_run2012C_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
-typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130111055435_run2012C_recovery_DE       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
-typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130116070021_run2012D_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130321095718_run2012A_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130321095915_run2012A_recovery_DE       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130321095941_run2012B_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130321100050_run2012C_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130321100212_run2012C_recovery_DE       tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
+typ=0     ind=0   draw=1    Nam=Data                  Dir=/hadoop/cms/store/user/matteo/reduced/20130321100243_run2012D_DE                tot=1 red=1 lum=1.0e10      xsec=1.       kfac=1.0      scal=1.
 
-typ=-123  ind=1   draw=1    Nam=ggh_m125_ee_8TeV      Dir=/hadoop/cms/store/user/matteo/reduced/20130111051905_hee      red=0 lum=1000000.0   xsec=4.3e-03  kfac=4.8e-05      scal=1.
-typ=-223  ind=2   draw=1    Nam=qqh_m125_ee_8TeV      Dir=/hadoop/cms/store/user/matteo/reduced/20130111054017_vbfee    red=0 lum=1000000.0   xsec=3.5e-04  kfac=4.8e-05      scal=1.
-##typ=-523  ind=3   draw=1    Nam=RSG_m125_ee_8TeV    Dir=/hadoop/cms/store/user/matteo/reduced/20130111054042_rsee     red=0 lum=1000000.0   xsec=4.7e-03  kfac=1.0      scal=1.
+typ=-123  ind=1   draw=1    Nam=ggh_m125_ee_8TeV      Dir=/hadoop/cms/store/user/matteo/reduced/20130111051905_hee      red=0 lum=1000000.0   xsec=4.29e-03  kfac=2.33e-05  scal=1.
+typ=-223  ind=2   draw=1    Nam=qqh_m125_ee_8TeV      Dir=/hadoop/cms/store/user/matteo/reduced/20130111054017_vbfee    red=0 lum=1000000.0   xsec=3.47e-04  kfac=2.33e-05  scal=1.
+##typ=-523  ind=3   draw=1    Nam=RSG_m125_ee_8TeV    Dir=/hadoop/cms/store/user/matteo/reduced/20130111054042_rsee     red=0 lum=1000000.0   xsec=4.29e-03  kfac=2.33e-05  scal=1.
+
+typ=-124  ind=1   draw=1    Nam=ggh_m120_ee_8TeV      Dir=/hadoop/cms/store/user/matteo/reduced/Hee120    		red=0 lum=1000000.0   xsec=5.15e-03  kfac=2.33e-05  scal=1.
+typ=-224  ind=2   draw=1    Nam=qqh_m120_ee_8TeV      Dir=/hadoop/cms/store/user/matteo/reduced/VBFee120   		red=0 lum=1000000.0   xsec=4.02e-04  kfac=2.33e-05  scal=1.
+##typ=-524  ind=3   draw=1    Nam=RSG_m120_ee_8TeV    Dir=/hadoop/cms/store/user/matteo/reduced/Gee120    		red=0 lum=1000000.0   xsec=5.15e-03  kfac=2.33e-05  scal=1.
+
+typ=-125  ind=1   draw=1    Nam=ggh_m130_ee_8TeV      Dir=/hadoop/cms/store/user/matteo/reduced/Hee130    		red=0 lum=1000000.0   xsec=3.36e-03  kfac=2.33e-05  scal=1.
+typ=-225  ind=2   draw=1    Nam=qqh_m130_ee_8TeV      Dir=/hadoop/cms/store/user/matteo/reduced/VBFee130   		red=0 lum=1000000.0   xsec=2.81e-04  kfac=2.33e-05  scal=1.
+##typ=-525  ind=3   draw=1    Nam=RSG_m130_ee_8TeV    Dir=/hadoop/cms/store/user/matteo/reduced/Gee130    		red=0 lum=1000000.0   xsec=3.36e-03  kfac=2.33e-05  scal=1.
 
 ##
 ## DY MC
@@ -60,4 +68,4 @@ treevariables htollanalysis/treevariables_htollanalysis.dat
 ##   analyzer <class_name> <config_file>
 ##
 ## analyzer PhotonAnalysis photonanalysis.dat
-analyzer  HtollAnalysis  htollanalysis/htollanalysis.dat doMuon=0 doBlinding=0
+analyzer  HtollAnalysis  htollanalysis/htollanalysis.dat doMuon=0 doBlinding=1

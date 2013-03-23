@@ -2,6 +2,8 @@
 #define __HtollAnalysis__
 
 #include "PhotonAnalysis/interface/StatAnalysis.h"
+#include "HtollAnalysis/interface/MuScleFitCorrector.h"
+#include "TRegexp.h"
 
 // ------------------------------------------------------------------------------------
 class HtollAnalysis : public StatAnalysis {
@@ -27,7 +29,7 @@ class HtollAnalysis : public StatAnalysis {
   virtual bool SelectEvents(LoopAll&, int);
   virtual bool Analysis(LoopAll&, Int_t);
 
-  bool ElectronId(LoopAll&, Int_t);
+  //bool ElectronId(LoopAll&, Int_t);
   void Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVector & Higgs,
 	    Int_t cat, Int_t vbfcat, 
 	    Float_t weight, Float_t pu_weight, bool isSyst, std::string name1, bool* passing_jets=0);
@@ -37,8 +39,9 @@ class HtollAnalysis : public StatAnalysis {
 			 float & dijet_j1pt, float & dijet_j2pt, float & dijet_j1eta, float & dijet_j2eta, bool* passing_jets=0);
 
   float FSRRecovery(LoopAll& l, TLorentzVector* lep1, TLorentzVector* lep2);
-  void SortLeptons(std::vector<int>&, TClonesArray*);
+  void SortLeptons(LoopAll& l, std::vector<int>& indices, bool isMuon);
   bool checkEventHLT(LoopAll& l, std::vector<std::string> paths);
+  void correctElectronEnergy(LoopAll& l, Int_t eleIndex, TLorentzVector& p4);
 
   bool doMuon;
   TMVA::Reader *tmvaReader_vbfmumu;
@@ -63,11 +66,14 @@ class HtollAnalysis : public StatAnalysis {
   void FillSignalLabelMap(LoopAll & l);
   std::vector<int> sigPointsToBook;
   std::string jetHandlerCfg;
+  std::string muFitParametersFile;
   
   bool doBlinding;
  protected:
   std::string name_;
   std::vector<std::string> hltSelection;
+
+  MuScleFitCorrector* muCorrector_;
 };
 
 #endif
