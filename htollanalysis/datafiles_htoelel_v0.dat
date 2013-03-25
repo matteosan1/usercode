@@ -1,4 +1,4 @@
-intL=19400. histfile=CMS-HElEl.root output=eventsList.txt
+intL=19200. histfile=CMS-HElEl.root output=eventsList.txt
 
 #
 # Data
