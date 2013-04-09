@@ -24,7 +24,7 @@
 #include "TTree.h"
 
 // For applying regression
-#include "CondFormats/EgammaObjects/interface/MyGBRForest.h"
+#include "CondFormats/EgammaObjects/interface/GBRForest.h"
 #ifndef STANDALONE
 #include "DataFormats/EgammaCandidates/interface/GsfElectronFwd.h"
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
@@ -228,10 +228,10 @@ class ElectronEnergyRegressionEvaluate{
  private:
   bool fIsInitialized;
   ElectronEnergyRegressionEvaluate::ElectronEnergyRegressionType fVersionType;
-  MyGBRForest *forestCorrection_eb;		// Pointer to the GBRForest for barrel
-  MyGBRForest *forestCorrection_ee;		// Pointer to the GBRForest for endcap
-  MyGBRForest *forestUncertainty_eb;	
-  MyGBRForest *forestUncertainty_ee;		
+  GBRForest *forestCorrection_eb;		// Pointer to the GBRForest for barrel
+  GBRForest *forestCorrection_ee;		// Pointer to the GBRForest for endcap
+  GBRForest *forestUncertainty_eb;	
+  GBRForest *forestUncertainty_ee;		
 };
 
 #endif

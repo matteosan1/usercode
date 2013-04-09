@@ -34,11 +34,10 @@ void ElectronEnergyRegressionEvaluate::initialize(std::string weightsFile,
   file = TFile::Open(weightsFile.c_str(),"READ");
 
   if (type == kNoTrkVar || type == kWithTrkVar) {
-    std::cout << "PIPPO " << weightsFile.c_str()  << std::endl;
-    forestCorrection_eb =  (MyGBRForest*) file->Get("EBCorrection");
-    forestCorrection_ee =  (MyGBRForest*) file->Get("EECorrection");
-    forestUncertainty_eb = (MyGBRForest*) file->Get("EBUncertainty");
-    forestUncertainty_ee = (MyGBRForest*) file->Get("EEUncertainty");
+    forestCorrection_eb =  (GBRForest*) file->Get("EBCorrection");
+    forestCorrection_ee =  (GBRForest*) file->Get("EECorrection");
+    forestUncertainty_eb = (GBRForest*) file->Get("EBUncertainty");
+    forestUncertainty_ee = (GBRForest*) file->Get("EEUncertainty");
 
     // Just checking
     assert(forestCorrection_eb);
