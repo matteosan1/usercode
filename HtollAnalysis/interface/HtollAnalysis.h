@@ -29,7 +29,7 @@ class HtollAnalysis : public StatAnalysis {
   virtual bool SelectEvents(LoopAll&, int);
   virtual bool Analysis(LoopAll&, Int_t);
 
-  //bool ElectronId(LoopAll&, Int_t);
+  std::pair<float, float> ElectronId(LoopAll&, Int_t);
   void Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVector & Higgs,
 	    Int_t cat, Int_t vbfcat, 
 	    Float_t weight, Float_t pu_weight, bool isSyst, std::string name1, bool* passing_jets=0);
@@ -42,8 +42,11 @@ class HtollAnalysis : public StatAnalysis {
   void SortLeptons(LoopAll& l, std::vector<int>& indices, bool isMuon);
   bool checkEventHLT(LoopAll& l, std::vector<std::string> paths);
   void correctElectronEnergy(LoopAll& l, Int_t eleIndex, TLorentzVector& p4);
+  Int_t MuonCategorization(LoopAll& l, Int_t mu1, Int_t mu2, Int_t ncats);
 
   bool doMuon;
+  Int_t nMuonCategories;
+  Float_t muonEtaLimit;
   TMVA::Reader *tmvaReader_vbfmumu;
   Float_t tmva_vbfmumu_mjj;
   Float_t tmva_vbfmumu_zep;
@@ -53,7 +56,6 @@ class HtollAnalysis : public StatAnalysis {
   Float_t tmva_vbfmumu_j2pt;
   Float_t tmva_vbfmumu_has2jets;
   Float_t tmva_vbfmumu_itype;
-  
   
   int nCategories_;
   float massMin,massMax;
@@ -67,7 +69,8 @@ class HtollAnalysis : public StatAnalysis {
   std::vector<int> sigPointsToBook;
   std::string jetHandlerCfg;
   std::string muFitParametersFile;
-  
+
+  float ptCut;
   bool doBlinding;
  protected:
   std::string name_;

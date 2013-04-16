@@ -23,6 +23,9 @@ HtollAnalysis::HtollAnalysis()  :
     jecShift = 0.;
     jetHandler_ = 0;
     muCorrector_ = 0;
+    ptCut = 20.;
+    nMuonCategories = 2;
+    muonEtaLimit = 2.1;
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -38,7 +41,7 @@ HtollAnalysis::~HtollAnalysis() {
 void HtollAnalysis::Term(LoopAll& l) {
   if (l.typerun != l.kReduce) {
     std::string postfix=(dataIs2011?"":"_8TeV");
-    l.rooContainer->FitToData("data_pol_model"+postfix,"data_mass");  // Fit to full range of dataset
+    //l.rooContainer->FitToData("data_voigtexp_model"+postfix,"data_mass");  // Fit to full range of dataset
   }
 }
 
@@ -168,6 +171,7 @@ void HtollAnalysis::buildBkgModel(LoopAll& l, const std::string & postfix) {
     assert( 0 );
   }
   
+  
   l.rooContainer->AddRealVar("CMS_hll_pol6_0"+postfix,-0.1,-1.0,1.0);
   l.rooContainer->AddRealVar("CMS_hll_pol6_1"+postfix,-0.1,-1.0,1.0);
   l.rooContainer->AddRealVar("CMS_hll_pol6_2"+postfix,-0.1,-1.0,1.0);
@@ -217,7 +221,17 @@ void HtollAnalysis::buildBkgModel(LoopAll& l, const std::string & postfix) {
   l.rooContainer->AddFormulaVar("CMS_hll_modlin0"+postfix,"@0*@0","CMS_hll_lin0"+postfix);
   
   l.rooContainer->AddRealVar("CMS_hll_plaw0"+postfix,0.01,-10,10);
-  
+
+  l.rooContainer->AddRealVar("CMS_hll_voigtexp_0"+postfix, 91.186, 80.0, 100.0);
+  l.rooContainer->AddRealVar("CMS_hll_voigtexp_1"+postfix, 2.125, 0.0, 5.0);
+  l.rooContainer->AddRealVar("CMS_hll_voigtexp_2"+postfix, 5, 0, 10.0);
+  l.rooContainer->AddRealVar("CMS_hll_voigtexp_3"+postfix,-1.,-10.0,0.0);
+  l.rooContainer->AddRealVar("CMS_hll_voigtexp_4"+postfix, .5, .0 , 1.0);
+
+  //l.rooContainer->AddRealVar("CMS_hll_voigt_0"+postfix, 91.186, 88.0, 94.0);
+  //l.rooContainer->AddRealVar("CMS_hll_voigt_1"+postfix, 2.495, 0.0, 0.0);
+  //l.rooContainer->AddRealVar("CMS_hll_voigt_2"+postfix, 5., 0., 10.0);
+
   // prefix for models parameters
   std::map<int,std::string> parnames;
   parnames[1] = "modlin";
@@ -225,7 +239,9 @@ void HtollAnalysis::buildBkgModel(LoopAll& l, const std::string & postfix) {
   parnames[3] = "modcubic";
   parnames[4] = "modquartic";
   parnames[5] = "modpol5_";
+  //parnames[5] = "voigt_";
   parnames[6] = "modpol6_";
+  parnames[7] = "voigtexp_";
   parnames[-1] = "plaw";
   
   // map order to categories flags + parameters names
@@ -234,6 +250,9 @@ void HtollAnalysis::buildBkgModel(LoopAll& l, const std::string & postfix) {
   for(int icat=0; icat<nCategories_; ++icat) {
     // get the poly order for this category
     int catmodel = bkgPolOrderByCat[icat];
+    if (catmodel == 7)
+      catmodel = 5;
+    int parnameIndex = bkgPolOrderByCat[icat];
     std::vector<int> & catflags = catmodels[catmodel].first;
     std::vector<std::string> & catpars = catmodels[catmodel].second;
     // if this is the first time we find this order, build the parameters
@@ -241,9 +260,10 @@ void HtollAnalysis::buildBkgModel(LoopAll& l, const std::string & postfix) {
       assert( catpars.empty() );
       // by default no category has the new model
       catflags.resize(nCategories_, 0);
-      std::string & parname = parnames[catmodel];
+      std::string & parname = parnames[parnameIndex];
       if( catmodel > 0 ) {
 	for(int iorder = 0; iorder<catmodel; ++iorder) {
+	  std::cout << "HtoLL " <<   Form( "CMS_hll_%s%d%s", parname.c_str(), iorder, +postfix.c_str() ) << std::endl;
 	  catpars.push_back( Form( "CMS_hll_%s%d%s", parname.c_str(), iorder, +postfix.c_str() ) );
 	}
       } else {
@@ -267,8 +287,8 @@ void HtollAnalysis::buildBkgModel(LoopAll& l, const std::string & postfix) {
     std::vector<std::string> & catpars = modit->second.second;
     
     if( modit->first > 0 ) {
-      l.rooContainer->AddSpecificCategoryPdf(&catflags[0],"data_pol_model"+postfix,
-					     "0","CMS_hll_mass",catpars,70+catpars.size());
+      l.rooContainer->AddSpecificCategoryPdf(&catflags[0],"data_voigtexp_model"+postfix,
+					     "0","CMS_hll_mass", catpars, 7);
       // >= 71 means RooBernstein of order >= 1
     } else {
       l.rooContainer->AddSpecificCategoryPdf(&catflags[0],"data_pol_model"+postfix,
@@ -302,14 +322,15 @@ void HtollAnalysis::SortLeptons(LoopAll& l, std::vector<int>& indices, bool isMu
       }
     }
   } else {
-    TLorentzVector p1, p2;
+    //TLorentzVector p1, p2;
     for (unsigned int i=0; i<indices.size()-1; i++) {
-      correctElectronEnergy(l, i, p1);
-      float pt1 = p1.Pt();
-      
+      //correctElectronEnergy(l, i, p1);
+      //float pt1 = p1.Pt();
+      float pt1 = ((TLorentzVector*)l.el_std_p4_corr->At(i))->Pt();
       for (unsigned int j=i+1; j<indices.size(); j++) {
-	correctElectronEnergy(l, j, p2);	
-	float pt2 = p2.Pt(); 
+	//correctElectronEnergy(l, j, p2);	
+	//float pt2 = p2.Pt(); 
+	float pt2 = ((TLorentzVector*)l.el_std_p4_corr->At(j))->Pt();
 	if (pt1 < pt2) {
 	  int temp = indices[j];
 	  indices[j] = indices[i];
@@ -318,6 +339,43 @@ void HtollAnalysis::SortLeptons(LoopAll& l, std::vector<int>& indices, bool isMu
       }
     }
   }
+}
+
+Int_t HtollAnalysis::MuonCategorization(LoopAll& l, Int_t mu1, Int_t mu2, Int_t ncats) {
+
+  Int_t cat = -1;
+  TLorentzVector* p1 = (TLorentzVector*)l.mu_glo_p4_corr->At(mu1);
+  TLorentzVector* p2 = (TLorentzVector*)l.mu_glo_p4_corr->At(mu2);
+  
+  if (ncats == 2) {
+    cat = (fabs(p1->Eta())>=0.8 || fabs(p2->Eta())>=0.8);
+  } else if (ncats == 6) {
+    Int_t catmu1 = -1, catmu2 = -1;
+    if (fabs(p1->Eta())<0.8) 
+      catmu1 = 0;
+    else if (fabs(p1->Eta())>1.6 && fabs(p1->Eta())<muonEtaLimit) 
+      catmu1 = 2;
+    else  
+      catmu1 = 1;
+
+    if (fabs(p2->Eta())<0.8) 
+      catmu2 = 0;
+    else if (fabs(p2->Eta())>1.6 && fabs(p2->Eta())<muonEtaLimit) 
+      catmu2 = 2;
+    else  
+      catmu2 = 1;
+
+    if (catmu1 == 0)
+      cat = catmu2;
+    else if (catmu1 == 1 && catmu2 == 1)
+      cat = 3;
+    else if (catmu1 == 1 && catmu2 == 2)
+      cat = 4;
+    else if (catmu1 == 2 && catmu2 == 2)
+      cat = 5;
+  }
+
+  return cat;
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -353,7 +411,7 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
   
   TLorentzVector higgs;
   float mass = -99;
-  Int_t cat = 0;
+  Int_t cat = -1;
   Int_t vbfcat = -1;
   TLorentzVector* lep1=0;
   TLorentzVector* lep2=0;
@@ -366,8 +424,8 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
     std::vector<int> goodMuons;
     
     for (int i=0; i<l.mu_glo_n; i++) {
-      TLorentzVector* p4 = (TLorentzVector*)l.mu_glo_p4->At(i);
-      if (p4->Pt() > 20.)
+      TLorentzVector* p4 = (TLorentzVector*)l.mu_glo_p4_corr->At(i);
+      if (p4->Pt() > ptCut && fabs(p4->Eta()) < muonEtaLimit)
 	goodMuons.push_back(i);
     }
     
@@ -392,25 +450,20 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
 	  higgs=(*p1)+(*p2);
 	  mass = higgs.M();
 	  highestpt=temp_ll.Pt();
-	  if (l.MuonLooseID2012(goodMuons[i]) && l.MuonLooseID2012(goodMuons[j])) {
-	    if (l.MuonIsolation2012(goodMuons[i], lep1->Pt(), false) && l.MuonIsolation2012(goodMuons[j], lep2->Pt(), false)) {
-	      cat = (fabs(lep1->Eta())>=1.4442 || fabs(lep2->Eta())>=1.4442);
+	  if (l.MuonTightID2012(goodMuons[i]) && l.MuonTightID2012(goodMuons[j])) {
+	    if (l.MuonIsolation2012(goodMuons[i], lep1->Pt(), true) && l.MuonIsolation2012(goodMuons[j], lep2->Pt(), true)) {
+	      cat = MuonCategorization(l, lep1_ind, lep2_ind, nMuonCategories);
 	    }
 	  }
         }
-        //std::cout << higgs.X() << " " << higgs.Y() << " " << higgs.Z() << " "  << std::endl;
-        //std::cout << p2->X() << " " << p2->Y() << " " << p2->Z() << " "  << std::endl;
-        //p2->Boost(-higgs.BoostVector());
-        //std::cout << p2->X() << " " << p2->Y() << " " << p2->Z() << " "  << std::endl;
-        //std::cout << p2->Theta() << std::endl;
       }
     }
   } else {
     std::vector<int> goodEles;
     
     for (int i=0; i<l.el_std_n; i++) {
-      TLorentzVector* p4 = (TLorentzVector*)l.el_std_p4->At(i);
-      if (p4->Pt() > 20.)
+      TLorentzVector* p4 = (TLorentzVector*)l.el_std_p4_corr->At(i);
+      if (p4->Pt() > ptCut)
 	goodEles.push_back(i);
     }
     
@@ -423,10 +476,13 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
     
     TLorentzVector p1, p2; 
     for (unsigned int i=0; i<goodEles.size()-1; i++) {
-      correctElectronEnergy(l, goodEles[i], p1);
+      //correctElectronEnergy(l, goodEles[i], p1);
+      p1 = *((TLorentzVector*)l.el_std_p4_corr->At(goodEles[i]));
       
       for (unsigned int j=i+1; j<goodEles.size(); j++) {
-        correctElectronEnergy(l, goodEles[j], p2);
+        //correctElectronEnergy(l, goodEles[j], p2);
+	p2 = *((TLorentzVector*)l.el_std_p4_corr->At(goodEles[j]));
+
         TLorentzVector temp_ll = p1 + p2;
         if(highestpt<temp_ll.Pt()){
 	  lep1=&p1;
@@ -466,14 +522,17 @@ bool HtollAnalysis::Analysis(LoopAll& l, Int_t jentry) {
       vbfcat=0;
     }
         
-    if (vbfcat != -1) 
-      cat=2+vbfcat;
+    if (vbfcat != -1 && cat != -1) 
+      if (doMuon)
+	cat=nMuonCategories+vbfcat;
   }
 
   if( !(mass < 130. && mass > 120. && doBlinding && l.itype[l.current] == 0) )
     Tree(l, lep1_ind, lep2_ind, higgs, cat, vbfcat, weight, pu_weight, false, "", jetid_flags);
 
-  FillRooContainer(l, cur_type, mass, cat, weight);
+  if (cat != -1)
+    FillRooContainer(l, cur_type, mass, cat, weight);
+
   return true;
 }
 
@@ -666,7 +725,8 @@ void HtollAnalysis::FillReductionVariables(LoopAll& l, int jentry) {
 // ----------------------------------------------------------------------------------------------------
 bool HtollAnalysis::SelectEventsReduction(LoopAll& l, int jentry) {
 
-  if (l.itype[l.current] == 0 && !checkEventHLT(l, hltSelection))
+  //if (l.itype[l.current] == 0 && !checkEventHLT(l, hltSelection))
+  if (!checkEventHLT(l, hltSelection))
     return false;
 
   // Two muons/electrons with pT > 20
@@ -679,7 +739,7 @@ bool HtollAnalysis::SelectEventsReduction(LoopAll& l, int jentry) {
 
   int goodEl = 0;
   for(int i =0; i<l.el_std_n; i++) {
-    TLorentzVector* p4 = (TLorentzVector*)l.el_std_sc->At(i);
+    TLorentzVector* p4 = (TLorentzVector*)l.el_std_p4->At(i);
     if (p4->Et() > 20.)
       goodEl++;
   }
@@ -736,11 +796,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
  
     if (doMuon) {
       lep1 = (TLorentzVector*)l.mu_glo_p4_corr->At(lept1);
-      l.FillTree("et1", (float)lep1->Et());
+      l.FillTree("et1", (float)lep1->Pt());
       l.FillTree("eta1", (float)lep1->Eta());
       l.FillTree("phi1", (float)lep1->Phi());
+      l.FillTree("dptopt1", (float)l.mu_glo_tkpterr[lept1]/(float)lep1->Pt());
       TLorentzVector* p4 = (TLorentzVector*)l.mu_glo_p4->At(lept1);
-      l.FillTree("etnocorr1", (float)p4->Et());
+      l.FillTree("etnocorr1", (float)p4->Pt());
       l.FillTree("etanocorr1", (float)p4->Eta());
       l.FillTree("phinocorr1", (float)p4->Phi());
       l.FillTree("mutype1", (int)l.mu_glo_type[lept1]);
@@ -768,11 +829,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("muid1", (int)muid1);
       
       lep2 = (TLorentzVector*)l.mu_glo_p4_corr->At(lept2);
-      l.FillTree("et2", (float)lep2->Et());
+      l.FillTree("et2", (float)lep2->Pt());
       l.FillTree("eta2", (float)lep2->Eta());
       l.FillTree("phi2", (float)lep2->Phi());
+      l.FillTree("dptopt2", (float)l.mu_glo_tkpterr[lept2]/(float)lep2->Pt());
       p4 = (TLorentzVector*)l.mu_glo_p4->At(lept2);
-      l.FillTree("etnocorr2", (float)p4->Et());
+      l.FillTree("etnocorr2", (float)p4->Pt());
       l.FillTree("etanocorr2", (float)p4->Eta());
       l.FillTree("phinocorr2", (float)p4->Phi());
       l.FillTree("mutype2", (int)l.mu_glo_type[lept2]);
@@ -789,10 +851,12 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("elmisshits1", (int)99);
       l.FillTree("elconv1", (int)99);
       l.FillTree("elmva1", (float)99.);
+      l.FillTree("elpfiso1", (float)99.);
       l.FillTree("elregr_err1", (float)9999.);
       l.FillTree("elmisshits2", (int)99);
       l.FillTree("elconv2", (int)99);
       l.FillTree("elmva2", (float)99.);
+      l.FillTree("elpfiso2", (float)99.);
       l.FillTree("elregr_err2", (float)9999.);
       l.FillTree("mc_et2", (float)l.mc_et[lept2]);
       l.FillTree("mc_eta2", (float)l.mc_eta[lept2]);
@@ -800,7 +864,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("fsr_et2", (float)l.fsr_et[lept2]);
       l.FillTree("fsr_eta2", (float)l.fsr_eta[lept2]);
       l.FillTree("fsr_phi2", (float)l.fsr_phi[lept2]);
-      //l.FillTree("cosDphi", (float)TMath::Cos(lead_p4.Phi()-sublead_p4.Phi()));
+      l.FillTree("cosDphi", (float)TMath::Cos(lep1->Phi()-lep2->Phi()));
       //std::cout << "FSR:" << l.fsr_et[lept1] << " " << l.fsr_et[lept2] << std::endl;
 
       if (l.MuonLooseID2012(lept2) && l.MuonIsolation2012(lept2, lep2->Pt(), false))
@@ -815,6 +879,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("et1", (float)lep1->Et());
       l.FillTree("eta1", (float)lep1->Eta());
       l.FillTree("phi1", (float)lep1->Phi());
+      l.FillTree("dptopt1", (float)9999.);
       TLorentzVector* p4 = (TLorentzVector*)l.el_std_p4->At(lept1);
       l.FillTree("etnocorr1", (float)p4->Et());
       l.FillTree("etanocorr1", (float)p4->Eta());
@@ -824,7 +889,9 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("phiso1", l.el_std_pfiso_photon[lept1]);
       l.FillTree("elmisshits1", (int)l.el_std_hp_expin[lept1]);
       l.FillTree("elconv1", (int)l.el_std_conv[lept1]);
-      l.FillTree("elmva1", (float)l.el_std_mva_trig[lept1]);
+      std::pair<float, float> r = ElectronId(l, lept1);
+      l.FillTree("elmva1", (float)r.first);
+      l.FillTree("elpfiso1", (float)r.second);
       l.FillTree("elregr_err1", (float)l.el_std_regr_energyerr[lept1]);
       l.FillTree("mc_et1", (float)l.mc_et[lept1]);
       l.FillTree("mc_eta1", (float)l.mc_eta[lept1]);
@@ -844,6 +911,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("et2", (float)lep2->Et());
       l.FillTree("eta2", (float)lep2->Eta());
       l.FillTree("phi2", (float)lep2->Phi());
+      l.FillTree("dptopt2", (float)9999.);
       p4 = (TLorentzVector*)l.el_std_p4->At(lept2);
       l.FillTree("etnocorr2", (float)p4->Et());
       l.FillTree("etanocorr2", (float)p4->Eta());
@@ -853,7 +921,9 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("phiso2", l.el_std_pfiso_photon[lept2]);
       l.FillTree("elmisshits2", (int)l.el_std_hp_expin[lept2]);
       l.FillTree("elconv2", (int)l.el_std_conv[lept2]);
-      l.FillTree("elmva2", (float)l.el_std_mva_trig[lept2]);
+      r = ElectronId(l, lept2);
+      l.FillTree("elmva2", (float)r.first);
+      l.FillTree("elpfiso2", (float)r.second);
       l.FillTree("elregr_err2", (float)l.el_std_regr_energyerr[lept2]);
       l.FillTree("mc_et2", (float)l.mc_et[lept2]);
       l.FillTree("mc_eta2", (float)l.mc_eta[lept2]);
@@ -882,8 +952,7 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
       l.FillTree("mupixhit2",(int)-9999);
       l.FillTree("mutklay2" ,(int)-9999);
       l.FillTree("mudb2"    ,(float)-9999.);
-
-      //l.FillTree("cosDphi", (float)TMath::Cos(lead_p4.Phi()-sublead_p4.Phi()));
+      l.FillTree("cosDphi", (float)TMath::Cos(lep1->Phi()-lep2->Phi()));
     }
     
     //l.FillTree("genmatch1", (float)l.pho_genmatched[diphoton_index.first]);
@@ -947,29 +1016,29 @@ void HtollAnalysis::Tree(LoopAll& l, Int_t lept1, Int_t lept2, const TLorentzVec
     float dijet_mva = tmvaReader_vbfmumu->EvaluateMVA("Gradient");
     l.FillTree("dijet_vbfmumumva",     (float)dijet_mva);
     float mass=Higgs.M();
-    
-    if( !(mass < 130. && mass > 120. && doBlinding && l.itype[l.current] == 0) ){
-      l.FillHist("mass", cat, mass, weight);
+  
+    if (cat != -1) {
+      if( !(mass < 130. && mass > 120. && doBlinding && l.itype[l.current] == 0) ){
+	l.FillHist("mass", cat, mass, weight);
+      }
+      
+      if(mass>110 && mass<160){
+	l.FillHist("nvtx",        cat,  l.vtx_std_n,  weight);
+	l.FillHist("ljet_pt",     cat,  dijet_j1pt,  weight);
+	l.FillHist("ljet_eta",    cat,  dijet_j1eta,  weight);
+	l.FillHist("sjet_pt",     cat,  dijet_j2pt,  weight);
+	l.FillHist("sjet_eta",    cat,  dijet_j2eta,  weight);
+	l.FillHist("dijet_mjj",   cat,  dijet_mjj,    weight);
+	l.FillHist("dijet_deta",  cat,  dijet_deta,    weight);
+	l.FillHist("ll_pt",       cat,  Higgs.Pt(),  weight);
+	l.FillHist("ll_eta",      cat,  Higgs.Eta(),  weight);
+      }
     }
-
-    if(mass>110 && mass<160){
-      l.FillHist("nvtx",        cat,  l.vtx_std_n,  weight);
-      l.FillHist("ljet_pt",     cat,  dijet_j1pt,  weight);
-      l.FillHist("ljet_eta",    cat,  dijet_j1eta,  weight);
-      l.FillHist("sjet_pt",     cat,  dijet_j2pt,  weight);
-      l.FillHist("sjet_eta",    cat,  dijet_j2eta,  weight);
-      l.FillHist("dijet_mjj",   cat,  dijet_mjj,    weight);
-      l.FillHist("dijet_deta",  cat,  dijet_deta,    weight);
-      l.FillHist("ll_pt",       cat,  Higgs.Pt(),  weight);
-      l.FillHist("ll_eta",      cat,  Higgs.Eta(),  weight);
-    }
-    
 }
 
-/*
-bool HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
-  
-  bool result = false;
+std::pair<float, float> HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
+ 
+  std::pair<float, float> result;
 
   TLorentzVector* thisel = (TLorentzVector*) l.el_std_p4->At(eleIndex);
   TLorentzVector* thissc = (TLorentzVector*) l.el_std_sc->At(eleIndex);
@@ -990,16 +1059,16 @@ bool HtollAnalysis::ElectronId(LoopAll& l, Int_t eleIndex) {
   float thisiso=l.el_std_pfiso_charged[eleIndex]+std::max(l.el_std_pfiso_neutral[eleIndex]+l.el_std_pfiso_photon[eleIndex]-l.rho_algo1*Aeff, 0.);
         
   if (l.el_std_hp_expin[eleIndex] > 1)
-    return false;
+    return std::pair<float, float>(99., 99.);
 
   if (l.el_std_conv[eleIndex] == 0)
-    return false;
+    return std::pair<float, float>(99., 99.);
         
-  result = (l.el_std_mva_trig[eleIndex] > 0.9) && (thisiso/thispt<0.15);
+  result = std::pair<float, float>(l.el_std_mva_trig[eleIndex], thisiso/thispt<0.15);
   
   return result;
 }
-*/
+
 
 bool HtollAnalysis::DijetPreSelection(LoopAll& l, TLorentzVector* veto_p41, TLorentzVector* veto_p42, 
     float & dijet_deta, float & dijet_mjj, float & dijet_zep, float & dijet_dphi_ll_jj, 

@@ -23,6 +23,7 @@ pfcand_posvtx
 el_std_n
 el_std_sc
 el_std_p4
+el_std_p4_corr
 el_std_momvtx
 el_std_momout
 el_std_posvtx

@@ -1,17 +1,18 @@
 ### Example of .dat 
 
 doMuon=0
-doBlinding=0
+doBlinding=1
 
 puMap=
 puHist=auto
 puTarget=aux/Moriond_pileup_190456-208686_minBiasXsec69400_corr_observed.root
 
-massMin=110
+ptCut=25.
+massMin=80
 massMax=180
-nDataBins=280
+nDataBins=400
 
-bkgPolOrderByCat=5,5,5,5
+bkgPolOrderByCat=7,7,7,7
 nCategories_=4
 
 sigPointsToBook=120,125,130
@@ -19,4 +20,8 @@ sigPointsToBook=120,125,130
 jetHandlerCfg=jetHandler_cfg.py
 recorrectJets=1
 
+
+#Muon Specific section
 muFitParametersFile=aux/MuScleFit_2012_DATA_53X.txt
+nMuonCategories=2
+muonEtaLimit=2.1
