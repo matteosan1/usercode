@@ -1,9 +1,0 @@
- include "RecoEgamma/EgammaHLTProducers/data/hltHcalDoubleCone.cfi" 
-module l1NonIsoEMHcalDoubleCone = hltHcalDoubleCone from "RecoEgamma/EgammaHLTProducers/data/hltHcalDoubleCone.cfi" 
-
-  replace  l1NonIsoEMHcalDoubleCone.recoEcalCandidateProducer = l1NonIsoRecoEcalCandidate
-#  InputTag hbRecHitProducer      = hbhereco
-#  InputTag hfRecHitProducer      = hfreco
-#  double egHcalIsoPtMin = 0.
-#  double egHcalIsoConeSize = 0.3
-#  double egHcalExclusion = 0.15

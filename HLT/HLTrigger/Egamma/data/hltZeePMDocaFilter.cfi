@@ -1,8 +1,0 @@
-module HltZeePMDocaFilter = HLTPMDocaFilter {
-
-      InputTag candTag                = HltZeePMMassFilter
-      double   docaDiffPerpCutLow       = 0.0
-      double   docaDiffPerpCutHigh       = 0.055691 # three sigma
-      int32    nZcandcut               = 1 # by candidate we now mean Z candidate
-}
-

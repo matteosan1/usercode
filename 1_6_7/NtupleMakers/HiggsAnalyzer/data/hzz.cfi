@@ -1,7 +1,0 @@
-module HiggsAnalyzer = hzz {
-
-string RootFileName = "hzz.root"
-string BaselineEleCollName = "pixelMatchGsfElectrons"
-string CustomEleCollName   = "globalGsfElectrons" 
-
-} 

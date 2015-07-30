@@ -1,5 +1,0 @@
-#PropagatorWithMaterialESProducer 
-es_module oppositeToMomElePropagator = OppositeMaterialPropagator from "TrackingTools/MaterialEffects/data/OppositeMaterialPropagator.cfi"
-replace   oppositeToMomElePropagator.Mass = 0.000511
-replace   oppositeToMomElePropagator.ComponentName = "oppositeToMomElePropagator"
-

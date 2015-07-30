@@ -1,9 +1,0 @@
-include "RecoEgamma/EgammaPhotonProducers/data/propAlongMomentumWithMaterialForElectrons.cfi"
-include "RecoEgamma/EgammaPhotonProducers/data/chi2EstimatorForOutInFit.cfi"
-
-#KFTrajectoryFitterESProducer
-es_module  KFTrajectoryFitterForOutIn = KFTrajectoryFitter from "TrackingTools/TrackFitters/data/KFTrajectoryFitterESProducer.cfi"
-replace  KFTrajectoryFitterForOutIn.ComponentName = "KFFitterForOutIn"
-replace  KFTrajectoryFitterForOutIn.Propagator = "alongMomElePropagator"
-replace  KFTrajectoryFitterForOutIn.Estimator = "Chi2ForOutIn"
-

@@ -1,9 +1,0 @@
-#
-# Bryan Dahmes, LLNL
-# 27 April, 2007
-#
-# Definition of DTDigiToRaw sequence
-#
-
-include "EventFilter/DTRawToDigi/data/dtPacker.cfi"
-sequence DTDigiToRaw = { dtpacker }

@@ -1,7 +1,0 @@
-include "RecoEgamma/EgammaHLTProducers/data/hltRecoEcalCandidate.cfi"
-module l1NonIsoRecoEcalCandidate  = hltRecoEcalCandidate from "RecoEgamma/EgammaHLTProducers/data/hltRecoEcalCandidate.cfi"
-
-replace l1NonIsoRecoEcalCandidate.scHybridBarrelProducer = correctedHybridSuperClustersL1NonIsolated
-replace l1NonIsoRecoEcalCandidate.scIslandEndcapProducer = correctedEndcapSuperClustersWithPreshowerL1NonIsolated
-#  string recoEcalCandidateCollection =  ""
-

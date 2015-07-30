@@ -1,7 +1,0 @@
-# Using SQLite cabling maps.  No AFS required.
-es_source siPixelCabling = PoolDBESSource {
-   using CondDBSetup
-   string connect = "sqlite_fip:CondCore/SQLiteData/data/siPixelCabling150.db"
-   string timetype = "runnumber"
-   VPSet toGet = {{ string record="SiPixelFedCablingMapRcd" string tag="SiPixelFedCablingMap_v1" }}
-}

@@ -1,7 +1,0 @@
-# Using SQLite cabling maps.  AFS not required.
-es_source RPCCabling = PoolDBESSource {
-   using CondDBSetup
-   string timetype = "runnumber"
-   string connect = "sqlite_fip:CondCore/SQLiteData/data/RPCCabling_030707.db"
-   VPSet toGet = {{ string record = "RPCReadOutMappingRcd" string tag = "RPCReadOutMapping_v1" }}
-}

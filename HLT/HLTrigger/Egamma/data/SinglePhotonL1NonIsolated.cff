@@ -1,4 +1,0 @@
-# common include file for different luminosities
-#
- include "HLTrigger/Egamma/data/SinglePhotonL1NonIsolated_1e32.cff"
-#

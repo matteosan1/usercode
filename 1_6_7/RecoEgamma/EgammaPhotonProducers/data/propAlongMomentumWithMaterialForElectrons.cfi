@@ -1,5 +1,0 @@
-#PropagatorWithMaterialESProducer 
-es_module alongMomElePropagator = MaterialPropagator from "TrackingTools/MaterialEffects/data/MaterialPropagator.cfi"
-replace  alongMomElePropagator.Mass = 0.000511 
-replace   alongMomElePropagator.ComponentName = "alongMomElePropagator"
-

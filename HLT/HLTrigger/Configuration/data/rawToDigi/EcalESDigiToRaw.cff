@@ -1,9 +1,0 @@
-#
-# Bryan Dahmes, LLNL
-# 1 May, 2007
-#
-# Definition of EcalESDigiToRaw sequence
-#
-
-module esPacker = esDigiToRaw from "EventFilter/ESDigiToRaw/data/esDigiToRaw.cfi"
-sequence EcalESDigiToRaw = { esPacker }

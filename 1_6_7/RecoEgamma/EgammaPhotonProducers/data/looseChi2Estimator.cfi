@@ -1,8 +1,0 @@
-
-es_module eleLooseChi2 = Chi2MeasurementEstimatorESProducer
-  {
-    string ComponentName = "eleLooseChi2"
-    double MaxChi2 = 100.
-    double nSigma = 3.
-  }
-

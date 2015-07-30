@@ -1,8 +1,0 @@
-//
-// Sequences for Vertex reconstruction
-//
-
-include "RecoPixelVertexing/Configuration/data/RecoPixelVertexing.cff"
-//	replace pixelVertices.NTrkMin = 2 # now back to default (= 5)
-
-// ??

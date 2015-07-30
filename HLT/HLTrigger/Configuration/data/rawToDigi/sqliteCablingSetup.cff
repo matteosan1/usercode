@@ -1,7 +1,0 @@
-include "HLTrigger/Configuration/data/rawToDigi/SiPixelSQLiteCabling.cfi"
-include "EventFilter/SiStripRawToDigi/data/SiStripSQLiteCabling.cfi"
-include "HLTrigger/Configuration/data/rawToDigi/DTSQLiteCabling.cfi"
-include "EventFilter/RPCRawToDigi/data/RPCSQLiteCabling.cfi"
-
-include "EventFilter/CSCRawToDigi/data/cscSQLiteCablingPack.cff"
-include "EventFilter/CSCRawToDigi/data/cscSQLiteCablingUnpck.cff"

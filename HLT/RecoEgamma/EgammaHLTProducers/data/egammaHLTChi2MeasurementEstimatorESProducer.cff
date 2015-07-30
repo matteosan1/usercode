@@ -1,4 +1,0 @@
- es_module egammaHLTChi2MeasurementEstimatorESProducer =  Chi2MeasurementEstimator from "TrackingTools/KalmanUpdators/data/Chi2MeasurementEstimatorESProducer.cfi"
-replace egammaHLTChi2MeasurementEstimatorESProducer.ComponentName = "egammaHLTChi2"
-replace egammaHLTChi2MeasurementEstimatorESProducer.MaxChi2 = 5.
-replace egammaHLTChi2MeasurementEstimatorESProducer.nSigma = 3.

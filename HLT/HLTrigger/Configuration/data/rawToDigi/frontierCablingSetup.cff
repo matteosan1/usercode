@@ -1,8 +1,0 @@
-include "HLTrigger/Configuration/data/rawToDigi/SiPixelFrontierCabling.cfi"
-# include "HLTrigger/Configuration/data/rawToDigi/SiStripFrontierCabling.cfi"
-include "EventFilter/SiStripRawToDigi/data/SiStripFrontierCabling.cfi"
-include "HLTrigger/Configuration/data/rawToDigi/DTFrontierCabling.cfi"
-include "EventFilter/RPCRawToDigi/data/RPCFrontierCabling.cfi"
-
-include "EventFilter/CSCRawToDigi/data/cscFrontierCablingPack.cff"
-include "EventFilter/CSCRawToDigi/data/cscFrontierCablingUnpck.cff"

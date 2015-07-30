@@ -1,7 +1,0 @@
-//
-// HLT Setup
-include "HLTrigger/Configuration/data/common/HLTSetup.cff"
-
-//
-// HLT Paths
-include "HLTrigger/Configuration/data/main/HLTpaths.cff"

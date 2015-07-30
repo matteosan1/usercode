@@ -1,9 +1,0 @@
-#
-# Bryan Dahmes, LLNL
-# 27 April, 2007
-#
-# Definition of RPCDigiToRaw sequence
-#
-
-module packRPC = rpcpacker from "EventFilter/RPCRawToDigi/data/rpcPacker.cfi"
-sequence RPCDigiToRaw = { packRPC }

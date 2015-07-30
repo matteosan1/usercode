@@ -1,8 +1,0 @@
-include "HLTrigger/Configuration/data/rawToDigi/frontierCablingSetup.cff"
-
-replace siPixelCabling.connect ="frontier://cms_conditions_data/CMS_COND_18X_PIXEL"	
-replace SiStripDBCabling.connect ="frontier://cms_conditions_data/CMS_COND_18X_STRIP"				 
-replace DTCabling.connect ="frontier://cms_conditions_data/CMS_COND_18X_DT"				 
-replace RPCCabling.connect ="frontier://cms_conditions_data/CMS_COND_18X_RPC"				 
-replace cscPackingCabling.connect = "frontier://cms_conditions_data/CMS_COND_18X_CSC"
-replace cscUnpackingCabling.connect = "frontier://cms_conditions_data/CMS_COND_18X_CSC"

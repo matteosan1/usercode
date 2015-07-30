@@ -1,8 +1,0 @@
-# Cabling map acquired from frontier
-es_source RPCCabling = PoolDBESSource {
-   using CondDBSetup
-   string connect = "frontier://FrontierDev/CMS_COND_RPC"
-   untracked bool siteLocalConfig = true
-   string timetype = "runnumber"
-   VPSet toGet = {{ string record = "RPCReadOutMappingRcd" string tag = "RPCReadOutMapping_v1" }}
-}

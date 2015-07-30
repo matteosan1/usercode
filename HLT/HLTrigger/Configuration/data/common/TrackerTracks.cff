@@ -1,7 +1,0 @@
-//
-// Sequences for Track reconstruction in the Tracker
-//
-
-include "RecoTracker/Configuration/data/RecoTracker.cff"
-
-// ??

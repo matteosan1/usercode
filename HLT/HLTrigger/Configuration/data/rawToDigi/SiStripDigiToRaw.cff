@@ -1,8 +1,0 @@
-# 
-# Bryan Dahmes, LLNL
-# 27 April, 2007
-# 
-# Definition of SiStripDigiToRaw sequence
-#
-
-include "EventFilter/SiStripRawToDigi/data/SiStripDigiToRaw.cfi"
