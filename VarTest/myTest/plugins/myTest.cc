@@ -1,0 +1,267 @@
+// system include files
+#include <memory>
+
+// user include files
+#include "FWCore/Framework/interface/Frameworkfwd.h"
+#include "FWCore/Framework/interface/EDAnalyzer.h"
+
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+
+#include "DataFormats/EgammaCandidates/interface/Photon.h"
+#include "DataFormats/EgammaCandidates/interface/PhotonFwd.h"
+#include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
+#include "DataFormats/EgammaCandidates/interface/GsfElectronFwd.h"
+
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+
+#include "TFile.h"
+#include "TTree.h"
+
+#include "DataFormats/Math/interface/deltaR.h"
+
+class myTest : public edm::EDAnalyzer {
+public:
+  explicit myTest(const edm::ParameterSet&);
+  ~myTest();
+  
+  static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+  int findPho(reco::PhotonRef ref, edm::Handle<reco::GenParticleCollection> gpH);
+  int findEle(reco::GsfElectronRef ref, edm::Handle<reco::GenParticleCollection> gpH);
+  
+private:
+  virtual void beginJob() override;
+  virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
+  void analyzePho(const edm::Event& iEvent, const edm::EventSetup& iSetup);
+  virtual void endJob() override;
+
+  TFile* file;
+  TTree* tree;
+  TTree* sctree;
+  Float_t gpeta;
+  Float_t gpe;
+  Float_t gpphi;
+  Float_t eleta;
+  Float_t elphi;
+  Float_t ele;
+  Float_t elrawe;
+  Float_t elecorr;
+  Float_t sce;
+  Float_t sceta;
+  Float_t scphi;
+  Int_t truePU;
+
+  std::string outfilename;
+  bool isElectron;
+  edm::InputTag eleLabel;
+};
+
+myTest::myTest(const edm::ParameterSet& iConfig) {
+
+  outfilename = iConfig.getParameter<std::string>("OutputFileName");
+  eleLabel = iConfig.getParameter<edm::InputTag>("label");
+  isElectron = iConfig.getParameter<bool>("isElectron");
+
+  //std::cout << outfilename << std::endl;
+  file = new TFile(outfilename.c_str(), "recreate");
+  tree = new TTree("tree", "tree");
+  tree->Branch("eleta", &eleta, "eleta/F");
+  tree->Branch("elrawe", &elrawe, "elrawe/F");
+  tree->Branch("ele", &ele, "ele/F");
+  tree->Branch("elecorr", &elecorr, "elecorr/F");
+  tree->Branch("elphi", &elphi, "elphi/F");
+  tree->Branch("gpeta", &gpeta, "gpeta/F");
+  tree->Branch("gp", &gpe, "gpe/F");
+  tree->Branch("gpphi", &gpphi, "gpphi/F");
+  tree->Branch("truePU", &truePU, "truePU/I");
+
+  sctree = new TTree("sctree", "sctree");
+  sctree->Branch("sceta", &sceta, "sceta/F");
+  sctree->Branch("sce",   &sce,   "sce/F");
+  sctree->Branch("scphi", &scphi, "scphi/F");
+}
+
+
+myTest::~myTest() {
+  file->cd();
+  tree->Write();
+  sctree->Write();
+  file->Close();
+}
+ 
+
+int myTest::findEle(reco::GsfElectronRef ref, edm::Handle<reco::GenParticleCollection> gpH) {
+  
+  int index = -1;
+  float dRMin = 0.3;
+  for (unsigned int i=0; i<gpH->size(); i++) {
+    reco::GenParticleRef gp(gpH, i);
+    if (gp->pt() > 4.) {
+      if (abs(gp->pdgId()) == 11) {
+	//if (abs(gp->pdgId()) == 22) {
+	//std::cout << gp->et() << " " << gp->status() << std::endl;
+	if (gp->status() == 1 or gp->status() == 23) 
+	{
+	  float dr = deltaR(*ref, *gp);
+	  if (dr < dRMin) {
+	    dr = dRMin;
+	    index = i;
+	  }
+	}
+      }
+    }
+  }
+
+  return index;
+}
+
+int myTest::findPho(reco::PhotonRef ref, edm::Handle<reco::GenParticleCollection> gpH) {
+  
+  int index = -1;
+  float dRMin = 0.3;
+  for (unsigned int i=0; i<gpH->size(); i++) {
+    reco::GenParticleRef gp(gpH, i);
+    if (gp->pt() > 4.) {
+      //if (abs(gp->pdgId()) == 11) {
+      if (abs(gp->pdgId()) == 22) {
+	//std::cout << gp->et() << " " << gp->status() << std::endl;
+	//if (gp->status() == 1 or gp->status() == 23) 
+	{
+	  float dr = deltaR(*ref, *gp);
+	  if (dr < dRMin) {
+	    dr = dRMin;
+	    index = i;
+	  }
+	}
+      }
+    }
+  }
+
+  return index;
+}
+
+void myTest::analyzePho(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+
+  edm::Handle<reco::GenParticleCollection> gpH;
+  iEvent.getByLabel("genParticles", gpH);
+
+  edm::Handle<reco::PhotonCollection> pEleH;
+  iEvent.getByLabel(eleLabel, pEleH);
+  
+  for (size_t i=0; i<pEleH->size(); i++) {
+
+    reco::PhotonRef el(pEleH, i);
+
+    int index = findPho(el, gpH);
+    if (index != -1) {
+      reco::GenParticleRef gp(gpH, index);
+      elecorr = 0;
+      ele = 0;
+      for (reco::CaloCluster_iterator bit = el->superCluster()->clustersBegin(); bit!=el->superCluster()->clustersEnd(); ++bit) {
+	const reco::CaloClusterPtr bc = *bit;
+	ele += bc->energy();
+	elecorr += bc->correctedEnergy();
+      }
+      //std::cout << ele << " " << elecorr << std::endl;
+      eleta = el->superCluster()->position().Eta();
+      elphi = el->superCluster()->position().Phi();
+      elrawe = el->superCluster()->rawEnergy();
+      gpeta = gp->eta();
+      gpphi = gp->phi();
+      gpe = gp->energy();
+
+      tree->Fill();
+    }
+  }
+}
+
+void myTest::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+
+  edm::Handle<reco::GenParticleCollection> gpH;
+  iEvent.getByLabel("genParticles", gpH);
+  
+  edm::Handle<std::vector<PileupSummaryInfo>> puH;
+  iEvent.getByLabel("addPileupInfo", puH);
+  truePU = (*puH)[0].getTrueNumInteractions();
+  
+  if (!isElectron) {
+    analyzePho(iEvent, iSetup);
+  } else {
+    edm::Handle<reco::GenParticleCollection> gpH;
+    iEvent.getByLabel("genParticles", gpH);
+    
+    edm::Handle<reco::GsfElectronCollection> pEleH;
+    iEvent.getByLabel(eleLabel, pEleH);
+    
+    for (size_t i=0; i<pEleH->size(); i++) {
+      
+      reco::GsfElectronRef el(pEleH, i);
+            
+      int index = findEle(el, gpH);
+      if (index != -1) {
+	reco::GenParticleRef gp(gpH, index);
+	elecorr = 0;
+	ele = 0;
+	for (reco::CaloCluster_iterator bit = el->superCluster()->clustersBegin(); bit!=el->superCluster()->clustersEnd(); ++bit) {
+	  const reco::CaloClusterPtr bc = *bit;
+	  ele += bc->energy();
+	  elecorr += bc->correctedEnergy();
+	}
+	//std::cout << ele << " " << elecorr << std::endl;
+	eleta = el->superCluster()->position().Eta();
+	elphi = el->superCluster()->position().Phi();
+	elrawe = el->superCluster()->rawEnergy();
+	gpeta = gp->eta();
+	gpphi = gp->phi();
+	gpe = gp->energy();
+	
+	tree->Fill();
+      }
+    }
+  }
+   
+  edm::Handle<reco::SuperClusterCollection> scEBH, scEEH;
+  iEvent.getByLabel("particleFlowSuperClusterECAL", "particleFlowSuperClusterECALBarrel", scEBH);
+  iEvent.getByLabel("particleFlowSuperClusterECAL", "particleFlowSuperClusterECALEndcapWithPreshower", scEEH);
+  
+  //if (!scEBH.failedToGet()) 
+  {
+    for(size_t i=0; i<scEBH->size(); i++) {
+      reco::SuperClusterRef sc(scEBH, i);
+      sce = sc->rawEnergy();
+      sceta = sc->position().eta();
+      scphi = sc->position().phi();
+      sctree->Fill();
+    }
+  }
+  
+  //if (!scEEH.failedToGet()) 
+  {
+    for(size_t i=0; i<scEEH->size(); i++) {
+      reco::SuperClusterRef sc(scEEH, i);
+      sce = sc->rawEnergy();
+      sceta = sc->position().eta();
+      scphi = sc->position().phi();
+      sctree->Fill();
+    }  
+  }
+}
+
+void myTest::beginJob() {}
+
+void myTest::endJob() {}
+
+void myTest::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+  //The following says we do not know what parameters are allowed so do no validation
+  // Please change this to state exactly what you do use, even if it is no parameters
+  edm::ParameterSetDescription desc;
+  desc.setUnknown();
+  descriptions.addDefault(desc);
+}
+
+//define this as a plug-in
+DEFINE_FWK_MODULE(myTest);
