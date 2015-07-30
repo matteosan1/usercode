@@ -1,0 +1,40 @@
+
+module globalGsfElectrons = GlobalGsfElectronProducer {
+
+  string hbheModule                = "hbhereco"
+  string hbheInstance              = ""
+  string TrackBarrelLabel          = "pixelMatchGsfFitBarrel"
+  string TrackBarrelProducer       = ""
+  string TrackEndcapLabel          = "pixelMatchGsfFitEndcap"
+  string TrackEndcapProducer       = ""
+  string SCLBarrelLabel            = "electronPixelSeeds"
+  string SCLBarrelProducer         = "correctedHybridSuperClusters"
+  string SCLEndcapLabel            = "electronPixelSeeds"
+  string SCLEndcapProducer         = "correctedEndcapSuperClustersWithPreshower"
+  string AssocTrTSBarrelLabel      = "pixelMatchGsfFitBarrel"
+  string AssocTrTBarrelProducer    = ""
+  string AssocTrTEndcapLabel       = "pixelMatchGsfFitEndcap"
+  string AssocTrTEndcapProducer    = ""
+
+  # nested parameter set for TransientInitialStateEstimator
+  PSet TransientInitialStateEstimatorParameters = {
+     string propagatorAlongTISE    = "PropagatorWithMaterial"
+     string propagatorOppositeTISE = "PropagatorWithMaterialOpposite"
+  }
+
+  # electron preselection parameters
+  double maxEOverPBarrel = 1000.
+  double maxEOverPEndcaps = 1000.
+  double minEOverPBarrel = 0.0
+  double minEOverPEndcaps = 0.0
+  double hOverEConeSize = 0.1
+  double maxHOverE = 0.2
+  double maxDeltaEta = 0.02
+  double maxDeltaPhi = 0.1
+  double ptCut = 1.5    # en Gev
+  bool highPtPreselection = false   
+  double highPtMin = 150.
+
+
+}
+

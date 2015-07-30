@@ -1,0 +1,36 @@
+# KFUpdatoerESProducer
+include "TrackingTools/KalmanUpdators/data/KFUpdatorESProducer.cfi"
+
+include "RecoEgamma/EgammaPhotonProducers/data/propAlongMomentumWithMaterialForElectrons.cfi"
+include "RecoEgamma/EgammaPhotonProducers/data/KFFittingSmootherForInOut.cfi"
+
+
+
+module ckfInOutTracksFromConversionsBarrel = TrackProducerWithSCAssociation
+{
+  string ComponentName = "ckfInOutTracksFromConversionsBarrel"
+  string Fitter = "KFFittingSmootherForInOut"
+  #string Propagator = "PropagatorWithMaterial"
+  string Propagator = "alongMomElePropagator"
+  string producer = "conversionTrackCandidates"
+  string src = "inOutTracksFromConversionsBarrel"
+  string trackCandidateSCAssociationCollection = "inOutTrackCandidateSCBarrelAssociationCollection"
+  string recoTrackSCAssociationCollection = "inOutTrackSCBarrelAssociationCollection"
+  string TTRHBuilder       =   "WithTrackAngle"
+  bool TrajectoryInEvent = false
+}
+
+
+
+# Chi2MeasurementEstimatorESProducer
+#es_module Chi2MeasurementEstimatorForOutIn  = Chi2MeasurementEstimator from "TrackingTools/KalmanUpdators/data/Chi2MeasurementEstimatorESProducer.cfi"
+#replace   Chi2MeasurementEstimatorForOutIn.ComponentName = "Chi2ForOutIn"
+#replace   Chi2MeasurementEstimatorForOutIn.MaxChi2 = 100.
+
+#es_module Chi2MeasurementEstimatorForInOut  = Chi2MeasurementEstimator from "TrackingTools/KalmanUpdators/data/Chi2MeasurementEstimatorESProducer.cfi"
+#replace   Chi2MeasurementEstimatorForInOut.ComponentName = "Chi2ForInOut"
+#replace   Chi2MeasurementEstimatorForInOut.MaxChi2 = 50.
+
+
+
+

@@ -1,0 +1,17 @@
+include "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cff"
+#TrajectoryBuilder
+es_module TrajectoryBuilderForPixelMatchElectronsL1NonIsoLargeWindow = CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
+
+replace TrajectoryBuilderForPixelMatchElectronsL1NonIsoLargeWindow.ComponentName = "TrajectoryBuilderForPixelMatchElectronsL1NonIsoLargeWindow"
+
+replace TrajectoryBuilderForPixelMatchElectronsL1NonIsoLargeWindow.estimator = "egammaHLTChi2"
+
+# Navigation School record
+include "RecoTracker/TkNavigation/data/NavigationSchoolESProducer.cff"
+
+#pixelMatchedElectrons
+
+module pixelMatchElectronsL1NonIsoLargeWindowForHLT = pixelMatchElectronsForHLT from "RecoEgamma/EgammaHLTProducers/data/pixelMatchElectronsForHLT.cfi"
+                                                               
+replace pixelMatchElectronsL1NonIsoLargeWindowForHLT.TrackLabel = "ctfL1NonIsoLargeWindowWithMaterialTracks"
+replace pixelMatchElectronsL1NonIsoLargeWindowForHLT.TrajectoryBuilder    = "TrajectoryBuilderForPixelMatchElectronsL1NonIsoLargeWindow"

@@ -1,0 +1,12 @@
+#
+# producer for hltSingleEMHcalDoubleConeFilter
+#
+module hltSingleEMHcalDoubleConeFilter =  HLTEgammaHcalDBCFilter {
+      InputTag candTag = hltL1NonIsoSingleEMHighEtHOEFilter
+      InputTag isoTag  = hltHcalDoubleCone
+      InputTag nonIsoTag  = l1NonIsoEMHcalDoubleCone
+      double hcalisolbarrelcut = 8.
+      double hcalisolendcapcut = 8.
+      int32 ncandcut = 1
+      bool doIsolated = false
+}

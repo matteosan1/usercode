@@ -1,0 +1,21 @@
+# Electron propagators
+#include "RecoEgamma/EgammaElectronProducers/data/gsfElectronChi2.cfi"
+#include "RecoEgamma/EgammaElectronProducers/data/fwdGsfElectronPropagator.cfi"
+#include "RecoEgamma/EgammaElectronProducers/data/bwdGsfElectronPropagator.cfi"
+
+# TrajectoryBuilder
+#es_module TrajectoryBuilderForGlobalGsfElectrons = CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
+
+#replace TrajectoryBuilderForGlobalGsfElectrons.ComponentName        = "TrajectoryBuilderForPixelMatchGsfElectrons"
+#replace TrajectoryBuilderForGlobalGsfElectrons.estimator            = "gsfElectronChi2"
+#replace TrajectoryBuilderForGlobalGsfElectrons.propagatorAlong      = "fwdGsfElectronPropagator"
+#replace TrajectoryBuilderForGlobalGsfElectrons.propagatorOpposite   = "bwdGsfElectronPropagator"
+#replace TrajectoryBuilderForGlobalGsfElectrons.maxCand              = 3
+#replace TrajectoryBuilderForGlobalGsfElectrons.minimumNumberOfHits  = 3   # default was 5
+#replace TrajectoryBuilderForGlobalGsfElectrons.ptCut                = 3.
+#replace TrajectoryBuilderForGlobalGsfElectrons.intermediateCleaning = false
+
+# gsfElectrons
+include "RecoEgamma/EgammaElectronProducers/data/globalGsfElectrons.cfi"
+
+

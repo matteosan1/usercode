@@ -1,0 +1,109 @@
+->
+Declare Branches for flat tree which will be saved in output
+delare:
+	type=0,1,2,3 (int, unsigned int, float, double)
+	name=name 
+->
+
+
+type=2 name=run
+type=2 name=lumis
+type=3 name=event
+type=2 name=itype
+type=2 name=nvtx
+type=2 name=rho
+type=2 name=pu_n
+type=2 name=xsec_weight
+type=2 name=pu_weight
+type=2 name=full_weight
+type=2 name=MET
+type=2 name=MET_phi
+type=2 name=mass
+type=2 name=mass_corr
+type=0 name=cat
+type=0 name=vbfcat
+type=2 name=vtx_x
+type=2 name=vtx_y
+type=2 name=vtx_z
+type=0 name=domuon
+type=2 name=cosDphi
+
+type=2 name=et1
+type=2 name=eta1
+type=2 name=phi1
+type=2 name=dptopt1
+type=2 name=etnocorr1
+type=2 name=etanocorr1
+type=2 name=phinocorr1
+type=0 name=mutype1
+type=2 name=muchi21
+type=0 name=much1
+type=0 name=munmatch1
+type=0 name=mupixhit1
+type=0 name=mutklay1
+type=2 name=mudb1
+type=2 name=mutkpterr1
+type=2 name=chiso1
+type=2 name=neiso1
+type=2 name=phiso1
+type=2 name=et2
+type=2 name=eta2
+type=2 name=phi2
+type=2 name=dptopt2
+type=2 name=etnocorr2
+type=2 name=etanocorr2
+type=2 name=phinocorr2
+type=0 name=mutype2
+type=2 name=muchi22
+type=0 name=much2
+type=0 name=munmatch2
+type=0 name=mupixhit2
+type=0 name=mutklay2
+type=2 name=mudb2
+type=2 name=mutkpterr2
+type=0 name=muid1
+type=0 name=muid2
+type=2 name=chiso2
+type=2 name=neiso2
+type=2 name=phiso2
+type=0 name=elmisshits1
+type=0 name=elconv1
+type=2 name=elmva1
+type=2 name=elpfiso1
+type=2 name=elregr_err1
+type=0 name=elmisshits2
+type=0 name=elconv2
+type=2 name=elmva2
+type=2 name=elpfiso2
+type=2 name=elregr_err2
+type=2 name=elpt1
+type=2 name=elpt2
+type=0 name=elid1
+type=0 name=elid2
+
+type=2 name=dijet_vbfmumumva
+type=2 name=dijet_deta
+type=2 name=dijet_mjj
+type=2 name=dijet_zep
+type=2 name=dijet_dphi_ll_jj
+type=2 name=dijet_j1pt
+type=2 name=dijet_j2pt
+type=2 name=dijet_has2jets
+
+type=2 name=mc_et1
+type=2 name=mc_eta1
+type=2 name=mc_phi1
+type=2 name=mc_et2
+type=2 name=mc_eta2
+type=2 name=mc_phi2
+type=2 name=fsr_et1
+type=2 name=fsr_eta1
+type=2 name=fsr_phi1
+type=2 name=fsr_et2
+type=2 name=fsr_eta2
+type=2 name=fsr_phi2
+
+type=2 name=higgs_pt
+type=2 name=higgs_phi
+type=2 name=higgs_eta
+type=2 name=higgs_mass

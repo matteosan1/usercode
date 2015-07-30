@@ -1,0 +1,19 @@
+->
+File format:
+        <branch_name>[:<branch_type>]
+where:
+        <branch_type> = 0 for branches to be always read
+        <branch_type> = 1 for branches to be read only for MC
+->
+
+gp_n:1
+gp_p4:1
+gp_pdgid:1
+gp_status:1
+gp_mother:1
+
+hlt_bit
+hlt_path_names_HLT
+hlt_n
+hlt_p4
+hlt_candpath

@@ -1,0 +1,81 @@
+#--------------------------------------------------------------------#
+# L1 MATCH
+#--------------------------------------------------------------------#
+module hltL1IsoDoubleExclPhotonL1MatchFilterRegional = hltEgammaL1MatchFilterRegional from "HLTrigger/Egamma/data/hltEgammaL1MatchFilterRegional.cfi" 
+
+      replace hltL1IsoDoubleExclPhotonL1MatchFilterRegional.candIsolatedTag = l1IsoRecoEcalCandidate
+      replace hltL1IsoDoubleExclPhotonL1MatchFilterRegional.L1SeedFilterTag = l1seedExclusiveDouble
+      replace  hltL1IsoDoubleExclPhotonL1MatchFilterRegional.ncandcut = 2
+      replace  hltL1IsoDoubleExclPhotonL1MatchFilterRegional.doIsolated = true
+
+#--------------------------------------------------------------------#
+# ET AND PHI CUT
+#--------------------------------------------------------------------#
+module hltL1IsoDoubleExclPhotonEtPhiFilter = hltDoubleExclusivePhotonFilter from "HLTrigger/Egamma/data/hltDoubleExclusivePhotonFilter.cfi"
+
+replace hltL1IsoDoubleExclPhotonEtPhiFilter.candTag = hltL1IsoDoubleExclPhotonL1MatchFilterRegional
+
+#--------------------------------------------------------------------#
+# ECAL ISOL
+#--------------------------------------------------------------------#
+module hltL1IsoDoubleExclPhotonEcalIsolFilter = hltPhotonEcalIsolFilter from "HLTrigger/Egamma/data/hltPhotonEcalIsolFilter.cfi" 
+
+replace hltL1IsoDoubleExclPhotonEcalIsolFilter.candTag = hltL1IsoDoubleExclPhotonEtPhiFilter
+replace hltL1IsoDoubleExclPhotonEcalIsolFilter.isoTag  = l1IsolatedPhotonEcalIsol
+replace hltL1IsoDoubleExclPhotonEcalIsolFilter.ecalisolcut = 2.5
+replace hltL1IsoDoubleExclPhotonEcalIsolFilter.ncandcut = 2
+
+#--------------------------------------------------------------------#
+# HCAL ISOL
+#--------------------------------------------------------------------#
+module hltL1IsoDoubleExclPhotonHcalIsolFilter = hltEgammaHcalIsolFilter from "HLTrigger/Egamma/data/hltEgammaHcalIsolFilter.cfi"
+
+ replace hltL1IsoDoubleExclPhotonHcalIsolFilter.candTag = hltL1IsoDoubleExclPhotonEcalIsolFilter
+ replace hltL1IsoDoubleExclPhotonHcalIsolFilter.isoTag = l1IsolatedPhotonHcalIsol
+ replace hltL1IsoDoubleExclPhotonHcalIsolFilter.hcalisolbarrelcut = 8.
+ replace hltL1IsoDoubleExclPhotonHcalIsolFilter.hcalisolendcapcut = 6.
+ replace hltL1IsoDoubleExclPhotonHcalIsolFilter.ncandcut = 2
+
+
+#--------------------------------------------------------------------#
+# TRACK ISOL
+#--------------------------------------------------------------------#
+ module hltL1IsoDoubleExclPhotonTrackIsolFilter = hltPhotonTrackIsolFilter from "HLTrigger/Egamma/data/hltPhotonTrackIsolFilter.cfi"
+
+replace  hltL1IsoDoubleExclPhotonTrackIsolFilter.candTag  = hltL1IsoDoubleExclPhotonHcalIsolFilter
+replace  hltL1IsoDoubleExclPhotonTrackIsolFilter.isoTag   = l1IsoPhotonTrackIsol
+replace  hltL1IsoDoubleExclPhotonTrackIsolFilter.numtrackisolcut = 3
+replace  hltL1IsoDoubleExclPhotonTrackIsolFilter.ncandcut = 2
+
+
+#--------------------------------------------------------------------#
+#--------------------------------------------------------------------#
+
+  module doubleExclPhotonL1IsoPresc = HLTPrescaler {
+         bool   makeFilterObject = true
+         uint32 prescaleFactor = 1
+         uint32 eventOffset    = 0
+  }
+
+
+
+  sequence doubleExclPhotonL1Isolated = {
+			   hltBegin &
+##                           l1seedDouble &
+			   l1seedExclusiveDouble &
+			   doRegionalEgammaEcal &
+                           l1IsolatedEcalClusters  &
+                           l1IsoRecoEcalCandidate &
+                           hltL1IsoDoubleExclPhotonL1MatchFilterRegional &
+			   hltL1IsoDoubleExclPhotonEtPhiFilter &
+	                   l1IsolatedPhotonEcalIsol & 
+			   hltL1IsoDoubleExclPhotonEcalIsolFilter &
+			   doLocalHcalWithoutHO &
+                           l1IsolatedPhotonHcalIsol & 
+			   hltL1IsoDoubleExclPhotonHcalIsolFilter &
+			   doLocalTracker &
+                           l1IsoEgammaRegionalRecoTracker &
+                           l1IsoPhotonTrackIsol & 
+			   hltL1IsoDoubleExclPhotonTrackIsolFilter &
+                           doubleExclPhotonL1IsoPresc
+	                  }

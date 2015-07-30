@@ -1,0 +1,6 @@
+# common include file for different luminosities
+#
+ include "HLTrigger/Egamma/data/SingleEMVeryHighEtL1NonIsolated_1e32.cff"
+#
+# include "HLTrigger/Egamma/data/SingleEMVeryHighEtL1NonIsolated_2e33.cff"
+#

@@ -1,0 +1,42 @@
+# Island BasicCluster producer
+module hltIslandBasicClusters = EgammaHLTIslandClusterProducer
+{
+    string VerbosityLevel = "ERROR"
+
+    bool doBarrel = true
+    bool doEndcaps = true
+    bool doIsolated = true
+
+    string barrelHitProducer   = "ecalRecHit"
+    string endcapHitProducer   = "ecalRecHit"
+
+    string barrelHitCollection = "EcalRecHitsEB"
+    string endcapHitCollection = "EcalRecHitsEE"
+
+    string barrelClusterCollection = "islandBarrelBasicClusters"
+    string endcapClusterCollection = "islandEndcapBasicClusters"
+
+    double IslandBarrelSeedThr = 0.50
+    double IslandEndcapSeedThr = 0.18
+
+    bool posCalc_logweight = true
+    double posCalc_t0_barl = 7.4
+    double posCalc_t0_endc = 3.1
+    double posCalc_t0_endcPresh = 1.2
+    double posCalc_w0 = 4.2
+    double posCalc_x0 = 0.89
+
+    InputTag l1TagIsolated = l1extraParticles:Isolated
+    InputTag l1TagNonIsolated = l1extraParticles:NonIsolated
+    double l1LowerThr = 0.
+    double l1UpperThr = 999.
+    double l1LowerThrIgnoreIsolation = 999.
+    double regionEtaMargin = 0.3 #MARCO 0.14
+    double regionPhiMargin = 0.4
+
+    string clustershapecollectionEB = "islandBarrelShape"
+    string clustershapecollectionEE = "islandEndcapShape"
+    string barrelShapeAssociation = "islandBarrelShapeAssoc"
+    string endcapShapeAssociation = "islandEndcapShapeAssoc"
+
+}

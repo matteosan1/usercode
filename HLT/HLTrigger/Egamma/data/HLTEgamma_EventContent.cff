@@ -1,0 +1,159 @@
+# Full Event content
+block HLTEgamma_FEVT = {
+ untracked vstring outputCommands = {
+	"keep *_l1IsoRecoEcalCandidate_*_*",
+	"keep *_l1NonIsoRecoEcalCandidate_*_*",
+	//electrons
+	"keep *_l1IsolatedElectronHcalIsol_*_*",
+	"keep *_l1NonIsolatedElectronHcalIsol_*_*",
+	"keep *_l1IsoElectronTrackIsol_*_*",
+	"keep *_l1NonIsoElectronTrackIsol_*_*",
+	"keep *_l1IsoLargeWindowElectronTrackIsol_*_*",
+	"keep *_l1NonIsoLargeWindowElectronTrackIsol_*_*",
+	//photons
+	"keep *_l1IsolatedPhotonEcalIsol_*_*",
+	"keep *_l1NonIsolatedPhotonEcalIsol_*_*",
+	"keep *_l1IsolatedPhotonHcalIsol_*_*",
+	"keep *_l1NonIsolatedPhotonHcalIsol_*_*",
+	"keep *_l1IsoPhotonTrackIsol_*_*",
+	"keep *_l1NonIsoPhotonTrackIsol_*_*",
+	//high em
+	"keep *_l1NonIsoEMHcalDoubleCone_*_*",
+	//pixels seeds
+ 	"keep *_l1IsoElectronPixelSeeds_*_*",
+ 	"keep *_l1NonIsoElectronPixelSeeds_*_*",
+ 	"keep *_l1IsoLargeWindowElectronPixelSeeds_*_*",
+ 	"keep *_l1NonIsoLargeWindowElectronPixelSeeds_*_*",
+
+	//electrons SC and track
+	"keep *_pixelMatchElectronsL1IsoForHLT_*_*",
+        "keep *_pixelMatchElectronsL1NonIsoForHLT_*_*",	
+	"keep *_pixelMatchElectronsL1IsoLargeWindowForHLT_*_*",
+        "keep *_pixelMatchElectronsL1NonIsoLargeWindowForHLT_*_*",	
+
+	"keep *_correctedHybridSuperClustersL1Isolated_*_*",
+	"keep *_correctedHybridSuperClustersL1NonIsolated_*_*",
+	"keep *_correctedEndcapSuperClustersWithPreshowerL1Isolated_*_*",
+	"keep *_correctedEndcapSuperClustersWithPreshowerL1NonIsolated_*_*",
+
+	"keep recoTracks_ctfL1IsoWithMaterialTracks_*_*",
+	"keep recoTracks_ctfL1NonIsoWithMaterialTracks_*_*",
+	"keep recoTracks_ctfL1IsoLargeWindowWithMaterialTracks_*_*",
+	"keep recoTracks_ctfL1NonIsoLargeWindowWithMaterialTracks_*_*",
+
+	//tracks for the isolation
+	"keep recoTracks_l1IsoElectronsRegionalCTFFinalFitWithMaterial_*_*",
+	"keep recoTracks_l1NonIsoElectronsRegionalCTFFinalFitWithMaterial_*_*",
+	"keep recoTracks_l1IsoEgammaRegionalCTFFinalFitWithMaterial_*_*",
+	"keep recoTracks_l1NonIsoEgammaRegionalCTFFinalFitWithMaterial_*_*",
+	"keep recoTracks_l1IsoLargeWindowElectronsRegionalCTFFinalFitWithMaterial_*_*",
+	"keep recoTracks_l1NonIsoLargeWindowElectronsRegionalCTFFinalFitWithMaterial_*_*",
+
+	//intermediate steps in the tracking
+	"keep *_ckfL1IsoTrackCandidates_*_*",
+	"keep *_ckfL1NonIsoTrackCandidates_*_*",
+	"keep *_ckfL1IsoLargeWindowTrackCandidates_*_*",
+	"keep *_ckfL1NonIsoLargeWindowTrackCandidates_*_*",
+	
+	"keep *_l1IsoElectronsRegionalPixelSeedGenerator_*_*",
+	"keep *_l1NonIsoElectronsRegionalPixelSeedGenerator_*_*",
+	"keep *_l1IsoEgammaRegionalPixelSeedGenerator_*_*",
+	"keep *_l1NonIsoEgammaRegionalPixelSeedGenerator_*_*",
+	"keep *_l1IsoLargeWindowElectronsRegionalPixelSeedGenerator_*_*",
+	"keep *_l1NonIsoLargeWindowElectronsRegionalPixelSeedGenerator_*_*",
+
+	"keep *_l1IsoElectronsRegionalCkfTrackCandidates_*_*",
+        "keep *_l1NonIsoElectronsRegionalCkfTrackCandidates_*_*",
+	"keep *_l1IsoEgammaRegionalCkfTrackCandidates_*_*",
+        "keep *_l1NonIsoEgammaRegionalCkfTrackCandidates_*_*",
+	"keep *_l1IsoLargeWindowElectronsRegionalCkfTrackCandidates_*_*",
+        "keep *_l1NonIsoLargeWindowElectronsRegionalCkfTrackCandidates_*_*"
+	
+ }
+}
+
+block HLTEgamma_RECO = {
+	 untracked vstring outputCommands = {
+	"keep *_l1IsoRecoEcalCandidate_*_*",
+	"keep *_l1NonIsoRecoEcalCandidate_*_*",
+	//electrons
+	"keep *_l1IsolatedElectronHcalIsol_*_*",
+	"keep *_l1NonIsolatedElectronHcalIsol_*_*",
+	"keep *_l1IsoElectronTrackIsol_*_*",
+	"keep *_l1NonIsoElectronTrackIsol_*_*",
+	"keep *_l1IsoLargeWindowElectronTrackIsol_*_*",
+	"keep *_l1NonIsoLargeWindowElectronTrackIsol_*_*",
+	//photons
+	"keep *_l1IsolatedPhotonEcalIsol_*_*",
+	"keep *_l1NonIsolatedPhotonEcalIsol_*_*",
+	"keep *_l1IsolatedPhotonHcalIsol_*_*",
+	"keep *_l1NonIsolatedPhotonHcalIsol_*_*",
+	"keep *_l1IsoPhotonTrackIsol_*_*",
+	"keep *_l1NonIsoPhotonTrackIsol_*_*",
+	//high em
+	"keep *_l1NonIsoEMHcalDoubleCone_*_*",
+	//pixels seeds
+ 	"keep *_l1IsoElectronPixelSeeds_*_*",
+ 	"keep *_l1NonIsoElectronPixelSeeds_*_*",
+ 	"keep *_l1IsoLargeWindowElectronPixelSeeds_*_*",
+ 	"keep *_l1NonIsoLargeWindowElectronPixelSeeds_*_*",
+
+	//electrons SC and track
+	"keep *_pixelMatchElectronsL1IsoForHLT_*_*",
+        "keep *_pixelMatchElectronsL1NonIsoForHLT_*_*",	
+	"keep *_pixelMatchElectronsL1IsoLargeWindowForHLT_*_*",
+        "keep *_pixelMatchElectronsL1NonIsoLargeWindowForHLT_*_*",	
+
+	"keep *_correctedHybridSuperClustersL1Isolated_*_*",
+	"keep *_correctedHybridSuperClustersL1NonIsolated_*_*",
+	"keep *_correctedEndcapSuperClustersWithPreshowerL1Isolated_*_*",
+	"keep *_correctedEndcapSuperClustersWithPreshowerL1NonIsolated_*_*",
+
+	"keep recoTracks_ctfL1IsoWithMaterialTracks_*_*",
+	"keep recoTracks_ctfL1NonIsoWithMaterialTracks_*_*",
+	"keep recoTracks_ctfL1IsoLargeWindowWithMaterialTracks_*_*",
+		//tracks for the isolation
+	"keep recoTracks_l1IsoElectronsRegionalCTFFinalFitWithMaterial_*_*",
+	"keep recoTracks_l1NonIsoElectronsRegionalCTFFinalFitWithMaterial_*_*",
+	"keep recoTracks_l1IsoEgammaRegionalCTFFinalFitWithMaterial_*_*",
+	"keep recoTracks_l1NonIsoEgammaRegionalCTFFinalFitWithMaterial_*_*",
+	"keep recoTracks_l1IsoLargeWindowElectronsRegionalCTFFinalFitWithMaterial_*_*",
+	"keep recoTracks_l1NonIsoLargeWindowElectronsRegionalCTFFinalFitWithMaterial_*_*"
+   }
+}
+
+block HLTEgamma_AOD = {
+ untracked vstring outputCommands = { }
+
+ VInputTag triggerCollections = {
+  l1IsoRecoEcalCandidate,
+  l1NonIsoRecoEcalCandidate,
+  pixelMatchElectronsL1IsoForHLT,
+  pixelMatchElectronsL1NonIsoForHLT,
+  pixelMatchElectronsL1IsoLargeWindowForHLT,
+  pixelMatchElectronsL1NonIsoLargeWindowForHLT
+ }
+
+
+ VInputTag triggerFilters = {
+  hltL1IsoSinglePhotonTrackIsolFilter,
+  hltL1NonIsoSinglePhotonTrackIsolFilter,
+  hltL1IsoDoublePhotonDoubleEtFilter,
+  hltL1NonIsoDoublePhotonDoubleEtFilter,
+  hltL1NonIsoSingleEMHighEtTrackIsolFilter,
+  hltL1NonIsoSinglePhotonEMVeryHighEtEtFilter,
+  hltL1IsoDoubleExclPhotonTrackIsolFilter,
+  hltL1IsoSinglePhotonPrescaledTrackIsolFilter,
+  hltL1IsoSingleElectronTrackIsolFilter,
+  hltL1NonIsoSingleElectronTrackIsolFilter,
+  hltL1IsoDoubleElectronTrackIsolFilter,
+  hltL1NonIsoDoubleElectronTrackIsolFilter,
+  hltL1IsoDoubleExclElectronTrackIsolFilter,
+  hltL1IsoDoubleElectronZeePMMassFilter,
+  hltL1IsoLargeWindowSingleElectronTrackIsolFilter,
+  hltL1NonIsoLargeWindowSingleElectronTrackIsolFilter,
+  hltL1IsoLargeWindowDoubleElectronTrackIsolFilter,
+  hltL1NonIsoLargeWindowDoubleElectronTrackIsolFilter
+ }
+}
+

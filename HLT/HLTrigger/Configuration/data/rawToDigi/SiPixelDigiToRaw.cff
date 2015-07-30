@@ -1,0 +1,9 @@
+#
+# Bryan Dahmes, LLNL
+# 27 April, 2007
+#
+# Definition of SiPixelDigiToRaw sequence
+#
+
+module siPixelPacker = siPixelRawData from "EventFilter/SiPixelRawToDigi/data/SiPixelDigiToRaw.cfi"
+sequence SiPixelDigiToRaw = { siPixelPacker }

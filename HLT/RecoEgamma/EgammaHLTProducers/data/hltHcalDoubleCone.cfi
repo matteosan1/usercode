@@ -1,0 +1,8 @@
+module hltHcalDoubleCone =  EgammaHLTHcalIsolationDoubleConeProducers {
+  InputTag recoEcalCandidateProducer = l1IsoRecoEcalCandidate
+  InputTag hbRecHitProducer      = hbhereco
+  InputTag hfRecHitProducer      = hfreco
+  double egHcalIsoPtMin = 0.
+  double egHcalIsoConeSize = 0.3
+  double egHcalExclusion = 0.15
+}

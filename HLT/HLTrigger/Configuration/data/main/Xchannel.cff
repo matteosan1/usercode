@@ -1,0 +1,52 @@
+// Xchannel trigger paths
+
+
+//
+// electron + b-jet (global or local Egamma reco)
+// include "HLTrigger/xchannel/data/PathElectronB.cff"
+include "HLTrigger/xchannel/data/PathElectronB-local.cff"
+path HLTXElectronBJet = { ElectronB }
+
+
+//
+// muon + b-jet
+include "HLTrigger/xchannel/data/PathMuB.cff"
+path HLTXMuonBJet = { MuB }
+include "HLTrigger/xchannel/data/PathMuBsoftMu.cff"
+path HLTXMuonBJetSoftMuon = { MuBsmu }
+
+
+//
+// electron+jet
+include "HLTrigger/xchannel/data/PathElectronPlusJet.cff"
+// sequence pdigireco = {doLocalTrackerFromDigis & doHLTJetReco}
+path HLTXElectron1Jet = { HLTEplus1jet }
+path HLTXElectron2Jet = { HLTEplus2jet }
+path HLTXElectron3Jet = { HLTEplus3jet }
+path HLTXElectron4Jet = { HLTEplus4jet }
+
+
+//
+// muon+jet
+include "HLTrigger/xchannel/data/PathMuJets.cff"
+path HLTXMuonJets = { HLTMuIsoJet }
+include "HLTrigger/xchannel/data/PathMuNoL2IsoJets.cff"
+path CandHLTXMuonNoL2IsoJets = { HLTMuNoL2IsoJet }
+include "HLTrigger/xchannel/data/PathMuNoIsoJets.cff"
+path CandHLTXMuonNoIsoJets = { HLTMuNoIsoJet }
+
+
+//
+// electron+muon
+include "HLTrigger/xchannel/data/electronmuon.cff"
+path HLTXElectronMuon = {emuonsequence}
+include "HLTrigger/xchannel/data/electronmuonNonIsolated.cff"
+path HLTXElectronMuonRelaxed = {NonIsoElectronMuonSequence}
+
+
+//
+// electron+tau and muon+tau
+include "HLTrigger/xchannel/data/LeptonTauHLT.cff"
+path HLTXElectronTau          = {hltElectronTau}
+path CandHLTXElectronTauPixel = {hltElectronTauPixel}
+path HLTXMuonTau              = {muonPixelTauL1HLT}

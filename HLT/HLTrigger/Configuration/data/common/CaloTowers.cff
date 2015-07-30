@@ -1,0 +1,92 @@
+//
+// Sequence for Calo reconstruction up to and including CaloTowers
+//
+// include "RecoJets/Configuration/data/CaloTowersRec.cff"
+// sequence doCalo = {doLocalCalo , caloTowersRec}
+
+# --------------------------------------------------------------------------------------
+
+# -- the following includes come from RecoJets/Configuration/data/CaloTowersRec.cff
+# -- can not include this cff here, since caloTowers is overloaded.
+                                                                                                                                      
+#
+# reconstruct CaloRecHits and create calotowers here
+#
+  include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
+  include "Geometry/CaloEventSetup/data/CaloGeometry.cfi"
+  include "Geometry/CaloEventSetup/data/CaloTopology.cfi"
+  es_module = HcalTopologyIdealEP {}
+                                                                                                                                      
+                                                                                                                                      
+   #include "Geometry/CaloEventSetup/data/CaloTowerConstituents.cfi"
+  es_module = CaloTowerConstituentsMapBuilder {
+      untracked string MapFile="Geometry/CaloTopology/data/CaloTowerEEGeometric.map.gz"
+  }
+                                                                                                                                      
+# --------------------------------------------------------------------------------------
+
+
+
+//
+// Regional, for Muons :
+//
+
+module towerMakerForMuons = towerMaker from "RecoJets/JetProducers/data/CaloTowerSchemeB.cfi"
+replace towerMakerForMuons.ecalInputs = { ecalRegionalMuonsRecHit:EcalRecHitsEB, ecalRegionalMuonsRecHit:EcalRecHitsEE }
+
+module caloTowersForMuons = CaloTowerCandidateCreator {
+           InputTag src = towerMakerForMuons
+           double minimumEt = -1
+           double minimumE = -1
+}
+
+sequence doRegionalCaloForMuons = { (doRegionalMuonsEcal & doLocalHcal), towerMakerForMuons, caloTowersForMuons }
+
+
+//
+// Regional, for Taus :
+//
+module towerMakerForTaus = towerMaker from "RecoJets/JetProducers/data/CaloTowerSchemeB.cfi"
+replace towerMakerForTaus.ecalInputs = { ecalRegionalTausRecHit:EcalRecHitsEB, ecalRegionalTausRecHit:EcalRecHitsEE }
+        // For taus, dedicated module caloTowerMakerHLT defined in HLTrigger/btau/data/tau/CaloTau.cff
+sequence doRegionalCaloForTaus = { (doRegionalTausEcal & doLocalHcal), towerMakerForTaus }
+                                                                                                                                      
+//
+// Regional, for Jets :
+//
+                                                                                                                                      
+module towerMakerForJets = towerMaker from "RecoJets/JetProducers/data/CaloTowerSchemeB.cfi"
+replace towerMakerForJets.ecalInputs = { ecalRegionalJetsRecHit:EcalRecHitsEB, ecalRegionalJetsRecHit:EcalRecHitsEE }
+                                                                                                                                      
+module caloTowersForJets = CaloTowerCandidateCreator {
+           InputTag src = towerMakerForJets
+           double minimumEt = -1
+           double minimumE = -1
+}
+                                                                                                                                      
+sequence doRegionalCaloForJets = { (doRegionalJetsEcal & doLocalHcal), towerMakerForJets, caloTowersForJets }
+
+
+//
+// For "rest", i.e. full Ecal :
+//
+                                                                                                                                      
+module towerMakerForAll = towerMaker from "RecoJets/JetProducers/data/CaloTowerSchemeB.cfi"
+replace towerMakerForAll.ecalInputs = { ecalRecHitAll:EcalRecHitsEB, ecalRecHitAll:EcalRecHitsEE }
+                                                                                                                                      
+module caloTowers = CaloTowerCandidateCreator {
+           InputTag src = towerMakerForAll
+           double minimumEt = -1
+           double minimumE = -1
+}
+
+sequence caloTowersRec = { towerMakerForAll, caloTowers }
+
+sequence doCalo = { (doEcalAll & doLocalHcal), caloTowersRec }
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+#module hltEgammaRegionalCtfWithMaterialTracks = TrackProducer 
+module hltEgammaRegionalCTFFinalFitWithMaterial = TrackProducer 
+{
+  string Fitter = "KFFittingSmoother"   
+  string Propagator = "PropagatorWithMaterial" 
+  string src = "hltEgammaRegionalCkfTrackCandidates"
+  string producer = ""
+  string TTRHBuilder       =   "WithTrackAngle"
+  bool TrajectoryInEvent = false
+  bool useHitsSplitting = false
+}                                                                                                                                                           

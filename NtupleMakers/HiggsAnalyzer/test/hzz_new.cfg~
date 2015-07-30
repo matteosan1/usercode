@@ -1,0 +1,98 @@
+process TEST = {
+    ### keep the logging output to a nice level ###
+    include "FWCore/MessageService/data/MessageLogger.cfi"
+    replace MessageLogger.cout.placeholder = "INFO"
+
+    ### Strip Tracker calibrations ES sources
+    ### fake calibs ###
+    include "CalibTracker/Configuration/data/SiStrip_FakeLorentzAngle.cff"
+    include "CalibTracker/Configuration/data/SiStrip_FakeGain.cff"
+    include "CalibTracker/Configuration/data/SiStrip_FakeNoise.cff"
+    include "CalibTracker/Configuration/data/SiStrip_FakePedestals.cff"
+    #include "CalibTracker/SiStripESProducers/data/SiStripGainFakeSource.cfi"
+    #include "CalibTracker/SiStripESProducers/data/SiStripGainESProducer.cfi" 
+
+    untracked PSet maxEvents = {untracked int32 input = 10}
+    //untracked PSet maxEvents = {untracked int32 input = CONDOR_MAXEVENTS}
+    source = PoolSource { 
+        untracked vstring fileNames = 
+	    {'/store/RelVal/2007/9/29/RelVal-RelValHiggsZZ4LM190-1191090129/0001/005B3098-256F-DC11-A39D-000423D98EC8.root'} 
+        untracked uint32 skipEvents = 0
+        //untracked uint32 skipEvents = CONDOR_SKIPEVENTS
+    }
+
+    ###############    
+    include "NtupleMakers/HiggsAnalyzer/test/cff/hzz4e_130_1_6_0.cff"
+    #include "NtupleMakers/HiggsAnalyzer/data/hzz.cfi"
+    #replace HiggsAnalyzer.RootFileName = "h130.root"
+    //replace HiggsAnalyzer.RootFileName = "CONDOR_OUTPUTFILENAME"
+    ###############
+
+    # hybrid clustering in the barrel
+    include "RecoEcal/EgammaClusterProducers/data/hybridClusteringSequence.cff"
+  
+    # island clustering for the endcaps
+    include "RecoEcal/EgammaClusterProducers/data/islandClusteringSequence.cff"
+  
+    include "Geometry/CaloEventSetup/data/CaloGeometry.cff"
+    
+    #include "RecoEgamma/EgammaElectronProducers/data/pixelMatchGsfElectronSequence.cff"
+    #replace pixelMatchGsfElectrons.EtCut = 1.5
+    include "RecoEgamma/EgammaElectronProducers/data/globalGsfElectronSequence.cff"
+    
+  ######################################################################################
+
+#include "Geometry/TrackerSimData/data/trackerSimGeometryXML.cfi"
+############ initialize magnetic field #########################
+include "MagneticField/Engine/data/volumeBasedMagneticField.cfi"
+
+############### initialize geometry #####################
+    #include "Geometry/TrackerRecoData/data/trackerRecoGeometryXML.cfi"
+    include "Geometry/TrackerGeometryBuilder/data/trackerGeometry.cfi"
+    include "Geometry/TrackerNumberingBuilder/data/trackerNumberingGeometry.cfi"
+    include "RecoTracker/GeometryESProducer/data/TrackerRecoGeometryESProducer.cfi"
+
+
+    include "RecoLocalTracker/SiStripClusterizer/data/SiStripClusterizer.cfi"
+    include "RecoLocalTracker/SiStripRecHitConverter/data/SiStripRecHitConverter.cfi"
+    include "RecoLocalTracker/SiStripRecHitConverter/data/StripCPEfromTrackAngle.cfi"
+
+  ### SeedGenerator module ###
+    include "RecoTracker/TkSeedGenerator/data/GlobalMixedSeeds.cff"
+    #include "RecoTracker/TkSeedGenerator/data/GlobalPixelSeeds.cff"
+    #include "RecoEgammaBis/EgammaElectronProducers/data/seedsFilteredWithCluster.cfi"
+    #replace seedsFilteredWithCluster.SeedProducer = "globalPixelSeeds" 
+
+  ### KFTrackCandidateMaker
+    #include "RecoTracker/CkfPattern/data/CkfTrackCandidates.cff"
+    #replace ckfTrackCandidates.SeedProducer  = "seedsFilteredWithCluster"   
+    #replace CkfTrajectoryBuilder.propagatorAlong = "fwdGsfElectronPropagator"
+    #replace CkfTrajectoryBuilder.propagatorOpposite = "bwdGsfElectronPropagator"
+    #replace CkfTrajectoryBuilder.estimator = "gsfElectronChi2"
+    
+  ### CTF track fit with material
+  #include "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cff"
+    
+  ### GSF track fit with material
+    #include "TrackingTools/GsfTracking/data/GsfElectrons.cff"
+    #replace GsfElectrons.src = "ckfTrackCandidates"  
+
+  ### Electron producer preselection cut
+    
+    # electron preselection parameters
+    #replace globalGsfElectrons.maxEOverPBarrel = 3.
+    #replace globalGsfElectrons.maxEOverPEndcaps = 5.
+    #replace minEOverPBarrel = 0.35
+    #replace minEOverPEndcaps = 0.35
+    #replace globalGsfElectrons.hOverEConeSize = 0.1
+    #replace globalGsfElectrons.maxHOverE = 0.2
+    #replace globalGsfElectrons.maxDeltaEta = 0.02
+    #replace globalGsfElectrons.maxDeltaPhi = 0.1
+    #
+    #replace globalGsfElectrons.highPtPreselection = false
+    #replace globalGsfElectrons.highPtMin = 150
+  ######################################################################################
+    
+    #path p = {hybridClusteringSequence, islandClusteringSequence,pixelMatchGsfElectronSequence} 
+    path p = {siStripClusters, siStripRecHits, globalMixedSeeds, hybridClusteringSequence, islandClusteringSequence, globalGsfElectronSequence}
+}

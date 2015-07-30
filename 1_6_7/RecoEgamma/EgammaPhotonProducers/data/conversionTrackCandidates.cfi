@@ -1,0 +1,78 @@
+#
+#  configuration for producer of converted photons
+#  $Id: conversionTrackCandidates.cfi,v 1.11 2007/06/25 16:05:03 nancy Exp $
+#
+
+############### Tracker geometry #####################
+include "Geometry/TrackerGeometryBuilder/data/trackerGeometry.cfi"
+include "Geometry/TrackerNumberingBuilder/data/trackerNumberingGeometry.cfi"
+include "RecoTracker/GeometryESProducer/data/TrackerRecoGeometryESProducer.cfi"
+
+# stripCPE
+include "RecoLocalTracker/SiStripRecHitConverter/data/StripCPEfromTrackAngle.cfi"
+include "RecoLocalTracker/SiStripRecHitConverter/data/SiStripRecHitMatcher.cfi"
+
+# pixelCPE
+include "RecoLocalTracker/SiPixelRecHits/data/PixelCPEParmError.cfi"
+
+#TransientTrackingBuilder
+include "RecoTracker/TransientTrackingRecHit/data/TransientTrackingRecHitBuilder.cfi"
+
+# MeasurementTracker
+include "RecoTracker/MeasurementDet/data/MeasurementTrackerESProducer.cfi"
+
+
+# TransientTracks
+include "TrackingTools/TransientTrack/data/TransientTrackBuilder.cfi"
+
+#TrajectoryBuilder
+include "RecoEgamma/EgammaPhotonProducers/data/trajectoryBuilderForConversions.cfi"
+
+module conversionTrackCandidates = ConversionTrackCandidateProducer {
+
+    string  bcProducer  =        "islandBasicClusters"
+    string  bcBarrelCollection = "islandBarrelBasicClusters"
+    string  bcEndcapCollection = "islandEndcapBasicClusters"
+
+    string scHybridBarrelProducer   =     "correctedHybridSuperClusters"
+    string scHybridBarrelCollection =     ""
+
+    string scIslandEndcapProducer   =     "correctedEndcapSuperClustersWithPreshower"
+    string scIslandEndcapCollection =     ""
+
+
+    string outInTrackCandidateBarrelCollection = "outInTracksFromConversionsBarrel" 
+    string inOutTrackCandidateBarrelCollection = "inOutTracksFromConversionsBarrel" 
+    string outInTrackCandidateEndcapCollection = "outInTracksFromConversionsEndcap" 
+    string inOutTrackCandidateEndcapCollection = "inOutTracksFromConversionsEndcap" 
+
+
+    string outInTrackCandidateSCBarrelAssociationCollection = "outInTrackCandidateSCBarrelAssociationCollection"
+    string inOutTrackCandidateSCBarrelAssociationCollection = "inOutTrackCandidateSCBarrelAssociationCollection"
+    string outInTrackCandidateSCEndcapAssociationCollection = "outInTrackCandidateSCEndcapAssociationCollection"
+    string inOutTrackCandidateSCEndcapAssociationCollection = "inOutTrackCandidateSCEndcapAssociationCollection"
+
+	
+
+    string TrajectoryBuilder    = 	"TrajectoryBuilderForConversions"
+
+    bool   outInSeedCleaning  = true
+    bool   inOutSeedCleaning  = true
+
+    string OutInRedundantSeedCleaner = "CachingSeedCleanerBySharedInput"
+    string InOutRedundantSeedCleaner = "CachingSeedCleanerBySharedInput"
+
+	
+    double  smootherChiSquareCut = 100.
+
+    PSet TransientInitialStateEstimatorParameters =
+      {
+         string propagatorAlongTISE    = "alongMomElePropagator"
+         string propagatorOppositeTISE = "oppositeToMomElePropagator"
+      }	
+
+  
+
+
+
+}

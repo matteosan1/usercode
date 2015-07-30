@@ -1,0 +1,139 @@
+#----------- filter modules for the sequence --------------------------------#
+
+
+#--------------------------------------------------------------------#
+# L1 MATCH
+#--------------------------------------------------------------------#
+module hltL1NonIsoSingleElectronL1MatchFilterRegional = hltEgammaL1MatchFilterRegional from "HLTrigger/Egamma/data/hltEgammaL1MatchFilterRegional.cfi" 
+
+     replace hltL1NonIsoSingleElectronL1MatchFilterRegional.candIsolatedTag = l1IsoRecoEcalCandidate
+     replace hltL1NonIsoSingleElectronL1MatchFilterRegional.candNonIsolatedTag = l1NonIsoRecoEcalCandidate
+     replace hltL1NonIsoSingleElectronL1MatchFilterRegional.L1SeedFilterTag = l1seedRelaxedSingle
+ #     InputTag l1Tag = l1extraParticles:Isolated
+     replace  hltL1NonIsoSingleElectronL1MatchFilterRegional.ncandcut = 1
+     replace  hltL1NonIsoSingleElectronL1MatchFilterRegional.doIsolated = false
+#
+#      double region_eta_size      = 0.522
+#      double region_eta_size_ecap = 1.0
+#      double region_phi_size      = 1.044
+#      double barrel_end           = 1.4791
+#      double endcap_end           = 2.65
+
+#--------------------------------------------------------------------#
+# ET CUT
+#--------------------------------------------------------------------#
+module hltL1NonIsoSingleElectronEtFilter = hltEgammaEtFilter from "HLTrigger/Egamma/data/hltEgammaEtFilter.cfi"
+
+ replace hltL1NonIsoSingleElectronEtFilter.inputTag = hltL1NonIsoSingleElectronL1MatchFilterRegional
+ #replace hltL1IsoSingleElectronEtFilter.inputTag = hltL1IsoSingleElectronL1MatchFilter
+ replace hltL1NonIsoSingleElectronEtFilter.etcut = 18.0
+ replace hltL1NonIsoSingleElectronEtFilter.ncandcut = 1
+
+#--------------------------------------------------------------------#
+# HCAL ISOL
+#--------------------------------------------------------------------#
+module hltL1NonIsoSingleElectronHcalIsolFilter = hltEgammaHcalIsolFilter from "HLTrigger/Egamma/data/hltEgammaHcalIsolFilter.cfi"
+
+ replace hltL1NonIsoSingleElectronHcalIsolFilter.candTag = hltL1NonIsoSingleElectronEtFilter
+ replace hltL1NonIsoSingleElectronHcalIsolFilter.isoTag = l1IsolatedElectronHcalIsol
+ replace hltL1NonIsoSingleElectronHcalIsolFilter.nonIsoTag  = l1NonIsolatedElectronHcalIsol
+ replace hltL1NonIsoSingleElectronHcalIsolFilter.hcalisolbarrelcut = 3.
+ replace hltL1NonIsoSingleElectronHcalIsolFilter.hcalisolendcapcut = 3.
+ replace hltL1NonIsoSingleElectronHcalIsolFilter.ncandcut = 1
+ replace hltL1NonIsoSingleElectronHcalIsolFilter.doIsolated = false
+
+#--------------------------------------------------------------------#
+# PIXEL MATCH
+#--------------------------------------------------------------------#
+module hltL1NonIsoSingleElectronPixelMatchFilter = hltElectronPixelMatchFilter from "HLTrigger/Egamma/data/hltElectronPixelMatchFilter.cfi"
+
+  replace hltL1NonIsoSingleElectronPixelMatchFilter.candTag = hltL1NonIsoSingleElectronHcalIsolFilter
+  replace hltL1NonIsoSingleElectronPixelMatchFilter.L1IsoPixelSeedsTag = l1IsoElectronPixelSeeds
+  replace hltL1NonIsoSingleElectronPixelMatchFilter.L1NonIsoPixelSeedsTag = l1NonIsoElectronPixelSeeds
+
+replace hltL1NonIsoSingleElectronPixelMatchFilter.doIsolated = false
+#      double   npixelmatchcut         = 1
+  replace hltL1NonIsoSingleElectronPixelMatchFilter.ncandcut = 1
+
+## #--------------------------------------------------------------------#
+## # E OVER P       
+## #--------------------------------------------------------------------#
+##  module hltL1NonIsoSingleElectronEoverpFilter = hltElectronEoverpFilter from "HLTrigger/Egamma/data/hltElectronEoverpFilter.cfi"
+## 
+##  replace hltL1NonIsoSingleElectronEoverpFilter.candTag = hltL1NonIsoSingleElectronPixelMatchFilter
+##  replace hltL1NonIsoSingleElectronEoverpFilter.electronIsolatedProducer = pixelMatchElectronsL1IsoForHLT 
+##  replace hltL1NonIsoSingleElectronEoverpFilter.electronNonIsolatedProducer = pixelMatchElectronsL1NonIsoForHLT 
+##   replace hltL1NonIsoSingleElectronEoverpFilter.eoverpbarrelcut = 1.5
+##   replace hltL1NonIsoSingleElectronEoverpFilter.eoverpendcapcut = 2.45
+##   replace hltL1NonIsoSingleElectronEoverpFilter.ncandcut = 1
+##   replace hltL1NonIsoSingleElectronEoverpFilter.doIsolated = false
+
+ #--------------------------------------------------------------------#
+ # 1/E - 1/P
+ #--------------------------------------------------------------------#
+ module hltL1NonIsoSingleElectronHOneOEMinusOneOPFilter = hltElectronOneOEMinusOneOPFilter from "HLTrigger/Egamma/data/hltElectronOneOEMinusOneOPFilter.cfi"
+
+  replace hltL1NonIsoSingleElectronHOneOEMinusOneOPFilter.candTag =  hltL1NonIsoSingleElectronPixelMatchFilter
+  replace hltL1NonIsoSingleElectronHOneOEMinusOneOPFilter.electronIsolatedProducer = pixelMatchElectronsL1IsoForHLT
+  replace hltL1NonIsoSingleElectronHOneOEMinusOneOPFilter.electronNonIsolatedProducer = pixelMatchElectronsL1NonIsoForHLT
+  replace hltL1NonIsoSingleElectronHOneOEMinusOneOPFilter.barrelcut = 999.03
+  replace hltL1NonIsoSingleElectronHOneOEMinusOneOPFilter.endcapcut = 999.03
+  replace hltL1NonIsoSingleElectronHOneOEMinusOneOPFilter.ncandcut = 1
+  replace hltL1NonIsoSingleElectronHOneOEMinusOneOPFilter.doIsolated = false
+
+#--------------------------------------------------------------------#
+# TRACK ISOL
+#--------------------------------------------------------------------#
+ module hltL1NonIsoSingleElectronTrackIsolFilter = hltElectronTrackIsolFilter from "HLTrigger/Egamma/data/hltElectronTrackIsolFilter.cfi"
+
+#replace  hltL1NonIsoSingleElectronTrackIsolFilter.candTag  = hltL1NonIsoSingleElectronEoverpFilter
+replace  hltL1NonIsoSingleElectronTrackIsolFilter.candTag  = hltL1NonIsoSingleElectronHOneOEMinusOneOPFilter
+replace  hltL1NonIsoSingleElectronTrackIsolFilter.isoTag   = l1IsoElectronTrackIsol
+replace  hltL1NonIsoSingleElectronTrackIsolFilter.nonIsoTag  = l1NonIsoElectronTrackIsol
+replace  hltL1NonIsoSingleElectronTrackIsolFilter.pttrackisolcut = 0.06
+replace  hltL1NonIsoSingleElectronTrackIsolFilter.ncandcut         = 1
+replace  hltL1NonIsoSingleElectronTrackIsolFilter.doIsolated = false
+
+#--------------------------------------------------------------------#
+#--------------------------------------------------------------------#
+
+  module singleElectronL1NonIsoPresc = HLTPrescaler {
+         bool   makeFilterObject = true
+         uint32 prescaleFactor = 1
+         uint32 eventOffset    = 0
+  }
+
+
+  sequence singleElectronL1NonIsolated = {
+	                           hltBegin& 
+                                   l1seedRelaxedSingle &
+		                    doRegionalEgammaEcal &
+                                    l1IsolatedEcalClusters &
+                                    l1NonIsolatedEcalClusters &
+                                    l1IsoRecoEcalCandidate &
+                                    l1NonIsoRecoEcalCandidate &
+                                   hltL1NonIsoSingleElectronL1MatchFilterRegional &
+                                   hltL1NonIsoSingleElectronEtFilter &
+                                    doLocalHcalWithoutHO &
+                                    l1IsolatedElectronHcalIsol & 
+                                    l1NonIsolatedElectronHcalIsol & 
+                                   hltL1NonIsoSingleElectronHcalIsolFilter &
+                                    doLocalPixel & // pixel rechit for SC-pixel matching
+	                            pixelMatchElectronL1IsoSequenceForHLT & 
+	                            pixelMatchElectronL1NonIsoSequenceForHLT & 
+                                   hltL1NonIsoSingleElectronPixelMatchFilter &
+			            doLocalStrip & // strip rechit for the electron tracking
+                                    pixelMatchElectronL1IsoTrackingSequenceForHLT &
+                                    pixelMatchElectronL1NonIsoTrackingSequenceForHLT &
+                                   ////hltL1NonIsoSingleElectronEoverpFilter &
+				   hltL1NonIsoSingleElectronHOneOEMinusOneOPFilter &	
+                                    l1IsoElectronsRegionalRecoTracker & //// here the regional is obtained by
+                                    l1NonIsoElectronsRegionalRecoTracker & //// here the regional is obtained by
+                                                           /// EgammaHLTRegionalPixelSeedGeneratorProducer
+                                    l1IsoElectronTrackIsol & 
+                                    l1NonIsoElectronTrackIsol & 
+                                   hltL1NonIsoSingleElectronTrackIsolFilter &
+                                                      
+                             singleElectronL1NonIsoPresc
+                            }
+

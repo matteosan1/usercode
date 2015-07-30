@@ -1,0 +1,10 @@
+include "RecoEgamma/EgammaPhotonProducers/data/propOppoMomentumWithMaterialForElectrons.cfi"
+include "RecoEgamma/EgammaPhotonProducers/data/chi2EstimatorForInOutFit.cfi"
+
+
+# KFTrajectorySmootherESProducer
+es_module  KFTrajectorySmootherForInOut = KFTrajectorySmoother from "TrackingTools/TrackFitters/data/KFTrajectorySmootherESProducer.cfi"
+replace  KFTrajectorySmootherForInOut.ComponentName = "KFSmootherForInOut"
+replace  KFTrajectorySmootherForInOut.Propagator = "oppositeToMomElePropagator"
+replace  KFTrajectorySmootherForInOut.Estimator = "Chi2ForInOut"
+

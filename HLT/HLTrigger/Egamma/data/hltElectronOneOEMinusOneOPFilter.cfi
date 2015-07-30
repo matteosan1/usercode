@@ -1,0 +1,9 @@
+module hltElectronOneOEMinusOneOPFilter = HLTElectronOneOEMinusOneOPFilterRegional {
+ InputTag candTag = hltElectronPixelMatchFilter
+ InputTag electronIsolatedProducer = pixelMatchElectronsL1IsoForHLT
+ InputTag electronNonIsolatedProducer = pixelMatchElectronsL1NonIsoForHLT
+ double barrelcut = 0.03
+ double endcapcut = 0.03
+ int32 ncandcut = 1
+ bool doIsolated = true
+}

@@ -1,0 +1,16 @@
+#
+# producer for hltPhotonTrackIsol
+#
+module hltPhotonTrackIsol = EgammaHLTPhotonTrackIsolationProducersRegional {
+
+  InputTag recoEcalCandidateProducer = hltEgammaHcalIsolFilter
+  InputTag trackProducer       = ctfWithMaterialTracks
+  //InputTag trackProducer       = hltSingleCtfWithMaterialTracks
+
+  double egTrkIsoPtMin        = 1.5
+  double egTrkIsoConeSize     = 0.3
+  double egTrkIsoZSpan        = 999999.
+  double egTrkIsoRSpan        = 999999.
+  double egTrkIsoVetoConeSize = 0.
+
+}

@@ -1,0 +1,11 @@
+include "RecoEgamma/EgammaHLTProducers/data/hltEgammaHcalIsol.cfi"
+module l1IsolatedElectronHcalIsol  = hltEgammaHcalIsol from "RecoEgamma/EgammaHLTProducers/data/hltEgammaHcalIsol.cfi"
+
+replace l1IsolatedElectronHcalIsol.recoEcalCandidateProducer = l1IsoRecoEcalCandidate
+
+#  InputTag hbRecHitProducer      = hbhereco
+#  InputTag hfRecHitProducer      = hfreco
+
+#  double egHcalIsoPtMin = 0.
+#  double egHcalIsoConeSize = 0.15
+

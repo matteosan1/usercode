@@ -1,0 +1,10 @@
+module l1IsoLargeWindowElectronTrackIsol  = hltElectronTrackIsol from "RecoEgamma/EgammaHLTProducers/data/hltElectronTrackIsol.cfi"
+
+replace l1IsoLargeWindowElectronTrackIsol.electronProducer    = pixelMatchElectronsL1IsoLargeWindowForHLT
+replace l1IsoLargeWindowElectronTrackIsol.trackProducer = l1IsoLargeWindowElectronsRegionalCTFFinalFitWithMaterial
+
+#  double egTrkIsoPtMin        = 1.5
+#  double egTrkIsoConeSize     = 0.2
+#  double egTrkIsoZSpan        = 0.1
+#  double egTrkIsoRSpan        = 999999.
+#  double egTrkIsoVetoConeSize = 0.02

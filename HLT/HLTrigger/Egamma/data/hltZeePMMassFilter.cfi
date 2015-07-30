@@ -1,0 +1,8 @@
+module hltZeePMMassFilter = HLTPMMassFilter {
+
+      InputTag candTag                = hltDoubleElectronTrackIsolFilter
+      double   lowerMassCut           = 54.22
+      double   upperMassCut           = 99999.9 # effectively infinite
+      int32    nZcandcut              = 1 # by candidate we now mean Z candiate
+}
+

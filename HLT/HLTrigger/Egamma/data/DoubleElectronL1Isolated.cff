@@ -1,0 +1,6 @@
+# common include file for different luminosities
+#
+ include "HLTrigger/Egamma/data/DoubleElectronL1Isolated_1e32.cff"
+#
+# include "HLTrigger/Egamma/data/DoubleElectronL1Isolated_2e33.cff"
+#

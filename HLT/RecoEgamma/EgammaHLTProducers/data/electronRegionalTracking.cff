@@ -1,0 +1,70 @@
+# Reconstruct regional tracks around jets starting from Digis
+# Define the standard hit and track reconstruction modules
+# (a few of these like road-search not needed, but do no harm).
+
+include "RecoTracker/Configuration/data/RecoTracker.cff"
+#include "RecoTracker/TkSeedingLayers/data/MixedLayerPairs.cfi"
+
+module electronHLTRegionalPixelSeedGenerator = SeedGeneratorFromRegionHitsEDProducer {
+    PSet RegionFactoryPSet = {
+        string ComponentName = "ElectronRegionalPixelSeedGenerator"
+        PSet RegionPSet = {
+            InputTag candTag        = l1IsoRecoEcalCandidate
+            InputTag candTagEle     = pixelMatchElectronsL1IsoForHLT
+            InputTag vertexSrc      = pixelVertices
+            bool   precise          = true
+            double ptMin            = 1.5
+            double originRadius     = 0.2
+            double originHalfLength = 0.2
+            double deltaEtaRegion   = 0.04
+            double deltaPhiRegion   = 0.05
+        }
+    }
+
+    PSet SeedComparitorPSet = {
+        string ComponentName = "none" 
+    }
+
+    PSet OrderedHitsFactoryPSet = {
+        string ComponentName = "StandardHitPairGenerator"
+        string SeedingLayers = "PixelLayerPairs"
+    }
+
+    string TTRHBuilder =  "WithTrackAngle"
+}
+
+# Tell track trajectory builder to use regional track seeds,
+# and speed it up by only partially reconstructing tracks. 
+#es_module electronRegionalTrajectoryFilter = trajectoryFilterESProducer from "TrackingTools/TrajectoryFiltering/data/TrajectoryFilterESProducer.cfi"
+#  replace electronRegionalTrajectoryFilter.ComponentName              = "electronRegionalTrajectoryFilter"
+#  replace electronRegionalTrajectoryFilter.filterPset.minPt           = 0.0
+#replace electronRegionalTrajectoryFilter.filterPset.maxNumberOfHits = 8 
+
+es_module electronRegionalTrajectoryBuilder = CkfTrajectoryBuilder from "RecoTracker/CkfPattern/data/CkfTrajectoryBuilderESProducer.cfi"
+  replace electronRegionalTrajectoryBuilder.ComponentName        = "electronRegionalTrajectoryBuilder"
+# replace electronRegionalTrajectoryBuilder.trajectoryFilterName = "electronRegionalTrajectoryFilter"
+  replace electronRegionalTrajectoryBuilder.maxCand              = 1
+#  replace electronRegionalTrejectoryBuilder.minPt                = 0.0
+  replace electronRegionalTrajectoryBuilder.alwaysUseInvalidHits = false
+
+# Form track candidates using the trajectory builder and seeds defined above.
+module  electronRegionalCkfTrackCandidates = ckfTrackCandidates from "RecoTracker/CkfPattern/data/CkfTrackCandidates.cfi"
+replace electronRegionalCkfTrackCandidates.SeedProducer      = "electronHLTRegionalPixelSeedGenerator"
+replace electronRegionalCkfTrackCandidates.TrajectoryBuilder = "electronRegionalTrajectoryBuilder"
+
+# Fit tracks using the track candidates defined above.
+module  electronRegionalCtfWithMaterialTracks     = ctfWithMaterialTracks from "RecoTracker/TrackProducer/data/CTFFinalFitWithMaterial.cfi"
+replace electronRegionalCtfWithMaterialTracks.src = "electronRegionalCkfTrackCandidates"
+
+# Define regional reconstruction path.
+sequence electronRegionalTracks = {
+    doLocalPixel,
+    electronHLTRegionalPixelSeedGenerator, 
+    doLocalStrip,
+    electronRegionalCkfTrackCandidates, 
+    electronRegionalCtfWithMaterialTracks
+}
+
+sequence electronRegionalTracking = { 
+    electronRegionalTracks 
+}

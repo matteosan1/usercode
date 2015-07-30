@@ -1,0 +1,117 @@
+ 
+#--------------------------------------------------------------------#
+# L1 MATCH
+#--------------------------------------------------------------------#
+module hltL1NonIsoDoublePhotonL1MatchFilterRegional = hltEgammaL1MatchFilterRegional from "HLTrigger/Egamma/data/hltEgammaL1MatchFilterRegional.cfi" 
+
+     replace hltL1NonIsoDoublePhotonL1MatchFilterRegional.candIsolatedTag = l1IsoRecoEcalCandidate
+     replace hltL1NonIsoDoublePhotonL1MatchFilterRegional.candNonIsolatedTag = l1NonIsoRecoEcalCandidate
+     replace  hltL1NonIsoDoublePhotonL1MatchFilterRegional.L1SeedFilterTag = l1seedRelaxedDouble
+     replace  hltL1NonIsoDoublePhotonL1MatchFilterRegional.ncandcut = 2
+     replace  hltL1NonIsoDoublePhotonL1MatchFilterRegional.doIsolated = false
+
+
+#--------------------------------------------------------------------#
+# ET CUT
+#--------------------------------------------------------------------#
+module hltL1NonIsoDoublePhotonEtFilter = hltEgammaEtFilter from "HLTrigger/Egamma/data/hltEgammaEtFilter.cfi"
+
+replace hltL1NonIsoDoublePhotonEtFilter.inputTag = hltL1NonIsoDoublePhotonL1MatchFilterRegional
+replace hltL1NonIsoDoublePhotonEtFilter.etcut = 20.0
+replace hltL1NonIsoDoublePhotonEtFilter.ncandcut = 2
+
+
+#--------------------------------------------------------------------#
+# ECAL ISOL
+#--------------------------------------------------------------------#
+module hltL1NonIsoDoublePhotonEcalIsolFilter = hltPhotonEcalIsolFilter from "HLTrigger/Egamma/data/hltPhotonEcalIsolFilter.cfi" 
+
+replace hltL1NonIsoDoublePhotonEcalIsolFilter.candTag = hltL1NonIsoDoublePhotonEtFilter
+replace hltL1NonIsoDoublePhotonEcalIsolFilter.isoTag  = l1IsolatedPhotonEcalIsol
+replace hltL1NonIsoDoublePhotonEcalIsolFilter.nonIsoTag  = l1NonIsolatedPhotonEcalIsol
+replace hltL1NonIsoDoublePhotonEcalIsolFilter.ecalisolcut = 2.5
+replace hltL1NonIsoDoublePhotonEcalIsolFilter.ncandcut = 2
+replace hltL1NonIsoDoublePhotonEcalIsolFilter.doIsolated = false
+
+#--------------------------------------------------------------------#
+# HCAL ISOL
+#--------------------------------------------------------------------#
+module hltL1NonIsoDoublePhotonHcalIsolFilter = hltEgammaHcalIsolFilter from "HLTrigger/Egamma/data/hltEgammaHcalIsolFilter.cfi"
+
+ replace hltL1NonIsoDoublePhotonHcalIsolFilter.candTag = hltL1NonIsoDoublePhotonEcalIsolFilter
+ replace hltL1NonIsoDoublePhotonHcalIsolFilter.isoTag = l1IsolatedPhotonHcalIsol
+ replace hltL1NonIsoDoublePhotonHcalIsolFilter.nonIsoTag  = l1NonIsolatedPhotonHcalIsol
+ replace hltL1NonIsoDoublePhotonHcalIsolFilter.hcalisolbarrelcut = 8.
+ replace hltL1NonIsoDoublePhotonHcalIsolFilter.hcalisolendcapcut = 6.
+ replace hltL1NonIsoDoublePhotonHcalIsolFilter.ncandcut = 2
+ replace hltL1NonIsoDoublePhotonHcalIsolFilter.doIsolated = false
+
+
+#--------------------------------------------------------------------#
+# TRACK ISOL
+#--------------------------------------------------------------------#
+ module hltL1NonIsoDoublePhotonTrackIsolFilter = hltPhotonTrackIsolFilter from "HLTrigger/Egamma/data/hltPhotonTrackIsolFilter.cfi"
+
+replace  hltL1NonIsoDoublePhotonTrackIsolFilter.candTag  = hltL1NonIsoDoublePhotonHcalIsolFilter
+replace  hltL1NonIsoDoublePhotonTrackIsolFilter.isoTag   = l1IsoPhotonTrackIsol
+replace  hltL1NonIsoDoublePhotonTrackIsolFilter.nonIsoTag  = l1NonIsoPhotonTrackIsol
+replace  hltL1NonIsoDoublePhotonTrackIsolFilter.numtrackisolcut = 3
+replace  hltL1NonIsoDoublePhotonTrackIsolFilter.ncandcut = 2
+replace  hltL1NonIsoDoublePhotonTrackIsolFilter.doIsolated = false
+
+#--------------------------------------------------------------------#
+# DOUBLE ET CUT
+#--------------------------------------------------------------------#
+module hltL1NonIsoDoublePhotonDoubleEtFilter = hltEgammaDoubleEtFilter from "HLTrigger/Egamma/data/hltEgammaDoubleEtFilter.cfi"
+
+replace hltL1NonIsoDoublePhotonDoubleEtFilter.candTag =  hltL1NonIsoDoublePhotonTrackIsolFilter
+replace hltL1NonIsoDoublePhotonDoubleEtFilter.etcut1 = 20.0 
+#      double etcut1 = 30.0
+#      double etcut2 = 20.0
+#      int32  npaircut = 1
+
+#--------------------------------------------------------------------#
+#--------------------------------------------------------------------#
+
+  module doublePhotonL1NonIsoPresc = HLTPrescaler {
+         bool   makeFilterObject = true
+         uint32 prescaleFactor = 1
+         uint32 eventOffset    = 0
+  }
+
+
+
+  sequence doublePhotonL1NonIsolated = {
+			   hltBegin&
+                           #doL1T &
+                           l1seedRelaxedDouble
+                           & 
+		           doRegionalEgammaEcal
+#doLocalEcal
+                           & l1IsolatedEcalClusters
+			   & l1NonIsolatedEcalClusters
+                           & l1IsoRecoEcalCandidate
+                           & l1NonIsoRecoEcalCandidate
+                           # & hltL1IsoDoublePhotonL1MatchFilter
+                           & hltL1NonIsoDoublePhotonL1MatchFilterRegional
+
+                           & hltL1NonIsoDoublePhotonEtFilter ### attention L1Iso
+
+# UP TO HERE OK
+
+	                   & l1IsolatedPhotonEcalIsol 
+	                   & l1NonIsolatedPhotonEcalIsol 
+			   & hltL1NonIsoDoublePhotonEcalIsolFilter
+                           & doLocalHcalWithoutHO
+                           & l1IsolatedPhotonHcalIsol 
+                           & l1NonIsolatedPhotonHcalIsol 
+			   & hltL1NonIsoDoublePhotonHcalIsolFilter
+                           & doLocalTracker
+                           & l1IsoEgammaRegionalRecoTracker
+                           & l1NonIsoEgammaRegionalRecoTracker
+                           & l1IsoPhotonTrackIsol 
+                           & l1NonIsoPhotonTrackIsol 
+			   & hltL1NonIsoDoublePhotonTrackIsolFilter
+	                   & hltL1NonIsoDoublePhotonDoubleEtFilter
+                           & doublePhotonL1NonIsoPresc
+	                  }
